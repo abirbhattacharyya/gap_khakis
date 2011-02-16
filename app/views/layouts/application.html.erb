@@ -13,6 +13,23 @@
     <%= stylesheet_link_tag "reset", "global", "notification" %>
     <%= javascript_include_tag "prototype", "effects" %>
     <%= javascript_include_tag 'application', 'jquery-1.4.2', 'jquery.bar' %>
+    <%= javascript_include_tag "jcarousellite_1.0.1c4" %>
+
+    <% javascript_tag do %>
+          jQuery.noConflict();
+          jQuery(function() {
+                jQuery(".newsticker-jcarousellite").jCarouselLite({
+                btnPlay: ".play",
+                btnPause: ".pause",
+                vertical: true,
+                hoverPause:true,
+                stop: false,
+                visible: 3,
+                auto:800,
+                speed:1100
+                });
+          });
+    <% end %>
   </head>
 
   <body>
