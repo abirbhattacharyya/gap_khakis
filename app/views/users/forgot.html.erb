@@ -1,0 +1,13 @@
+<h1>Forgot Password?</h1>
+<h2>Happens to all of us. Tell us your email & we will send it to you.</h2>
+
+<% form_tag forgot_path do %>
+  <p class="ctrl">
+    <%= label_tag(:email, "Email") %>
+    <%= text_field_tag :email, '', :class => "text w200" %>
+  </p>
+  <p class="ctrl actions">
+    <span class="button green"><%= submit_tag("Go!") %></span>
+    <%= link_to "Cancel", "javascript:history.go(-1);", :class => "alter" %>
+  </p>
+<% end %>

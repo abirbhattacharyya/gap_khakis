@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  ip: MyString
+  response: MyString
+  product_id: 1
+  price: 1.5
+  counter: 1
+
+two:
+  ip: MyString
+  response: MyString
+  product_id: 1
+  price: 1.5
+  counter: 1

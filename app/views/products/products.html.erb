@@ -1,0 +1,25 @@
+<h1>Upload a CSV with your product catalog</h1>
+<p>Make sure your CSV file contains the columns listed below. Click on the sample file to see an example.</p>
+<ul class="list">
+  <li>Style#</li>
+  <li>9 Digit Style #</li>
+  <li>Style Description</li>
+  <li>Color Description</li>
+  <li>First Cost</li>
+  <li>ELLC</li>
+  <li>Ticketed Retail</li>
+  <li>Ticketed GM%</li>
+  <li>Target GM%</li>
+  <li>Image url</li>
+</ul>
+
+<% form_tag product_catalog_path, :multipart => true do %>
+  <p class="ctrl">
+      <%= file_field_tag 'uploaded_file', {:style => "vertical-align: bottom;", :size => 20} %>
+      <%= link_to("Sample file", "/sample.jpg", :target => "_new") %>
+  </p>
+  <p class="ctrl actions">
+      <span class="button green"><%= submit_tag "Go!" %></span>
+      <%= link_to("Cancel", root_path, :class => "alter") if @products and @products.size > 0 %>
+  </p>
+<% end %>

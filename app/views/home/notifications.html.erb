@@ -1,0 +1,16 @@
+<%#= render :partial => "/partials/my_dashboard" %>
+<h1>My previous action= <%= distance_of_time_in_words(Time.now, @notifications[0][1]) %> ago</h1>
+
+<div class="sbox w640px">
+    <div class="sinner">
+
+    <ul class="events">
+        <% @notifications.each_with_index do |notify, index| %>
+            <li><%= index + 1 %>. You added your <%= notify[0] %> on <%= notify[1].to_date.strftime("%B %d, %Y") %></li>
+        <% end %>
+    </ul>
+
+    </div><!-- .sinner -->
+    <div class="stl"></div><div class="str"></div>
+    <div class="sbl"></div><div class="sbr"></div>
+</div><!-- .sbox -->

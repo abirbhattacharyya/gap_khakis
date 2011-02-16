@@ -1,0 +1,8 @@
+<% content_tag :div, :class => "fixed-side-ctrls" do %>
+    <% content_tag :ul do %>
+        <%= content_tag(:li, content_tag(:span, link_to("Notifications", notifications_path, :class => "w160px"), :class => "button green ".concat(([notifications_path, root_path].include? request.path) ? "current" : ""))) %>
+        <%= content_tag(:li, content_tag(:span, link_to("My Wardrobes", my_wardrobes_path, :class => "w160px"), :class => "button green ".concat(([my_wardrobes_path].include? request.path) ? "current" : ""))) %>
+        <%= content_tag(:li, content_tag(:span, link_to("New Wardrobe", wardrobe_path, :class => "w160px"), :class => "button green ".concat(([wardrobe_path].include? request.path) ? "current" : ""))) %>
+        <%= content_tag(:li, content_tag(:span, link_to("Analytics", analytics_path, :class => "w160px"), :class => "button green ".concat(([analytics_path].include? request.path) ? "current" : ""))) %>
+    <% end %>
+<% end %>

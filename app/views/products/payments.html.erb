@@ -1,0 +1,16 @@
+<h1>Here's your khakhi voucher, you lucky winner you!</h1>
+<div class="sbox w640px">
+    <div class="sinner">
+        <h1>Voucher # <%=@payment.promotion_code.code %></h1>
+        <h2>You Won!</h2>
+        <p>
+            1 pair of <%= @payment.offer.product.style_description %> for <%= number_to_currency(@payment.offer.price) %><br />
+            Color = <%= @payment.offer.product.color_description %><br />
+            Style = <%= @payment.offer.product.style_num_full %><br />
+            Expires = 04/30/2011<br />
+        </p>
+    </div><!-- .sinner -->
+    <div class="stl"></div><div class="str"></div>
+    <div class="sbl"></div><div class="sbr"></div>
+</div><!-- .sbox -->
+

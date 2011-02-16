@@ -1,0 +1,104 @@
+<% product = capsule %>
+<%
+  @accepted_offer = product.offers.last(:conditions => ["ip = (?) and response = (?)", request.remote_ip, 'accepted'])
+  @accepted = (@accepted_offer.nil? ? false: true)
+  @counter_offer = product.offers.last(:conditions => ["ip = (?) and response = (?)", request.remote_ip, 'counter'])
+  @new_price = @counter_offer.price if @counter_offer
+  @counter = (@counter_offer ? true : false)
+  @last_offer = (@counter_offer ? true : false)
+%>
+
+<div class="sbox w640px thin">
+    <div class="sinner">
+        <h1>
+            <%= product.style_description %>, Color= <%= product.color_description %>, is yours @ the right price!
+        </h1>
+
+        <div class="visual">
+            <div class="caption">
+                <span>
+                    Share with friends:
+                    <%= link_to(image_tag("/images/icons/ico-15x14-twitter.gif", :size => "15x14", :alt => "Twitter"), "http://twitter.com/home?status=Save money and look great on exclusive Gap wardrobe deals! #{capsule_url(product.id)}", :target => "_new") %>
+                    <%= link_to(image_tag("/images/icons/ico-15x14-facebook.gif", :size => "15x14", :alt => "Facebook"), "http://www.facebook.com/sharer.php?u=#{capsule_url(product.id)}&t=Save money and look great on exclusive Gap wardrobe deals!", :target => "_new") %>
+                    <%= link_to(image_tag("/images/icons/ico-14x14-email.gif", :size => "15x14", :alt => "Email"), send_to_path(product.id)) %>
+                </span>
+            </div>
+            <%= link_to(image_tag((product.image_url || "/images/khakis.png"), :size => "400x300"), capsule_url(product.id), :target => "_new", :class => "photo") %>
+        </div>
+
+        <div class="manage">
+            <br />
+            <div class="plate">
+                <div class="body">
+                  <% if logged_in? and product.user == current_user %>
+                      <h2>Total Price= $<%= number_with_delimiter(product.ticketed_retail) %></h2>
+                      <p class="ctrl">
+                          <label>Your offer?</label>
+                          <%= text_field_tag :price, '', :class => "w120px", :maxLength => 4, :onKeyPress => "return keyAllowed(event,'0123456789')", :onblur => "this.value=removeChars(this.value)" %>
+                      </p>
+                      <p>
+                          <span class="button green-fat disabled"><input type="submit" name="" value="Say Your Price!"></span>
+                      </p>
+                  <% else %>
+                      <% if @accepted_offer %>
+                          <p class="ctrl">Total Price= $<%= number_with_delimiter(@accepted_offer.price.ceil) %></p>
+                          <% form_tag payments_path(@accepted_offer.id) do %>
+                              <span class="button green-fat"><%= submit_tag "Get Code" %></span>
+                          <% end %>
+                      <% else %>
+                          <% form_tag capsule_path(product.id), :id => "submit_form" do %>
+                              <%= hidden_field_tag(:submit_button, "counter") %>
+                              <% if @counter %>
+                                <h2 class="long"><%#= "Final " if @last_offer == true %>Offer= $<%= number_with_delimiter(@new_price.ceil) %></h2>
+                                <p class="ctrl">
+                                    <label>Buy at $<%= number_with_delimiter(@new_price.ceil) %>?</label>
+                                    <%= button_to_function("Yes", "var f = document.forms['submit_form'];$('submit_button').value='yes';f.submit();return false;", :class => "button-yes") %>
+                                    <%= button_to_function("No", "var f = document.forms['submit_form'];$('submit_button').value='no';f.submit();return false;", :class => "button-no") %>
+                                </p>
+                                <% if @last_offer == false %>
+                                <p>OR</p>
+                                <p class="ctrl">
+                                    <label>Your Counter Offer?</label>
+                                    <%= text_field_tag :price, '', :class => "w120px", :maxLength => 4, :onKeyPress => "return keyAllowed(event,'0123456789')", :onblur => "this.value=removeChars(this.value)" %>
+                                </p>
+                                <p>
+                                  <span class="button orange-fat"><%= submit_tag "Counter" %></span>
+                                </p>
+                                <% end %>
+                              <% else %>
+                                <h2>Say your price</h2>
+
+                                <p class="ctrl">
+                                    <label>Your offer?</label>
+                                    <%= text_field_tag :price, '', :class => "w120px", :maxLength => 4, :onKeyPress => "return keyAllowed(event,'0123456789')", :onblur => "this.value=removeChars(this.value)" %>
+                                </p>
+                                <p>
+                                    <span class="button green-fat"><%= submit_tag "Say your price!" %></span>
+                                </p>
+                              <% end %>
+                          <% end %>
+                        <% end %>
+                  <% end %>
+                  <% if @error %>
+                      <p class="ctrl">Sorry, can't do that. Please make another offer</p>
+                  <% end %>
+                </div><!-- .body -->
+                <div class="foot"></div>
+            </div><!-- .plate -->
+        </div><!-- .manage -->
+        <div class="clearer"></div>
+        <br />
+        <div class="divider"></div>
+        <p><%= link_to(capsule_url(product.id), capsule_path(product.id)) %></p>
+        <h4>
+            <% if logged_in? and product.user == current_user %>
+              <%#= number_with_delimiter(product.wardrobe.qty) %> items, Discounted Price=$<%= number_with_delimiter(product.total_min_price) %>
+            <% else %>
+              WARDROBE INCLUDES (Reg. Price=$<%= number_with_delimiter(product.ticketed_retail) %>)
+            <% end %><br />
+            Color= <%= product.color_description %>
+        </h4>
+    </div><!-- .sinner -->
+    <div class="stl"></div><div class="str"></div>
+    <div class="sbl"></div><div class="sbr"></div>
+</div><!-- .capsule -->

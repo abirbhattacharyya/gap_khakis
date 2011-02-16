@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  offer_id: 1
+  promotion_code_id: 1
+
+two:
+  offer_id: 1
+  promotion_code_id: 1

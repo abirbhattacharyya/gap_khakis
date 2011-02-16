@@ -1,0 +1,30 @@
+<h1><%= link_to("Want EXCLUSIVE wardrobe deals? Choose to say your price!", say_your_price_path) %></h1>
+
+<div class="preface">
+    <div class="column first" onclick="window.location.href='<%= say_your_price_path %>'">
+        <h2><%= link_to("Check out cool wardrobes", say_your_price_path) %></h2>
+        <p>Entertain yourself with hand picked wardrobes for her + him.  Feel the love when you share these exclusive deals!</p>
+
+    </div><!-- .column -->
+    <div class="column second" onclick="window.location.href='<%= say_your_price_path %>'">
+        <h2><%= link_to("Go ahead, say your price!", say_your_price_path) %></h2>
+        <p>Make reasonable offers & snag these special deals.  Your wardrobe is so fashionable, you paid how much? wow!</p>
+
+    </div><!-- .column -->
+</div>
+
+<h1><%= link_to("These fabulous wardrobes can be yours if the price is right!", say_your_price_path) %></h1>
+
+<div class="sbox slides">
+    <div class="sinner">
+      <%= link_to(image_tag("/images/samples/gap-house.jpg"), say_your_price_path) %>
+      <%= link_to(image_tag("/images/samples/woman-with-dog.jpg"), say_your_price_path) %>
+      <%= link_to(image_tag("/images/samples/man.jpg"), say_your_price_path) %>
+    </div><!-- .sinner -->
+    <div class="stl"></div><div class="str"></div>
+    <div class="sbl"></div><div class="sbr"></div>
+</div><!-- .sbox -->
+
+<p class="ctrl actions" align="right">
+    <%= content_tag(:span, button_to_function("Go!", "window.location.href='#{say_your_price_path}'"), :class => "button green") %>
+</p>

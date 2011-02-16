@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Language" content="en-us" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="" />
+    <meta name="description" content="">
+    <link rel="icon"  type="image/png" href="/images/favicon.ico" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+
+    <title>Gap Khakis</title>
+    <%= stylesheet_link_tag "reset", "global", "notification" %>
+    <%= javascript_include_tag "prototype", "effects" %>
+    <%= javascript_include_tag 'application', 'jquery-1.4.2', 'jquery.bar' %>
+  </head>
+
+  <body>
+    <%= content_tag(:div, nil, :id => "notification", :class => "message-notification") %>
+    <div id="layout">
+        <div id="header">
+            <a class="logo" href="/">GAP</a>
+            <ul>
+                <%= content_tag(:li, link_to('Home', root_path)) if request.path != root_path %>
+                <% if logged_in? %>
+                    <%= content_tag(:li, link_to("My Profile", profile_path), :class => ([profile_path].include? request.path) ? "current" : nil) if current_user.profile %>
+                <% else %>
+                    <%= content_tag(:li, link_to("Say Your Price", say_your_price_path), :class => ([say_your_price_path].include? request.path) ? "current" : nil) %>
+                    <%= content_tag(:li, link_to("Winners", winners_path), :class => ([winners_path].include? request.path) ? "current" : nil) %>
+                <% end %>
+            </ul>
+        </div><!-- #header -->
+
+        <% content_tag :div, :id => "content" do %>
+            <%= @content_for_layout %>
+        <% end %>
+
+        <div id="footer">
+            <div>
+                &copy; 2010 DealKat
+                <%= "@#{link_to("#{Profile.first.twitter} ", Profile.first.twitter_url, :target => "_new")} " %>
+                <%= "<b>#{number_to_phone(Profile.first.phone, :delimiter => "-")}</b>" if Profile.first %>
+            </div>
+
+            <address>
+                <%= "#{Profile.first.name}<br />" if Profile.first %>
+                <%= "#{Profile.first.address}" if Profile.first %>
+                <%#= "#{Profile.first.city}, #{Profile.first.state} #{Profile.first.zip}" if Profile.first %>
+            </address>
+            <% content_tag :ul do %>
+                <%= content_tag(:li, link_to('Sign Out', logout_path)) if logged_in? %>
+                <%#= content_tag(:li, link_to("FAQ", faqs_path), :class => ([faqs_path].include? request.path) ? "current" : nil) %>
+            <% end %>
+        </div><!-- #footer -->
+    </div><!-- #layout -->
+    <% if flash[:error] or flash[:notice] %>
+      <% javascript_tag do %>
+          <% if flash[:error] %>
+            showNotification("<%= flash.now[:error] %>", 'error', 8000);
+          <% elsif flash[:notice] %>
+            showNotification("<%= flash.now[:notice] %>", 'notice', 8000);
+          <% end %>
+          <% flash.discard %>
+      <% end %>
+    <% end %>
+  </body>
+</html>

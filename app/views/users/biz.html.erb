@@ -1,0 +1,18 @@
+<%= content_tag(:h1, "Sign in") %>
+
+<%#= error_messages_for(:user, :order => [:email, :password], :message => "", :header_message => "")%>
+<% form_for :user, :url => biz_path do |f| %>
+  <p class="ctrl">
+      <%= label_tag(:email, "Email") %>
+      <%= f.text_field :email, :class => "w180px" %>
+  </p>
+  <p class="ctrl">
+      <%= label_tag(:password, "Password") %>
+      <%= f.password_field :password, :class => "w180px" %>
+  </p>
+  <%= content_tag :p, @message, :style => "color:red;" if @message %>
+  <p class="ctrl actions">
+      <span class="button green"><%= f.submit("Go!") %></span>
+      <%= link_to "Forgot Password?", forgot_path, :class => "alter" %>
+  </p>
+<% end %>

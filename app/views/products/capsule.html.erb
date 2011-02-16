@@ -1,0 +1,10 @@
+  <h1>
+      <% if @accepted == true and @accepted_offer %>
+        Done deal. Please pay now. See you @ the store
+      <% elsif @counter %>
+        Come on let's make a deal!
+      <% else %>
+        Say your price, if it's reasonable the wardrobe is yours!
+      <% end %>
+  </h1>
+  <%= render :partial => "partials/capsule", :object => @product %>

@@ -1,0 +1,73 @@
+<% if @payments and @payments.size > 0 %>
+
+  <p class="feed-ctrl">
+    <a id="pause1" class="button pause">Pause</a>
+    <a id="play1" class="button play" style="display:none;">Play</a>
+  </p>
+
+  <div class="sbox" style="width: 780px;">
+      <div class="sinner">
+      <div class="newsticker-jcarousellite">
+      <ul class="events">
+        <% for payment in @payments %>
+            <li>
+                <%= link_to("@#{payment.screen_name}", "http://twitter.com/#{payment.screen_name}", :class => "addr") %>
+                <em>Won <%= payment.offer.product_name %>. Negotiated Price=$<%= number_with_delimiter(payment.offer.price.ceil) %>; Reg. Price=$<%= number_with_delimiter(payment.offer.combination.total_reg_price.ceil) %></em>
+                <span class="when">Won on <%= payment.created_at.strftime("%b %d, %I:%M %p %Z") %></span>
+            </li>
+            <li>
+                <a class="button green" href="/say_your_price"><span class="small-text">Gimme A Wardrobe!</span></a>
+                <a class="alter dspaced" href="http://www.facebook.com/sharer.php"><img src="/images/icons/facebook.gif" width="27" height="27" alt=""></a>
+                <span class="alter unspaced">
+                  <a href="http://twitter.com/share" class="twitter-share-button" data-text="Save money and look great on exclusive Gap wardrobe deals!" data-count="horizontal">Tweet</a>
+                  <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+                </span>
+                <%= link_to("Email others", send_to_path(payment.offer.combination.id), :class => "alter underlined") %>
+        <% end %>
+      </ul>
+      </div>
+
+      </div><!-- .sinner -->
+      <div class="stl"></div><div class="str"></div>
+      <div class="sbl"></div><div class="sbr"></div>
+  </div><!-- .sbox -->
+
+  <p class="feed-ctrl">
+    <a id="pause2" class="button pause">Pause</a>
+    <a id="play2" class="button play" style="display:none;">Play</a>
+  </p>
+
+  <% javascript_tag do -%>
+    $('play1').hide();
+    $('play2').hide();
+    var bindplaypause = function(){
+      jQuery('#play1').bind('click', function(event){
+          $('pause1').show();
+          $('play1').hide();
+          $('pause2').show();
+          $('play2').hide();
+      });
+      jQuery('#play2').bind('click', function(event){
+          $('pause1').show();
+          $('play1').hide();
+          $('pause2').show();
+          $('play2').hide();
+      });
+      jQuery('#pause1').bind('click', function(event){
+          $('play1').show();
+          $('pause1').hide();
+          $('play2').show();
+          $('pause2').hide();
+      });
+      jQuery('#pause2').bind('click', function(event){
+          $('play1').show();
+          $('pause1').hide();
+          $('play2').show();
+          $('pause2').hide();
+      });
+    }
+    bindplaypause();
+  <%end%>
+<% else %>
+  <div style="height: 200px;"></div>
+<% end %>

@@ -1,0 +1,10 @@
+<div class="article">
+    <h1>Thanks for Payment</h1>
+    
+    <p>
+        <b>Transaction ID:</b> <%= @trans_id %><br />
+        <b>Amount:</b> <%= number_to_currency(@amount.to_i, :precision => 0) %><br />
+    </p>
+</div><!-- .article -->
+
+<div style="height: 550px;">&nbsp;</div>
