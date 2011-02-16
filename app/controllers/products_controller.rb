@@ -214,7 +214,7 @@ class ProductsController < ApplicationController
                 @counter = true
               end
           else
-              flash[:error] = "Hey, the regular wardrobe price=$#{reg_price.ceil}. Make another offer?"
+              flash[:error] = "Hey, the regular wardrobe price=$#{reg_price}. Make another offer?"
               for offer in @product.offers.all(:conditions => ["ip = (?) and id <= ?", request.remote_ip, @offer.id])
                   offer.update_attribute(:response, "expired") unless ['paid', 'accepted'].include? offer.response
               end
