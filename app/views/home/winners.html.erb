@@ -11,8 +11,8 @@
       <ul class="events">
         <% for payment in @payments %>
             <li>
-                <%= link_to("@#{payment.screen_name}", "http://twitter.com/#{payment.screen_name}", :class => "addr") %>
-                <em>Won <%= payment.offer.product_name %>. Negotiated Price=$<%= number_with_delimiter(payment.offer.price.ceil) %>; Reg. Price=$<%= number_with_delimiter(payment.offer.combination.total_reg_price.ceil) %></em>
+                Someone
+                <em>Won <%= payment.offer.product.style_description %>. Negotiated Price=$<%= number_with_delimiter(payment.offer.price.ceil) %>; Reg. Price=$<%= number_with_delimiter(payment.offer.product.ticketed_retail) %></em>
                 <span class="when">Won on <%= payment.created_at.strftime("%b %d, %I:%M %p %Z") %></span>
             </li>
             <li>
@@ -22,7 +22,7 @@
                   <a href="http://twitter.com/share" class="twitter-share-button" data-text="Save money and look great on exclusive Gap wardrobe deals!" data-count="horizontal">Tweet</a>
                   <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
                 </span>
-                <%= link_to("Email others", send_to_path(payment.offer.combination.id), :class => "alter underlined") %>
+                <%= link_to("Email others", send_to_path(payment.offer.product.id), :class => "alter underlined") %>
         <% end %>
       </ul>
       </div>

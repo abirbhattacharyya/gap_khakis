@@ -38,15 +38,19 @@
         <div id="footer">
             <div>
                 &copy; 2010 DealKat
-                <%= "@#{link_to("#{Profile.first.twitter} ", Profile.first.twitter_url, :target => "_new")} " %>
-                <%= "<b>#{number_to_phone(Profile.first.phone, :delimiter => "-")}</b>" if Profile.first %>
+                <% if Profile.first %>
+                  <%= "@#{link_to("#{Profile.first.twitter} ", Profile.first.twitter_url, :target => "_new")} " %>
+                  <%= "<b>#{number_to_phone(Profile.first.phone, :delimiter => "-")}</b>" %>
+                <% end %>
             </div>
 
-            <address>
-                <%= "#{Profile.first.name}<br />" if Profile.first %>
-                <%= "#{Profile.first.address}" if Profile.first %>
-                <%#= "#{Profile.first.city}, #{Profile.first.state} #{Profile.first.zip}" if Profile.first %>
-            </address>
+            <% if Profile.first %>
+              <address>
+                  <%= "#{Profile.first.name}<br />" %>
+                  <%= "#{Profile.first.address}" %>
+                  <%#= "#{Profile.first.city}, #{Profile.first.state} #{Profile.first.zip}" %>
+              </address>
+            <% end %>
             <% content_tag :ul do %>
                 <%= content_tag(:li, link_to('Sign Out', logout_path)) if logged_in? %>
                 <%#= content_tag(:li, link_to("FAQ", faqs_path), :class => ([faqs_path].include? request.path) ? "current" : nil) %>
