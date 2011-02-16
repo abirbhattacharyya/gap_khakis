@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   include AuthenticatedSystem # logged_in? and current_user
   include ApplicationHelper
 
-  protect_from_forgery # See ActionController::RequestForgeryProtection for details
+#  protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password

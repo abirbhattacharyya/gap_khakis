@@ -1,0 +1,18 @@
+<p>
+  Hey,<br />
+  <%=
+    if @message and !@message.strip.blank?
+        @message + ","
+    else
+        "Someone thought you may be interested in this,"
+    end
+  %><br />
+  <%=  auto_link(capsule_url(@product.id)) %><br />
+</p>
+<p>
+  Follow GAP on twitter to get your own goodies of deals, discounts, and free stuff.
+</p>
+<p>
+  Regards,<br />
+  Dealkat
+</p>
