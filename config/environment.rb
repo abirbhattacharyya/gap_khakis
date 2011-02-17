@@ -39,6 +39,8 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 end
-GOOGLE_APPLICATION_ID = "ABQIAAAA4gRupQYhwTH4GnkUxYYb5xRKuIgsmbqgKKc9P0BAkMdv2TmcBxSqbWDttZrOVXMPwO_7b09ryUJzLA"
 ActionMailer::Base.default_content_type = "text/html"
+ActionMailer::Base.raise_delivery_errors = true
+ActionMailer::Base.perform_deliveries = true
+ActionMailer::Base.delivery_method = :smtp
 ActionMailer::Base.smtp_settings = {:address => "smtp.gmail.com",:port => 587,:authentication => :plain,:user_name => "testing.dealkat@gmail.com",:password => "princessthecat"}
