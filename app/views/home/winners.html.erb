@@ -1,4 +1,4 @@
-<% if @payments and @payments.size > 0 %>
+<% if @results and @results.size > 0 %>
 
   <p class="feed-ctrl">
     <a id="pause1" class="button pause">Pause</a>
@@ -9,20 +9,12 @@
       <div class="sinner">
       <div class="newsticker-jcarousellite">
       <ul class="events">
-        <% for payment in @payments %>
+        <%for result in @results%>
             <li>
-                Someone
-                <em>Won <%= payment.offer.product.style_description %>. Negotiated Price=$<%= number_with_delimiter(payment.offer.price.ceil) %>; Reg. Price=$<%= number_with_delimiter(payment.offer.product.ticketed_retail) %></em>
-                <span class="when">Won on <%= payment.created_at.strftime("%b %d, %I:%M %p %Z") %></span>
+                <a class="user" target="_blank" href="http://www.twitter.com/<%=result.screen_name %>"><%=result.screen_name %></a>
+                <em><%=highlight(result.tweet, [result.keyword.to_s.strip], :highlighter => '<b>\1</b>') %></em>
+                <span class="when"><%=result.tweet_created.strftime("%I:%M %p %b %d ") if result.tweet_created %> via <%=result.source %> from Twitter</span>
             </li>
-            <li>
-                <a class="button green" href="/sayprice"><span class="small-text">Gimme A Wardrobe!</span></a>
-                <a class="alter dspaced" href="http://www.facebook.com/sharer.php"><img src="/images/icons/facebook.gif" width="27" height="27" alt=""></a>
-                <span class="alter unspaced">
-                  <a href="http://twitter.com/share" class="twitter-share-button" data-text="Save money and look great on exclusive Gap wardrobe deals!" data-count="horizontal">Tweet</a>
-                  <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-                </span>
-                <%= link_to("Email others", send_to_path(payment.offer.product.id), :class => "alter underlined") %>
         <% end %>
       </ul>
       </div>

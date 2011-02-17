@@ -41,7 +41,7 @@ class HomeController < ApplicationController
   end
 
   def winners
-    @payments = Payment.all(:order => "id desc", :limit => 100)
+    @results = TwitterResult.all(:order => "id desc", :limit => 100)
   end
 
   def get_twitter_data
