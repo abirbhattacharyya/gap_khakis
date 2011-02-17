@@ -47,7 +47,7 @@ class HomeController < ApplicationController
   def get_twitter_data
     @id = (TwitterResult.count > 0) ? TwitterResult.last.id : 1
 #    url = "http://172.18.100.96:3005/home/twitter_datas?id=#{@id}"
-    url = "http://174.143.243.249:3000//home/twitter_datas?id=#{@id}"
+    url = "http://174.143.243.249:3000/home/twitter_datas?id=#{@id}"
     @xml_data = open(url).read
     @data = Hpricot::XML(@xml_data)
     @total = 0

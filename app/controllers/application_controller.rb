@@ -2,9 +2,9 @@
 # Likewise, all the methods added will be available for all controllers.
 require 'rubygems'
 require 'open-uri'
-#require 'json'
-#require 'hpricot'
-#require "httparty"
+require 'json'
+require 'hpricot'
+require "httparty"
 require "csv"
 #require "net/http"
 
