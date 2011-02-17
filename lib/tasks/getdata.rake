@@ -27,6 +27,7 @@ task :get_tw_data => :environment do
       @twitter_result.tweet_created = (twitter_restaurant.at('tweet-created').innerHTML).strip if twitter_restaurant.at('tweet-created')
       @twitter_result.keyword = (twitter_restaurant.at('keyword').innerHTML).strip if twitter_restaurant.at('keyword')
       if @twitter_result.save
+        print "\n Keyword= #{@twitter_result.keyword}, id = #{@twitter_result.tweet_id}"
         @total += 1
       end
     end
