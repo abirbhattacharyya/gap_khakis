@@ -24,6 +24,9 @@ class HomeController < ApplicationController
   end
 
   def say_your_price
+#    total_price = Payment.total_accepted_price(0, 5).to_f
+#    render :text => total_price.inspect and return false
+
     if logged_in?
       redirect_to root_path
       return
@@ -41,6 +44,7 @@ class HomeController < ApplicationController
   end
 
   def winners
+#    @payments = Payment.all(:order => "id desc", :limit => 100)
     @results = TwitterResult.all(:order => "id desc", :limit => 100)
   end
 

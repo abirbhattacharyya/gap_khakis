@@ -1,0 +1,9 @@
+<% @payment = pdf_letter %>
+
+<b>Voucher # <%=@payment.promotion_code.code %></b>
+You Won!
+
+1 pair of <%= @payment.offer.product.style_description %> for <%= (@payment.offer.price > 0) ? number_to_currency(@payment.offer.price) : "free" %>
+Color = <%= @payment.offer.product.color_description %>
+Style = <%= @payment.offer.product.style_num_full %>
+Expires = 04/30/2011

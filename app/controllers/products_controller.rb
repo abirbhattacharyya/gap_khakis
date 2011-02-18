@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_filter :check_login, :except => [:capsule, :send_to, :payments, :success, :cancel]
+  before_filter :check_login, :except => [:capsule, :download_pdf, :send_to, :payments, :success, :cancel]
 
   def products
     if request.post?
@@ -95,14 +95,34 @@ class ProductsController < ApplicationController
   def payments
     if params[:id]
       @offer = Offer.find_by_id(params[:id])
-      redirect_to root_path if @offer.nil?
+      if @offer.nil?
+        redirect_to root_path
+        return
+      end
 
       @payment = @offer.payment
       if @payment.nil?
-        @promotion_code = PromotionCode.last(:order => "rand()")
+        @promotion_code = PromotionCode.last(:conditions => ["price_point = ? and used = 0", @offer.price], :order => "rand()")
         @payment = Payment.create(:offer_id => @offer.id, :promotion_code_id => @promotion_code.id)
         @promotion_code.update_attribute(:used, true)
       end
+    else
+      redirect_to root_path
+    end
+  end
+
+  def download_pdf
+    if params[:id]
+      @payment = Payment.find_by_id(params[:id])
+      if @payment.nil?
+        redirect_to root_path
+        return
+      end
+      output= render_to_string :partial => "partials/pdf_letter", :object => @payment
+      pdf = PDF::Writer.new
+      pdf.text output
+      pdf.save_as("payment.pdf")
+      send_file("payment.pdf")
     else
       redirect_to root_path
     end
@@ -142,12 +162,12 @@ class ProductsController < ApplicationController
       @counter = (@counter_offer ? true : false)
       @last_offer = (@counter_offer ? true : false)
       if request.post?
-        @offer = @product.offers.last(:conditions => ["ip = (?) and response IS NULL", request.remote_ip])
+        @offer = @product.offers.last(:conditions => ["ip = (?) and (response IS NULL OR response = ?)", request.remote_ip, "counter"])
         if params[:submit_button]
           submit = params[:submit_button].strip.downcase
           if submit == "no"
               if @offer
-                for offer in @product.offers.all(:conditions => ["ip = (?) and response <> (?) and id <= (?)", request.remote_ip, 'accepted', @offer.id])
+                for offer in @product.offers.all(:conditions => ["ip = (?) and id <= ?", request.remote_ip, @offer.id])
                   offer.update_attribute(:response, "expired") if offer.response != "paid" and offer.response != "accepted"
                 end
               end
@@ -182,7 +202,7 @@ class ProductsController < ApplicationController
           flash[:error] = "Hey you can't get something for nothing"
         else
           reg_price = @product.ticketed_retail.ceil
-          min_price = (@product.ticketed_retail.to_f * (0.40)).ceil
+#          min_price = (@product.ticketed_retail.to_f * (0.40)).ceil
           if @offer
             if price > @offer.price
               @offer.update_attribute(:price, price)
@@ -196,15 +216,40 @@ class ProductsController < ApplicationController
               return
             end
           else
-            @offer = Offer.new(:ip => request.remote_ip, :product_id => @product.id, :price => price, :counter => 1)
-            @offer.save
+#            if(price >= min_price)
+              @offer = Offer.new(:ip => request.remote_ip, :product_id => @product.id, :price => price, :counter => 1)
+              @offer.save
+#            else
+#              flash[:error] = "Hey, the regular wardrobe price=$#{@product.ticketed_retail}. Make another offer?"
+#              return
+#            end
           end
-          percent = (100-(rand(40-25) + 25).to_f)/100
-          if(price.to_i >= min_price)
-              if(price.to_i >= (0.60*reg_price.to_f).ceil)
+#          if(price >= min_price)
+            total_price = Payment.total_prices.to_f
+            if(price >= (0.60*reg_price.to_f).ceil)
                 @accepted = true
-              else
-                Offer.create(:ip => request.remote_ip, :product_id => @product.id, :price => (percent*reg_price.to_f).ceil, :response => "counter", :counter => 1)
+            else
+                if total_price > 10000
+                  @new_offer = (@product.ticketed_retail.to_f * 0.50).ceil
+                else
+                  point = Offer::PRICE_POINT[rand(99)%Offer::PRICE_POINT.size]
+                  @new_offer = 0
+                  if ["free", "$5"].include? point.strip
+                    total = Payment.total_accepted_price(0, 5).to_f
+                    if total < 5000
+                      @new_offer = ((point.strip == "free") ? 0 : 5)
+                    else
+                      @new_offer = (@product.ticketed_retail.to_f - (@product.ticketed_retail.to_f * 0.40)).ceil
+                      @new_offer += 1 unless PromotionCode.first(:conditions => ["price_point = ?", @new_offer])
+                      @new_offer -= 1 unless PromotionCode.first(:conditions => ["price_point = ?", @new_offer])
+                    end
+                  else
+                    @new_offer = (@product.ticketed_retail.to_f - (@product.ticketed_retail.to_f * 0.40)).ceil
+                    @new_offer += 1 unless PromotionCode.first(:conditions => ["price_point = ?", @new_offer])
+                    @new_offer -= 1 unless PromotionCode.first(:conditions => ["price_point = ?", @new_offer])
+                  end
+                end
+                Offer.create(:ip => request.remote_ip, :product_id => @product.id, :price => @new_offer, :response => "counter", :counter => 1)
                 @counter_offer = @product.offers.last(:conditions => ["ip = (?) and response = (?)", request.remote_ip, 'counter'])
                 if @counter_offer
                   flash[:notice] = "Hey, the best we can do is $#{@counter_offer.price.ceil}. Deal?"
@@ -212,15 +257,8 @@ class ProductsController < ApplicationController
                   @last_offer = true
                 end
                 @counter = true
-              end
-          else
-              flash[:error] = "Hey, the regular wardrobe price=$#{reg_price}. Make another offer?"
-              for offer in @product.offers.all(:conditions => ["ip = (?) and id <= ?", request.remote_ip, @offer.id])
-                  offer.update_attribute(:response, "expired") unless ['paid', 'accepted'].include? offer.response
-              end
-              @offer.update_attribute(:response, "rejected")
-              return
-          end
+            end
+#          end
 
           if @accepted == true
             for offer in @product.offers.all(:conditions => ["ip = (?) and id <= ?", request.remote_ip, @offer.id])

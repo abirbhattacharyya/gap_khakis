@@ -17,6 +17,7 @@ ActionController::Routing::Routes.draw do |map|
   map.product_catalog '/products', :controller => 'products', :action => 'products'
   map.send_to '/:id/sendto', :controller => 'products', :action => 'send_to'
   map.payments '/payment/:id', :controller => 'products', :action => 'payments'
+  map.download_pdf '/download_pdf/:id', :controller => 'products', :action => 'download_pdf'
 
   map.capsule '/:id', :controller => 'products', :action => 'capsule'
 

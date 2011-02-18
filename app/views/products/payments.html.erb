@@ -13,4 +13,4 @@
     <div class="stl"></div><div class="str"></div>
     <div class="sbl"></div><div class="sbr"></div>
 </div><!-- .sbox -->
-
+<%= link_to("Download pdf", "javascript::void();", :onclick => "window.location.href='#{download_pdf_path(@payment.id)}'") %>
