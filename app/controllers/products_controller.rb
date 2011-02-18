@@ -103,8 +103,13 @@ class ProductsController < ApplicationController
       @payment = @offer.payment
       if @payment.nil?
         @promotion_code = PromotionCode.last(:conditions => ["price_point = ? and used = 0", @offer.price], :order => "rand()")
-        @payment = Payment.create(:offer_id => @offer.id, :promotion_code_id => @promotion_code.id)
-        @promotion_code.update_attribute(:used, true)
+        if @promotion_code
+          @payment = Payment.create(:offer_id => @offer.id, :promotion_code_id => @promotion_code.id)
+          @promotion_code.update_attribute(:used, true)
+        else
+          flash[:notice] = "Sorry promotions over. Try again later"
+          redirect_to root_path
+        end
       end
     else
       redirect_to root_path
