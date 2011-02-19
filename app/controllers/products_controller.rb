@@ -93,7 +93,7 @@ class ProductsController < ApplicationController
   end
 
   def payments
-    if params[:id]
+    if request.post?
       @offer = Offer.find_by_id(params[:id])
       if @offer.nil?
         redirect_to root_path
