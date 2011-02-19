@@ -167,6 +167,9 @@ class ProductsController < ApplicationController
       @counter = (@counter_offer ? true : false)
       @last_offer = (@counter_offer ? true : false)
       if request.post?
+        if @accepted_offer
+          return
+        end
         @offer = @product.offers.last(:conditions => ["ip = (?) and (response IS NULL OR response = ?)", request.remote_ip, "counter"])
         if params[:submit_button]
           submit = params[:submit_button].strip.downcase
