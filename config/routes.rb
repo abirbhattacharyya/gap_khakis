@@ -14,6 +14,8 @@ ActionController::Routing::Routes.draw do |map|
   map.winners '/winners', :controller => 'home', :action => 'winners'
   map.say_your_price '/sayprice', :controller => 'home', :action => 'say_your_price'
 
+  map.schedule '/schedule/:id', :controller => 'products', :action => 'schedule'
+
   map.success '/success', :controller => 'products', :action => 'success'
   map.cancel '/cancel', :controller => 'products', :action => 'cancel'
 
