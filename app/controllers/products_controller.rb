@@ -134,6 +134,13 @@ class ProductsController < ApplicationController
     end
   end
 
+  def schedule
+    if request.post?
+        Schedule.create(:user_id => current_user.id, :start_date => params[:start_date].to_date, :end_date => params[:end_date].to_date)
+        redirect_to root_path
+    end
+  end
+
   def send_to
     @product = Product.find_by_id(params[:id])
     redirect_to root_path if @product.nil?

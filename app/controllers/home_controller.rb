@@ -8,6 +8,8 @@ class HomeController < ApplicationController
         render :template => "users/profile"
       elsif current_user.products.size <= 0
         render :template => "products/products"
+      elsif current_user.schedule.nil?
+        render :template => "products/schedule"
       else
         @notifications = [["profile", current_user.profile.created_at], ["prices", current_user.products.last.created_at]]
         @notifications.sort!{|n1, n2| n2[1] <=> n1[1]}

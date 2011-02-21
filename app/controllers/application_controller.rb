@@ -2,12 +2,10 @@
 # Likewise, all the methods added will be available for all controllers.
 require 'rubygems'
 require 'open-uri'
-#require 'json'
 require 'hpricot'
-#require "httparty"
 require "csv"
-#require "net/http"
 require 'pdf/writer'
+require "calendar_date_select"
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
