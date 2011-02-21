@@ -8,6 +8,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.profile '/profile', :controller => 'users', :action => 'profile'
 
+  map.notifications '/notifications', :controller => 'home', :action => 'notifications'
+  map.analytics '/analytics', :controller => 'home', :action => 'analytics'
+
   map.winners '/winners', :controller => 'home', :action => 'winners'
   map.say_your_price '/sayprice', :controller => 'home', :action => 'say_your_price'
 
@@ -20,6 +23,7 @@ ActionController::Routing::Routes.draw do |map|
   map.download_pdf '/download_pdf/:id', :controller => 'products', :action => 'download_pdf'
 
   map.capsule '/:id', :controller => 'products', :action => 'capsule'
+  map.connect '/:id', :controller => 'products', :action => 'capsule'
 
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'

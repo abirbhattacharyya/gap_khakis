@@ -3,14 +3,14 @@
 <% form_tag send_to_path(@product) do -%>
   <p class="ctrl">
       <label>Separate emails by commas</label>
-      <%= text_area_tag(:emails, "", :class => "w640px h160px") %>
+      <%= text_area_tag(:emails, "", :size => "60x3") %>
   </p>
   <p class="ctrl">
       <label>Write something? (Optional)</label>
-      <%= text_area_tag(:message, @message, :class => "w640px h160px") %>
+      <%= text_area_tag(:message, @message, :size => "60x3") %>
   </p>
-  <p class="ctrl actions">
-    <span class="button green"><%= submit_tag("Go!", :class => "w100px") %></span>
-    <a class="alter" href="javascript:history.back();">Cancel</a>
+  <p class="ctrls">
+    <span class="button-green"><%= submit_tag("Go!") %></span>
+    <a class="alter-link" href="javascript:history.back();">Cancel</a>
   </p>
 <%end%>

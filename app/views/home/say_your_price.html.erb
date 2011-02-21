@@ -20,9 +20,11 @@
   </div>
 
   <% for product in @products %>
-    <div class="w540">
-      <%= render :partial => "partials/capsule", :object => product %>
-    </div>
+    <div class="columns">
+        <div class="column widest">
+          <%= render :partial => "partials/capsule", :object => product %>
+        </div><!-- .column.wide -->
+    </div><!-- .columns -->
   <% end %>
 
   <div class="paginator w650px">

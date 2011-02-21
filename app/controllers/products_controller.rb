@@ -2,6 +2,7 @@ class ProductsController < ApplicationController
   before_filter :check_login, :except => [:capsule, :download_pdf, :send_to, :payments, :success, :cancel]
 
   def products
+    @products = current_user.products
     if request.post?
       if !params[:uploaded_file].blank?
         file = params[:uploaded_file]
@@ -94,7 +95,7 @@ class ProductsController < ApplicationController
 
   def payments
     if request.post?
-      @offer = Offer.find_by_id(params[:id])
+      @offer = Offer.find_by_id(params[:id].to_i)
       if @offer.nil?
         redirect_to root_path
         return

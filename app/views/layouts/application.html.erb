@@ -1,4 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -18,7 +19,7 @@
     <% javascript_tag do %>
           jQuery.noConflict();
           jQuery(function() {
-                jQuery(".newsticker-jcarousellite").jCarouselLite({
+                jQuery("#newsticker-jcarousellite").jCarouselLite({
                 btnPlay: ".play",
                 btnPause: ".pause",
                 vertical: true,
@@ -30,6 +31,9 @@
                 });
           });
     <% end %>
+
+    <%= include_visualization_api %>
+    <%= yield :head %>
   </head>
 
   <body>
@@ -53,24 +57,19 @@
         <% end %>
 
         <div id="footer">
-            <div>
-                &copy; 2010 DealKat
-                <% if Profile.first %>
-                  <%= "@#{link_to("#{Profile.first.twitter} ", Profile.first.twitter_url, :target => "_new")} " %>
-                  <%= "<b>#{number_to_phone(Profile.first.phone, :delimiter => "-")}</b>" %>
-                <% end %>
-            </div>
-
-            <% if Profile.first %>
-              <address>
-                  <%= "#{Profile.first.name}<br />" %>
-                  <%= "#{Profile.first.address}" %>
-                  <%#= "#{Profile.first.city}, #{Profile.first.state} #{Profile.first.zip}" %>
-              </address>
-            <% end %>
+            <div class="copyright">&copy; 2011 <a href="http://dealkat.com">DealKat</a></div>
             <% content_tag :ul do %>
                 <%= content_tag(:li, link_to('Sign Out', logout_path)) if logged_in? %>
                 <%#= content_tag(:li, link_to("FAQ", faqs_path), :class => ([faqs_path].include? request.path) ? "current" : nil) %>
+            <% end %>
+            <% if Profile.first %>
+              <address>
+                  <%= "#{Profile.first.name} " %>
+                  <%= "#{Profile.first.address.strip}; " %>
+                  <%= number_to_phone(Profile.first.phone, :delimiter => "-") + "; " %>
+                  <%= auto_link(Profile.first.email) + "; "%>
+                  <%= "@#{link_to("#{Profile.first.twitter} ", Profile.first.twitter_url, :target => "_new")} " %>
+              </address>
             <% end %>
         </div><!-- #footer -->
     </div><!-- #layout -->

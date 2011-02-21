@@ -1,16 +1,24 @@
 <h1>Here's your khakhi voucher, you lucky winner you!</h1>
-<div class="sbox w640px">
-    <div class="sinner">
-        <h1>Voucher # <%=@payment.promotion_code.code %></h1>
-        <h2>You Won!</h2>
-        <p>
-            1 pair of <%= @payment.offer.product.style_description %> for <%= number_to_currency(@payment.offer.price) %><br />
-            Color = <%= @payment.offer.product.color_description %><br />
-            Style = <%= @payment.offer.product.style_num_full %><br />
-            Expires = 04/30/2011<br />
-        </p>
-    </div><!-- .sinner -->
-    <div class="stl"></div><div class="str"></div>
-    <div class="sbl"></div><div class="sbr"></div>
-</div><!-- .sbox -->
+<div class="columns">
+    <div class="column wide">
+        <div class="capsule2">
+          <div class="cinner">
+              <h4>Voucher# <%=@payment.promotion_code.code %></h4>
+              <h5>You Won!</h5>
+              <p>
+                  1 pair of <%= @payment.offer.product.style_description %><br />
+                  Regular price = <%= number_to_currency(@payment.offer.product.ticketed_retail) %><br />
+                  You Pay = <%= number_to_currency(@payment.offer.price) %><br />
+                  Color = <%= @payment.offer.product.color_description %><br />
+                  Style = <%= @payment.offer.product.style_num_full %><br />
+                  Expires = 04/30/2011<br />
+              </p>
+            </div><!-- .cinner -->
+            <div class="ctl"></div><div class="ctc"></div><div class="ctr"></div>
+            <div class="cml"></div><div class="cmr"></div>
+            <div class="cbl"></div><div class="cbc"></div><div class="cbr"></div>
+        </div><!-- .capsule -->
+
+    </div><!-- .column.wide -->
+</div><!-- .columns -->
 <%= link_to("Download pdf", "javascript::void();", :onclick => "window.location.href='#{download_pdf_path(@payment.id)}'") %>

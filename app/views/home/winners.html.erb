@@ -5,24 +5,28 @@
     <a id="play1" class="button play" style="display:none;">Play</a>
   </p>
 
-  <div class="sbox" style="width: 780px;">
-      <div class="sinner">
-      <div class="newsticker-jcarousellite">
-      <ul class="events">
-        <%for result in @results%>
-            <li>
-                <a class="user" target="_blank" href="http://www.twitter.com/<%=result.screen_name %>"><%=result.screen_name %></a>
-                <em><%=highlight(result.tweet, [result.keyword.to_s.strip], :highlighter => '<b>\1</b>') %></em>
-                <span class="when"><%=result.tweet_created.strftime("%I:%M %p %b %d ") if result.tweet_created %> via <%=result.source %> from Twitter</span>
-            </li>
-        <% end %>
-      </ul>
-      </div>
+<div class="columns">
+    <div class="column wide">
+        <div class="capsule" style="width: 780px;">
+            <div class="cinner" id="newsticker-jcarousellite">
+              <ul class="events">
+                <%for result in @results%>
+                    <li>
+                        <a class="user" target="_blank" href="http://www.twitter.com/<%=result.screen_name %>"><%=result.screen_name %></a>
+                        <em><%=highlight(result.tweet, [result.keyword.to_s.strip], :highlighter => '<b>\1</b>') %></em>
+                        <p class="when"><%=result.tweet_created.strftime("%I:%M %p %b %d ") if result.tweet_created %> <%= "via #{result.source}" if !result.source.strip.blank? %> from Twitter</p>
+                        <hr />
+                    </li>
+                <% end %>
+              </ul>
+            </div><!-- .cinner -->
+            <div class="ctl"></div><div class="ctc"></div><div class="ctr"></div>
+            <div class="cml"></div><div class="cmr"></div>
+            <div class="cbl"></div><div class="cbc"></div><div class="cbr"></div>
+        </div><!-- .capsule -->
 
-      </div><!-- .sinner -->
-      <div class="stl"></div><div class="str"></div>
-      <div class="sbl"></div><div class="sbr"></div>
-  </div><!-- .sbox -->
+    </div><!-- .column.wide -->
+</div><!-- .columns -->
 
   <p class="feed-ctrl">
     <a id="pause2" class="button pause">Pause</a>

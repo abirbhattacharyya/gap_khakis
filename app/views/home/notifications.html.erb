@@ -1,16 +1,21 @@
-<%#= render :partial => "/partials/my_dashboard" %>
+<%= render :partial => "/partials/my_dashboard" %>
 <h1>My previous action= <%= distance_of_time_in_words(Time.now, @notifications[0][1]) %> ago</h1>
+<div class="columns">
+    <div class="column wide">
+        <div class="capsule">
+            <div class="cinner">
 
-<div class="sbox w640px">
-    <div class="sinner">
+                <ol>
+                  <% @notifications.each_with_index do |notify, index| %>
+                      <li>You added your <%= notify[0] %> on <%= notify[1].to_date.strftime("%B %d, %Y") %></li>
+                  <% end %>
+                </ol>
 
-    <ul class="events">
-        <% @notifications.each_with_index do |notify, index| %>
-            <li><%= index + 1 %>. You added your <%= notify[0] %> on <%= notify[1].to_date.strftime("%B %d, %Y") %></li>
-        <% end %>
-    </ul>
+            </div><!-- .cinner -->
+            <div class="ctl"></div><div class="ctc"></div><div class="ctr"></div>
+            <div class="cml"></div><div class="cmr"></div>
+            <div class="cbl"></div><div class="cbc"></div><div class="cbr"></div>
+        </div><!-- .capsule -->
 
-    </div><!-- .sinner -->
-    <div class="stl"></div><div class="str"></div>
-    <div class="sbl"></div><div class="sbr"></div>
-</div><!-- .sbox -->
+    </div><!-- .column.wide -->
+</div><!-- .columns -->

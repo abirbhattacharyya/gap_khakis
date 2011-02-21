@@ -4,34 +4,34 @@
 <% form_for :profile, :url => profile_path, :html => {:multipart => true} do |f| %>
   <p class="ctrl">
       <%= label_tag(:name, "Name") %>
-      <%= f.text_field :name, :class => "w180px" %>
+      <%= f.text_field :name, :class => "w250px" %>
   </p>
   <p class="ctrl">
       <%= label_tag(:address1, "Address") %>
-      <%= f.text_field :address, :class => "w180px" %>
+      <%= f.text_field :address, :class => "w250px" %>
   </p>
   <p class="ctrl">
       <%= label_tag(:phone, "Customer Service #") %>
-      <%= f.text_field :phone, :maxLength => 14, :class => "w180px", :onKeyPress => "return keyAllowed(event,'0123456789.-()')" %>
+      <%= f.text_field :phone, :maxLength => 14, :class => "w250px", :onKeyPress => "return keyAllowed(event,'0123456789.-()')" %>
   </p>
   <p class="ctrl">
       <%= label_tag(:address1, "Customer Service Email") %>
-      <%= f.text_field :email, :class => "w180px" %>
+      <%= f.text_field :email, :class => "w250px" %>
   </p>
   <p class="ctrl">
       <%= label_tag(:address1, "Twitter") %>
-      <%= f.text_field :twitter, :class => "w180px" %>
+      <%= f.text_field :twitter, :class => "w250px" %>
   </p>
   <p class="ctrl">
       <%= label_tag(:address1, "Facebook Url") %>
-      <%= f.text_field :facebook_url, :class => "w180px" %>
+      <%= f.text_field :facebook_url, :class => "w250px" %>
   </p>
   <p class="ctrl">
       <%= label_tag(:address1, "Company Url") %>
-      <%= f.text_field :company_url, :class => "w180px" %>
+      <%= f.text_field :company_url, :class => "w250px" %>
   </p>
-  <p class="ctrl actions">
-      <span class="button green"><%= f.submit("Go!") %></span>
-      <%= link_to("Cancel", "javascript:history.back();", :class => "alter") if current_user.profile%>
+  <p class="ctrls">
+      <span class="button-green-fat"><%= f.submit("Go!") %></span>
+      <%= link_to("Cancel", "javascript:history.back();", :class => "alter-link") if current_user.profile%>
   </p>
 <% end %>

@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_filter :check_login, :only => [:notifications]
+  before_filter :check_login, :only => [:notifications, :analytics]
 
   def index
     flash.discard
@@ -23,10 +23,56 @@ class HomeController < ApplicationController
     @notifications.sort!{|n1, n2| n2[1] <=> n1[1]}
   end
 
-  def say_your_price
-#    total_price = Payment.total_accepted_price(0, 5).to_f
-#    render :text => total_price.inspect and return false
+  def analytics
+    if request.post?
+      @page = params[:page].to_i
+    else
+      @page = 1
+    end
+    @size = 5
+    @per_page = 1
+    @post_pages = (@size.to_f/@per_page).ceil;
+    @page =1 if @page.to_i<=0 or @page.to_i > @post_pages
+    @titleX = "Time Period"
+    @titleY = "#"
+    @colors = []
 
+    case @page
+      when 1
+        @title = "# Came to SYP Capsule"
+        @offer_today = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and Date(offers.updated_at)='#{Date.today}'")
+        @offer_yesterday = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and Date(offers.updated_at)='#{Date.today - 1.day}'")
+        @chart_data1 = [["Yesterday", @offer_yesterday.total.to_i], ["Today", @offer_today.total.to_i]]
+      when 2
+        @title = "# Started Negotiating"
+        @offer_today = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and Date(offers.updated_at)='#{Date.today}'")
+        @offer_yesterday = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and Date(offers.updated_at)='#{Date.today - 1.day}'")
+        @chart_data1 = [["Yesterday", @offer_yesterday.total.to_i], ["Today", @offer_today.total.to_i]]
+      when 3
+        @title = "# Reached Pricing Agreement"
+        @offer_today = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and offers.response='accepted' and Date(offers.updated_at)='#{Date.today}'")
+        @offer_yesterday = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and offers.response='accepted' and Date(offers.updated_at)='#{Date.today - 1.day}'")
+        @chart_data1 = [["Yesterday", @offer_yesterday.total.to_i], ["Today", @offer_today.total.to_i]]
+      when 4
+        @title = "# Completed a Sale"
+        @offer_today = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and offers.response='paid' and Date(offers.updated_at)='#{Date.today}'")
+        @offer_yesterday = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and offers.response='paid' and Date(offers.updated_at)='#{Date.today - 1.day}'")
+        @chart_data1 = [["Yesterday", @offer_yesterday.total.to_i], ["Today", @offer_today.total.to_i]]
+      when 5
+        @title = "$ Completed Sales"
+        @titleY = "$"
+        @offer_today = Offer.first(:select => "SUM(price) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and offers.response='paid' and Date(offers.updated_at)='#{Date.today}'")
+        @offer_yesterday = Offer.first(:select => "SUM(price) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and offers.response='paid' and Date(offers.updated_at)='#{Date.today - 1.day}'")
+        @chart_data1 = [["Yesterday", @offer_yesterday.total.to_i], ["Today", @offer_today.total.to_i]]
+      else
+        @title = "# Came to SYP Capsule"
+        @offer_today = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id INNER JOIN wardrobes ON products.wardrobe_id=wardrobes.id and wardrobes.user_id=#{current_user.id} and Date(offers.updated_at)='#{Date.today}'")
+        @offer_yesterday = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id INNER JOIN wardrobes ON products.wardrobe_id=wardrobes.id and wardrobes.user_id=#{current_user.id} and Date(offers.updated_at)='#{Date.today - 1.day}'")
+        @chart_data1 = [["Yesterday", @offer_yesterday.total.to_i], ["Today", @offer_today.total.to_i]]
+    end
+  end
+
+  def say_your_price
     if logged_in?
       redirect_to root_path
       return
@@ -44,13 +90,11 @@ class HomeController < ApplicationController
   end
 
   def winners
-#    @payments = Payment.all(:order => "id desc", :limit => 100)
     @results = TwitterResult.all(:order => "id desc", :limit => 100)
   end
 
   def get_twitter_data
     @id = (TwitterResult.count > 0) ? TwitterResult.last.id : 1
-#    url = "http://172.18.100.96:3005/home/twitter_datas?id=#{@id}"
     url = "http://174.143.243.249:3000/home/twitter_datas?id=#{@id}"
     @xml_data = open(url).read
     @data = Hpricot::XML(@xml_data)
@@ -81,7 +125,7 @@ class HomeController < ApplicationController
 	def code_generate
     for price_code in PromotionCode::PRICE_CODES
       if PromotionCode.count(:conditions => ["price_point = ?", price_code]) <= 0
-        (1..10).each do |i|
+        (1..100).each do |i|
           @code = rand_code(16)
           while(1)
             if PromotionCode.find_by_code(@code)

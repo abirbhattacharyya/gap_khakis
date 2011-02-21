@@ -59,18 +59,20 @@ class UsersController < ApplicationController
 
   def forgot
     flash.discard
-    email = params[:email]
-    if email and !email.strip.blank?
-      @user = User.find_by_email(email)
-      if @user.nil?
-        flash[:error] = "No such ID, want to join?"
+    if request.post?
+      email = params[:email]
+      if email.strip.blank?
+        flash[:error] = "Please enter valid information"
       else
-        Notification.deliver_forgot_password(@user)
-        flash[:notice] = "Yeah! Emailed you the password."
-        redirect_to root_path
+        @user = User.find_by_email(email)
+        if @user.nil?
+          flash[:error] = "No such ID, want to join?"
+        else
+          Notification.deliver_forgot_password(@user)
+          flash[:notice] = "Yeah! Emailed you the password."
+          redirect_to root_path
+        end
       end
-    else
-      flash[:error] = "Please enter valid information"
     end
   end
 
