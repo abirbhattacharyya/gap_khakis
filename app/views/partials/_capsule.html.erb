@@ -14,7 +14,10 @@
         <h5><%= product.color_description %></h5>
 
         <div class="view">
-            <%= link_to(image_tag((product.image_url || "/images/khakis.png"), :size => "215x290"), capsule_url(product.id), :target => "_new", :class => "preview") %>
+            <span class="preview">
+                <%= image_tag((product.image_url || "/images/khakis.png"), :size => "215x290") %>
+                <%= link_to(content_tag(:span, nil, :class => "play"), (product.image_url || "/images/khakis.png"), :rel => "lightbox") %>
+            </span>
             <p>
                 Share:
                 <%= link_to(image_tag("/images/icons/twitter-18x18px.gif", :size => "15x14", :alt => "Twitter"), "http://twitter.com/home?status=Save money and look great on exclusive Gap wardrobe deals! #{capsule_url(product.id)}", :target => "_new") %>

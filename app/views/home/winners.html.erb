@@ -5,17 +5,17 @@
     <a id="play1" class="button play" style="display:none;">Play</a>
   </p>
 
-<div class="columns">
-    <div class="column wide">
-        <div class="capsule" style="width: 780px;">
+        <div class="capsule2">
             <div class="cinner" id="newsticker-jcarousellite">
-              <ul class="events">
+              <ul>
                 <%for result in @results%>
                     <li>
-                        <a class="user" target="_blank" href="http://www.twitter.com/<%=result.screen_name %>"><%=result.screen_name %></a>
-                        <em><%=highlight(result.tweet, [result.keyword.to_s.strip], :highlighter => '<b>\1</b>') %></em>
-                        <p class="when"><%=result.tweet_created.strftime("%I:%M %p %b %d ") if result.tweet_created %> <%= "via #{result.source}" if !result.source.strip.blank? %> from Twitter</p>
-                        <hr />
+                      <p>
+                        <a target="_blank" href="http://www.twitter.com/<%=result.screen_name %>"><%=result.screen_name %></a>
+                        <%=highlight(CGI.unescapeHTML(result.tweet), [result.keyword.to_s.strip], :highlighter => '<b>\1</b>') %><br />
+                        <span><%=result.tweet_created.strftime("%I:%M %p %b %d ") if result.tweet_created %> <%= "via #{result.source}" if !result.source.strip.blank? %> from Twitter</span>
+                        <span class="divider"><hr /></span>
+                      </p>
                     </li>
                 <% end %>
               </ul>
@@ -24,9 +24,6 @@
             <div class="cml"></div><div class="cmr"></div>
             <div class="cbl"></div><div class="cbc"></div><div class="cbr"></div>
         </div><!-- .capsule -->
-
-    </div><!-- .column.wide -->
-</div><!-- .columns -->
 
   <p class="feed-ctrl">
     <a id="pause2" class="button pause">Pause</a>

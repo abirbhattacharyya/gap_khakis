@@ -250,7 +250,7 @@ $.fn.jCarouselLite = function(o) {
         var ulSize = liSize * itemLength;                   // size of full ul(total length, not just for the visible items)
         var divSize = liSize * v;                           // size of entire div(total length for just the visible items)
 
-        li.css({width: li.width(), height: li.height()});
+        //li.css({width: li.width(), height: li.height()});
         ul.css(sizeCss, ulSize+"px").css(animCss, -(curr*liSize));
         div.css(sizeCss, "450px");                     // Width of the DIV. length of visible images
 

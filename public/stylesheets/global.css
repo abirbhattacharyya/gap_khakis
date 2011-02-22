@@ -259,9 +259,13 @@ INPUT[type="submit"] {
     overflow: hidden;
     }
 
+    .intro-slides .cinner {
+        margin-left: 35px !important;
+        }
+
     .intro-slides A {
-        margin-left: 37px;
-        width: 270px;
+        margin-left: 60px;
+        width: 240px;
         float: left;
         }
 
@@ -349,6 +353,20 @@ INPUT[type="submit"] {
         .paginator .button.next { background: url(/images/buttons/button-right.gif) 0 0 no-repeat; }
         .paginator .button.next:hover { background: url(/images/buttons/button-right.gif) -70px 0 no-repeat; }
 
+.feed-informer {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 1.5em 40px;
+    }
+
+    .feed-informer A {
+        color: #4267af;
+        }
+
+    .feed-informer SPAN {
+        color: #888888;
+        }
+
 .feed-ctrl {
     margin: .5em 0 .5em 15px;
     }
@@ -404,11 +422,30 @@ INPUT[type="submit"] {
         float: left;
         }
 
-        .capsule2 .view .preview {}
+        .capsule2 .view .preview {
+            margin-bottom: 1em;
+            width: 215px;
+            height: 290px;
+            display: block;
+            overflow: hidden;
+            position: relative;
+            }
 
             .capsule2 .view .preview IMG {
                 width: 215px;
                 height: 290px;
+                }
+            .capsule2 .view .preview .play {
+                background: url(/images/buttons/button-play.png) 0px 0px no-repeat;
+                position: absolute;
+                bottom: 5px;
+                right: 5px;
+                width: 70px;
+                height: 70px;
+                }
+
+            .capsule2 .view .preview .play:hover {
+                background: url(/images/buttons/button-play.png) -70px 0px no-repeat;
                 }
 
         .capsule2 .view P {
