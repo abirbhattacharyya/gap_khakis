@@ -56,15 +56,15 @@ class HomeController < ApplicationController
         @offer_yesterday = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and offers.response='accepted' and Date(offers.updated_at)='#{Date.today - 1.day}'")
         @chart_data1 = [["Yesterday", @offer_yesterday.total.to_i], ["Today", @offer_today.total.to_i]]
       when 4
-        @title = "# Completed a Sale"
-        @offer_today = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and offers.response='paid' and Date(offers.updated_at)='#{Date.today}'")
-        @offer_yesterday = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and offers.response='paid' and Date(offers.updated_at)='#{Date.today - 1.day}'")
+        @title = "# Completed Sale"
+        @offer_today = Payment.first(:select => "COUNT(id) as total", :conditions => "Date(payments.updated_at)='#{Date.today}'")
+        @offer_yesterday = Payment.first(:select => "COUNT(id) as total", :conditions => "Date(payments.updated_at)='#{Date.today - 1.day}'")
         @chart_data1 = [["Yesterday", @offer_yesterday.total.to_i], ["Today", @offer_today.total.to_i]]
       when 5
         @title = "$ Completed Sales"
         @titleY = "$"
-        @offer_today = Offer.first(:select => "SUM(price) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and offers.response='paid' and Date(offers.updated_at)='#{Date.today}'")
-        @offer_yesterday = Offer.first(:select => "SUM(price) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and offers.response='paid' and Date(offers.updated_at)='#{Date.today - 1.day}'")
+        @offer_today = Payment.first(:select => "SUM(price) as total", :joins => "INNER JOIN offers ON payments.offer_id=offers.id and Date(payments.updated_at)='#{Date.today}'")
+        @offer_yesterday = Payment.first(:select => "SUM(price) as total", :joins => "INNER JOIN offers ON payments.offer_id=offers.id and Date(payments.updated_at)='#{Date.today - 1.day}'")
         @chart_data1 = [["Yesterday", @offer_yesterday.total.to_i], ["Today", @offer_today.total.to_i]]
       else
         @title = "# Came to SYP Capsule"
