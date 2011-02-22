@@ -95,10 +95,17 @@ class ProductsController < ApplicationController
 
   def payments
     if request.post?
-      @offer = Offer.find_by_id(params[:id].to_i)
-      if @offer.nil?
+      if params[:payment]
+        @payment = Payment.find(params[:id])
+        @payment.update_attributes(params[:payment])
         redirect_to root_path
         return
+      else
+        @offer = Offer.find_by_id(params[:id].to_i)
+        if @offer.nil?
+          redirect_to root_path
+          return
+        end
       end
 
       @payment = @offer.payment

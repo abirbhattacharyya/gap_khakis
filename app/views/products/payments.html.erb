@@ -13,6 +13,18 @@
                   Style = <%= @payment.offer.product.style_num_full %><br />
                   Expires = 04/30/2011<br />
               </p>
+
+              <% form_for :payment, :url => payments_path(@payment.id) do |f| %>
+                <p class="ctrl">
+                    <%= label_tag(:email, "Email") %>
+                    <%= f.text_field :email, :class => "w250px" %>
+                </p>
+                <p class="ctrls">
+                    <span class="button-green"><%= f.submit("Go!") %></span>
+                    <%= link_to "Cancel", capsule_path(@payment.offer.product.id), :class => "alter-link" %>
+                </p>
+              <% end %>
+
             </div><!-- .cinner -->
             <div class="ctl"></div><div class="ctc"></div><div class="ctr"></div>
             <div class="cml"></div><div class="cmr"></div>
