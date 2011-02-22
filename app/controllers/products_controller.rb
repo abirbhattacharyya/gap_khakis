@@ -97,9 +97,13 @@ class ProductsController < ApplicationController
     if request.post?
       if params[:payment]
         @payment = Payment.find(params[:id])
-        @payment.update_attributes(params[:payment])
-        redirect_to root_path
-        return
+        if @payment.update_attributes(params[:payment])
+          redirect_to root_path
+          return
+        else
+          flash[:error]= "Hey, please enter a valid email address"
+          return
+        end
       else
         @offer = Offer.find_by_id(params[:id].to_i)
         if @offer.nil?
@@ -216,11 +220,11 @@ class ProductsController < ApplicationController
                 for offer in @product.offers.all(:conditions => ["ip = (?) and id <= (?)", request.remote_ip, @offer.id])
                   offer.update_attribute(:response, "expired") if offer.response != "paid" and offer.response != "accepted"
                 end
-                flash[:error] = "Cool, the wardrobe is yours for $#{@offer.price.ceil}"
+                flash[:error] = "Cool, the wardrobe is yours for #{(@offer.price.ceil > 0) ? "$#{@offer.price.ceil}" : "Free of cost"}"
               end
               if @counter_offer
                 @counter_offer.update_attribute(:response, "accepted")
-                flash[:error] = "Cool, the wardrobe is yours for $#{@counter_offer.price.ceil}"
+                flash[:error] = "Cool, the wardrobe is yours for #{(@counter_offer.price.ceil > 0) ? "$#{@counter_offer.price.ceil}" : "Free of cost"}"
               end
               @accepted = true
               @accepted_offer = @product.offers.last(:conditions => ["ip = (?) and response = (?)", request.remote_ip, 'accepted'])
@@ -286,7 +290,7 @@ class ProductsController < ApplicationController
                 Offer.create(:ip => request.remote_ip, :product_id => @product.id, :price => @new_offer, :response => "counter", :counter => 1)
                 @counter_offer = @product.offers.last(:conditions => ["ip = (?) and response = (?)", request.remote_ip, 'counter'])
                 if @counter_offer
-                  flash[:notice] = "Hey, the best we can do is $#{@counter_offer.price.ceil}. Deal?"
+                  flash[:notice] = "Hey, the best we can do is #{(@counter_offer.price.ceil > 0) ? "$#{@counter_offer.price.ceil}" : "Free of cost"}. Deal?"
                   @new_price = @counter_offer.price.ceil
                   @last_offer = true
                 end
