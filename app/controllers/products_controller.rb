@@ -124,6 +124,17 @@ class ProductsController < ApplicationController
     end
   end
 
+  def download_emails
+    payments = Payment.find(:all, :conditions => "email IS NOT NULL and email <> ''")
+    csv_string = FasterCSV.generate do |csv|
+      csv << ["Style #", "Email"]
+      payments.each do |payment|
+        csv << [payment.offer.product.style_num_full, payment.email]
+      end
+    end
+    send_data csv_string, :filename => 'emails.csv', :type => 'text/csv', :disposition => 'attachment'
+  end
+
   def download_pdf
     if params[:id]
       @payment = Payment.find_by_id(params[:id])

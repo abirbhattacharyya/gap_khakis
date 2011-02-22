@@ -6,6 +6,7 @@ require 'hpricot'
 require "csv"
 require 'pdf/writer'
 require "calendar_date_select"
+require 'fastercsv'
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time

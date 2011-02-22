@@ -24,6 +24,8 @@ ActionController::Routing::Routes.draw do |map|
   map.payments '/payment/:id', :controller => 'products', :action => 'payments'
   map.download_pdf '/download_pdf/:id', :controller => 'products', :action => 'download_pdf'
 
+  map.download_emails '/download_emails', :controller => 'products', :action => 'download_emails'
+
   map.capsule '/:id', :controller => 'products', :action => 'capsule'
   map.connect '/:id', :controller => 'products', :action => 'capsule'
 
