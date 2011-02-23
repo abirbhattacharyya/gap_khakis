@@ -66,8 +66,9 @@
                 <%  if logged_in? %>
                   <%= content_tag(:li, link_to("Edit Profile", profile_path), :class => ([profile_path].include? request.path) ? "current" : nil) if current_user.profile %>
                   <%= content_tag(:li, link_to("Download", download_emails_path)) if Payment.count(:conditions => "email IS NOT NULL and email <> ''").to_i > 0 %>
+                <% else %>
+                  <%= content_tag(:li, link_to("FAQ", faqs_path), :class => ([faqs_path].include? request.path) ? "current" : nil) %>
                 <% end %>
-                <%= content_tag(:li, link_to("FAQ", faqs_path), :class => ([faqs_path].include? request.path) ? "current" : nil) %>
             <% end %>
             <% if Profile.first %>
               <address>
