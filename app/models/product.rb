@@ -10,7 +10,7 @@ class Product < ActiveRecord::Base
 
   def description
     if self.style_description.strip.eql? "CLASSIC STRAIGHT KHAKI"
-      ["Fit for any occasion, you'll turn to the classic khaki again, and again. Not too slouchy, not too polished, your wash-and-wear, best-foot-forward pair.",
+      ["Fit for any occasion, you'll turn to the classic khaki again, and again.",
         "<b>fabric & care</b><br />
           100% Cotton. <br />
           Machine wash.<br />
@@ -24,7 +24,7 @@ class Product < ActiveRecord::Base
           Flat front, button closure, zip fly.<br />
           On-seam pockets, back button-welt pockets.<br />"]
     elsif self.style_description.strip.eql? "CLASSIC RELAXED KHAKI"
-      ["Fit for any occasion, you'll turn to the classic khaki again, and again. Not too slouchy, not too polished, your wash-and-wear, best-foot-forward pair.",
+      ["Fit for any occasion, you'll turn to the classic khaki again, and again.",
         "<b>fabric & care</b><br />
           100% Cotton. <br />
           Machine wash.<br />
@@ -38,7 +38,7 @@ class Product < ActiveRecord::Base
           Flat front, button closure, zip fly.<br />
           On-seam pockets, back button-welt pockets.<br />"]
     elsif self.style_description.strip.eql? "TAILORED STRAIGHT KHAKI"
-      ["Introducing our dressiest pair. Designed with a creased leg, wrinkle-resistant twill, and a hook and bar closure in place of a button.",
+      ["Our dressiest pair. Designed w a creased leg & wrinkle-resistant twill.",
         "<b>fabric & care</b><br />
           100% Cotton. <br />
           Machine wash.<br />
@@ -52,7 +52,7 @@ class Product < ActiveRecord::Base
           Flat front, hook & bar closure, zip fly.<br />
           On-seam pockets, back button-welt pockets.<br />"]
     elsif self.style_description.strip.eql? "TAILORED RELAXED KHAKI"
-      ["Introducing our dressiest pair. Designed with a creased leg, wrinkle-resistant twill, and a hook and bar closure in place of a button.",
+      ["Our dressiest pair. Designed w a creased leg & wrinkle-resistant twill.",
         "<b>fabric & care</b><br />
           100% Cotton. <br />
           Machine wash.<br />
@@ -66,7 +66,7 @@ class Product < ActiveRecord::Base
           Flat front, hook & bar closure, zip fly.<br />
           On-seam pockets, back button-welt pockets.<br />"]
     elsif self.style_description.strip.eql? "VINTAGE KHAKI"
-      ["Made of soft, prewashed cotton with a relaxed fit, the vintage khaki is a T's best friend.",
+      ["Made of soft, prewashed cotton with a relaxed fit.",
         "<b>fabric & care</b><br />
           100% Cotton. <br />
           Machine wash.<br />

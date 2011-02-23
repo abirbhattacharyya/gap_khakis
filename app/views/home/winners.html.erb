@@ -1,4 +1,4 @@
-<% if @results and @results.size > 0 %>
+<% if @payments and @payments.size > 0 %>
 
   <p class="feed-ctrl">
     <a id="pause1" class="button pause">Pause</a>
@@ -8,13 +8,22 @@
         <div class="capsule2">
             <div class="cinner" id="newsticker-jcarousellite">
               <ul>
-                <%for result in @results%>
+                <%for payment in @payments%>
                     <li>
-                      <p>
-                        <a target="_blank" href="http://www.twitter.com/<%=result.screen_name %>"><%=result.screen_name %></a>
-                        <%=highlight(CGI.unescapeHTML(result.tweet), [result.keyword.to_s.strip], :highlighter => '<b>\1</b>') %><br />
-                        <span><%=result.tweet_created.strftime("%I:%M %p %b %d ") if result.tweet_created %> <%= "via #{result.source}" if !result.source.strip.blank? %> from Twitter</span>
-                        <span class="divider"><hr /></span>
+                      <p class="feed-informer">
+                        <%= (payment.email and !payment.email.strip.blank?) ? auto_link(payment.email) : "Someone" %>
+                        Won <%= payment.offer.product.style_description.titleize %> (<%= payment.offer.product.color_description.titleize %>).
+                        Negotiated Price= <%= (payment.offer.price > 0) ? number_to_currency(payment.offer.price) : "Free" %>;
+                        Reg. Price= <%= number_to_currency(payment.offer.product.ticketed_retail) %><br />
+                        <span>Won on <%=payment.created_at.strftime("%b %d, %I:%M %p") %></span>
+                      </p>
+                      <p class="feed-ctrls">
+                          <%= content_tag(:span, button_to_function("Gimme a Khaki!", "window.location.href='#{capsule_path(payment.offer.product.id)}'"), :class => "button-green") %>
+                          <span class="share-line">
+                              <%= link_to(image_tag("/images/icons/twitter-20x20px.gif", :size => "20x20", :alt => "Twitter"), "http://twitter.com/home?status=hey check out http://dealkat.com and use myprice at gap stores for $35 khakis", :target => "_new") %>
+                              <%= link_to(image_tag("/images/icons/facebook-20x20px.gif", :size => "20x20", :alt => "Facebook"), "http://www.facebook.com/sharer.php?u=#{root_url}&t=hey check out http://dealkat.com and use myprice at gap stores for $35 khakis", :target => "_new") %>
+                          </span>
+                          <span class="divider"></span>
                       </p>
                     </li>
                 <% end %>

@@ -367,6 +367,21 @@ INPUT[type="submit"] {
         color: #888888;
         }
 
+.feed-ctrls {
+    border-bottom: 1px solid #e1e2e3;
+    padding-bottom: 1.5em;
+    margin: 0 40px 1.5em;
+    overflow: hidden;
+    }
+
+    .feed-ctrls .share-line {
+        vertical-align: middle;
+        background: url(../i/share-line-bg.gif) top repeat-x;
+        padding: 4px 10px;
+        margin: 0 1em;
+        display: inline-block;
+        }
+
 .feed-ctrl {
     margin: .5em 0 .5em 15px;
     }
