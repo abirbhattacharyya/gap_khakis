@@ -4,6 +4,10 @@ class Product < ActiveRecord::Base
 
   validates_uniqueness_of :style_num_full, :scope => [:user_id]
 
+  def images
+    Product.all(:conditions => ["style_num = ? and image_url <> ? ", self.style_num, self.image_url])
+  end
+
   def description
     if self.style_description.strip.eql? "CLASSIC STRAIGHT KHAKI"
       ["Fit for any occasion, you'll turn to the classic khaki again, and again. Not too slouchy, not too polished, your wash-and-wear, best-foot-forward pair.",

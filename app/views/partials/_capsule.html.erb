@@ -16,7 +16,12 @@
         <div class="view">
             <span class="preview">
                 <%= image_tag((product.image_url || "/images/khakis.png"), :size => "215x290") %>
-                <%= link_to(content_tag(:span, nil, :class => "play"), (product.image_url || "/images/khakis.png"), :rel => "lightbox") %>
+                <%= link_to(content_tag(:span, nil, :class => "play"), (product.image_url || "/images/khakis.png"), :title => "#{product.style_description} (#{product.color_description})", :rel => "lightbox[#{product.style_num}]") %>
+                <div style="display: none">
+                    <% for product_image in product.images %>
+                    <%= link_to(content_tag(:span, nil, :class => "play"), (product_image.image_url || "/images/khakis.png"), :title => "#{product_image.style_description} (#{product_image.color_description})", :rel => "lightbox[#{product.style_num}]") %>
+                    <% end %>
+                </div>
             </span>
             <p>
                 Share:
