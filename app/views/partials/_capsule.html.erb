@@ -36,8 +36,8 @@
                 <div class="sinner">
 
                   <% if logged_in? and product.user == current_user %>
-                      <h2>Total Price= $<%= number_with_delimiter(product.ticketed_retail) %></h2>
                       <% form_tag capsule_path(product.id), :id => "submit_form" do %>
+                      <h2>Total Price= $<%= number_with_delimiter(product.ticketed_retail) %></h2>
                       <p>
                           <label>Your offer?</label>
                           <%= text_field_tag :price, '', :class => "w120px", :maxLength => 4, :onKeyPress => "return keyAllowed(event,'0123456789')", :onblur => "this.value=removeChars(this.value)" %>
@@ -48,8 +48,8 @@
                       <% end %>
                   <% else %>
                       <% if @accepted_offer %>
-                          <p class="ctrl"><%= (@accepted_offer.price.ceil > 0) ? "Total Price= $" + number_with_delimiter(@accepted_offer.price.ceil) : "Free of cost" %></p>
                           <% form_tag payments_path(@accepted_offer.id) do %>
+                              <h2><%= (@accepted_offer.price.ceil > 0) ? "Total Price= $" + number_with_delimiter(@accepted_offer.price.ceil) : "Free of cost" %></h2>
                               <p class="ctrls">
                                 <span class="button-green-ctrl-fat"><%= submit_tag "Get Code" %></span>
                               </p>
