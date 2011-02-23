@@ -98,6 +98,9 @@ class ProductsController < ApplicationController
       if params[:payment]
         @payment = Payment.find(params[:id])
         if @payment.update_attributes(params[:payment])
+          unless @payment.email.strip.blank?
+            Notification.deliver_sendcoupon(@payment.email, @payment)
+          end
           redirect_to root_path
           return
         else

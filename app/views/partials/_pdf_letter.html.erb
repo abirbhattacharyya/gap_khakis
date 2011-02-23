@@ -1,9 +1,19 @@
 <% @payment = pdf_letter %>
 
-<b>Voucher # <%=@payment.promotion_code.code %></b>
+<b>Here's your exclusive coupon code, you lucky winner you!</b>
+-------------------------------------------------------------------------------------
+
+<b>Coupon# <%=@payment.promotion_code.code %></b>
 You Won!
 
-1 pair of <%= @payment.offer.product.style_description %> for <%= (@payment.offer.price > 0) ? number_to_currency(@payment.offer.price) : "free" %>
+1 pair of <%= @payment.offer.product.style_description %>
+Regular price = <%= number_to_currency(@payment.offer.product.ticketed_retail) %>
+You Pay = <%= (@payment.offer.price > 0) ? number_to_currency(@payment.offer.price) : "Free" %>
 Color = <%= @payment.offer.product.color_description %>
-Style = <%= @payment.offer.product.style_num_full %>
+Style# = <%= @payment.offer.product.style_num_full %>
 Expires = 04/30/2011
+
+
+<b>Terms & Conditions:</b>
+Offer valid from March 3, 2011 through March 17, 2011 in the U.S. only (including Puerto Rico) at Gap stores. Not valid at Gap Outlet, Gap Factory Store or The Gap Generation stores or online. Offer is good for one time use only and must be surrendered at time of in-store purchase. Discount applies to Gap Men's Khaki merchandise only, not to GiftCards or applicable taxes. No adjustments on previous purchases. The value of the purchase must be greater than or equal to the value of the coupon. Not valid for cash or cash equivalent. Offer cannot be combined with any other offers or discounts, including the Gap Inc. employee discount. Not responsible for lost or stolen coupons. Offer is not transferable.
+<b>Cashiers:</b> enter the code above to process the discount.
