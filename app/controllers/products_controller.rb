@@ -152,8 +152,8 @@ class ProductsController < ApplicationController
       output= render_to_string :partial => "partials/pdf_letter", :object => @payment
       pdf = PDF::Writer.new
       pdf.text output
-      pdf.save_as("payment.pdf")
-      send_file("payment.pdf")
+      pdf.save_as("storemyprice.pdf")
+      send_file("storemyprice.pdf")
     else
       redirect_to root_path
     end
