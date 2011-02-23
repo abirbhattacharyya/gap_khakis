@@ -317,7 +317,7 @@ class ProductsController < ApplicationController
             end
             @accepted_offer = @product.offers.last(:conditions => ["ip = (?) and response = (?)", request.remote_ip, 'accepted'])
             if(price.to_i >= reg_price)
-              msg = "Hey, don't overspend. The wardrobe is yours at a discount for $#{@accepted_offer.price.ceil}"
+              msg = "Hey, don't overspend. Buy it @ a special discount of $#{@accepted_offer.price.ceil}"
             else
               msg = "Your offer=$#{@accepted_offer.price.ceil} is accepted for the wardrobe!"
             end
