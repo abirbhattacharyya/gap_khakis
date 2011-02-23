@@ -8,9 +8,11 @@ ActionController::Routing::Routes.draw do |map|
 
   map.profile '/profile', :controller => 'users', :action => 'profile'
 
+  map.my_wardrobes '/wardrobes', :controller => 'home', :action => 'my_wardrobes'
   map.notifications '/notifications', :controller => 'home', :action => 'notifications'
   map.analytics '/analytics', :controller => 'home', :action => 'analytics'
 
+  map.faqs '/faqs', :controller => 'home', :action => 'faqs'
   map.winners '/winners', :controller => 'home', :action => 'winners'
   map.say_your_price '/sayprice', :controller => 'home', :action => 'say_your_price'
 

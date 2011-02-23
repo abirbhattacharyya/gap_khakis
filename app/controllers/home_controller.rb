@@ -100,6 +100,10 @@ class HomeController < ApplicationController
     @payments = Payment.all(:order => "id desc", :limit => 100)
   end
 
+  def faqs
+    
+  end
+
   def get_twitter_data
     @id = (TwitterResult.count > 0) ? TwitterResult.last.id : 1
     url = "http://174.143.243.249:3000/home/twitter_datas?id=#{@id}"
