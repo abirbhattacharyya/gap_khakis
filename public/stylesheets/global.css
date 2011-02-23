@@ -479,6 +479,7 @@ INPUT[type="submit"] {
                 line-height: 1.3em;
                 border-bottom: 1px solid #a29aa4;
                 padding-bottom: 7px;
+                margin: 0;
                 }
 
         .capsule2 .info P {
@@ -618,6 +619,9 @@ INPUT[type="submit"] {
     background: #ece4d8; /* background color */
     position: relative;
     display: inline-block;
+*zoom: 1;
+*display: inline;
+
     }
 
     .ctrl-box .stl, .ctrl-box .str,

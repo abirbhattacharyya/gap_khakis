@@ -18,7 +18,7 @@
 
 #imageDataContainer{ font: 10px Verdana, Helvetica, sans-serif; background-color: #fff; margin: 0 auto; line-height: 1.4em; overflow: auto; width: 100%	; }
 
-#imageData{	padding:0 10px; color: #666; }
+#imageData{	padding:0 10px; color: #666; overflow: hidden; }
 #imageData #imageDetails{ width: 70%; float: left; text-align: left; }	
 #imageData #caption{ font-weight: bold;	}
 #imageData #numberDisplay{ display: block; clear: left; padding-bottom: 1.0em;	}			
