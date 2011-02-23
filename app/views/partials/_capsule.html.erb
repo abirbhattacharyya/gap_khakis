@@ -10,8 +10,8 @@
 
 <div class="capsule2">
     <div class="cinner">
-        <h4><%= product.style_description %></h4>
-        <h5><%= product.color_description %></h5>
+        <h4><%= product.style_description %> (<%= product.color_description %>)</h4>
+        <h5><%= product.description[0] %></h5>
 
         <div class="view">
             <span class="preview">
@@ -93,8 +93,8 @@
 
             <p><%= link_to(capsule_url(product.id), capsule_path(product.id), :class => "myprice") %></p>
             <p>
-                Reg. Price=$<%= number_with_delimiter(product.ticketed_retail) %>
-                <br />
+                <%= product.description[1] %>
+                <%#= "Reg. Price=$" + number_with_delimiter(product.ticketed_retail) %>
                 <%#= link_to("More Info", "javascript:void();", :class => "more") %>
             </p>
         </div><!-- .info -->
