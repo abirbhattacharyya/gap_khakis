@@ -40,7 +40,7 @@
                       <h2>Total Price= $<%= number_with_delimiter(product.ticketed_retail) %></h2>
                       <p>
                           <label>Your offer?</label>
-                          <%= text_field_tag :price, '', :class => "w120px", :maxLength => 4, :onKeyPress => "return keyAllowed(event,'0123456789')", :onblur => "this.value=removeChars(this.value)" %>
+                          <%= text_field_tag :price, '', :class => "w120px", :maxLength => 2, :onKeyPress => "return keyAllowed(event,'0123456789')", :onblur => "this.value=removeChars(this.value)" %>
                       </p>
                       <p>
                           <span class="button-green-ctrl-fat disabled"><input type="submit" name="" value="Say Your Price!" disabled="disabled"></span>
@@ -68,7 +68,7 @@
                                 
                                 <p>
                                     <label>OR Your Counter Offer?</label>
-                                    <%= text_field_tag :price, '', :class => "w120px", :maxLength => 4, :onKeyPress => "return keyAllowed(event,'0123456789')", :onblur => "this.value=removeChars(this.value)" %>
+                                    <%= text_field_tag :price, '', :class => "w120px", :maxLength => 2, :onKeyPress => "return keyAllowed(event,'0123456789')", :onblur => "this.value=removeChars(this.value)" %>
                                 </p>
                                 <p>
                                   <span class="button-orange-ctrl-fat"><%= submit_tag "Counter" %></span>
@@ -79,7 +79,7 @@
 
                                 <p class="ctrl">
                                     <label>Your offer?</label>
-                                    <%= text_field_tag :price, '', :class => "w120px", :maxLength => 4, :onKeyPress => "return keyAllowed(event,'0123456789')", :onblur => "this.value=removeChars(this.value)" %>
+                                    <%= text_field_tag :price, '', :class => "w120px", :maxLength => 2, :onKeyPress => "return keyAllowed(event,'0123456789')", :onblur => "this.value=removeChars(this.value)" %>
                                 </p>
                                 <p class="ctrls">
                                     <span class="button-green-ctrl-fat"><%= submit_tag "Say your price!" %></span>
