@@ -25,6 +25,10 @@ class HomeController < ApplicationController
     @notifications.sort!{|n1, n2| n2[1] <=> n1[1]}
   end
 
+  def my_wardrobes
+    @products = current_user.products
+  end
+
   def analytics
     if request.post?
       @page = params[:page].to_i
@@ -92,7 +96,8 @@ class HomeController < ApplicationController
   end
 
   def winners
-    @results = TwitterResult.all(:order => "id desc", :limit => 100)
+#    @results = TwitterResult.all(:order => "id desc", :limit => 100)
+    @payments = Payment.all(:order => "id desc", :limit => 100)
   end
 
   def get_twitter_data
