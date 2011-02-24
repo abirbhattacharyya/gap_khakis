@@ -1,8 +1,8 @@
 <% product = capsule %>
 <%
-  @accepted_offer = product.offers.last(:conditions => ["ip = (?) and response = (?)", request.remote_ip, 'accepted'])
+  @accepted_offer = product.offers.last(:conditions => ["ip = ? and (response = ? OR response = ?)", request.remote_ip, 'accepted', 'paid'])
   @accepted = (@accepted_offer.nil? ? false: true)
-  @counter_offer = product.offers.last(:conditions => ["ip = (?) and response = (?)", request.remote_ip, 'counter'])
+  @counter_offer = product.offers.last(:conditions => ["ip = ? and response = ?", request.remote_ip, 'counter'])
   @new_price = @counter_offer.price if @counter_offer
   @counter = (@counter_offer ? true : false)
   @last_offer = (@counter_offer ? true : false)
