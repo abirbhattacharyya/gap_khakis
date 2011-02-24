@@ -24,7 +24,7 @@ class Notification < ActionMailer::Base
   end
 
   def sendto(recipient, product, name, message)
-    subject    'Cool info from dealkat'
+    subject    'Say your price with GAP'
     #recipients recipient
     bcc recipient
     from       sender_email

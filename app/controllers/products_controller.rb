@@ -175,10 +175,11 @@ class ProductsController < ApplicationController
         @emails = params[:emails]
         @message = params[:message]
         if check_emails(@emails)
+            @message += "<br />hey check out http://dealkat.com and use myprice at gap stores for $35 khakis"
             name = (params[:name].nil? or params[:name].blank?) ? 'Someone' : params[:name]
             recipient = @emails
 
-            Notification.deliver_sendto(recipient,@product,name,params[:message])
+            Notification.deliver_sendto(recipient,@product,name,@message)
             flash[:notice]= "Yeah! Email sent!"
             redirect_to capsule_path(@product.id)
         else
