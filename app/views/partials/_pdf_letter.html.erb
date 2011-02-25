@@ -1,12 +1,13 @@
 <% @payment = pdf_letter %>
 
+
 <b>Here's your exclusive coupon code, you lucky winner you!</b>
 -------------------------------------------------------------------------------------
 
 <b>Coupon# <%=@payment.promotion_code.code %></b>
 You Won!
 
-<%= @payment.offer.product.style_description.titleize %> (<%= @payment.offer.product.color_description.titleize %>)
+<%= @payment.offer.product.style_description.titleize %> (<%= @payment.offer.product.color.titleize %>)
 Style# = <%= @payment.offer.product.style_num_full %>
 Expires = 04/30/2011
 

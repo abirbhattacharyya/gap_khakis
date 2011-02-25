@@ -61,7 +61,7 @@
         <% end %>
 
         <div id="footer">
-            <div class="copyright">&copy; 2011 Gap Inc.</div>
+            <div class="copyright">&copy; 2011 Gap Inc. engine by Dealkat</div>
             <% content_tag :ul do %>
                 <%  if logged_in? %>
                   <%= content_tag(:li, link_to("Edit Profile", profile_path), :class => ([profile_path].include? request.path) ? "current" : nil) if current_user.profile %>

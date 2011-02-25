@@ -152,9 +152,9 @@ class ProductsController < ApplicationController
       end
       output= render_to_string :partial => "partials/pdf_letter", :object => @payment
       pdf = PDF::Writer.new
+      pdf.add_image_from_file("#{Rails.root}/public/images/logo-gap.jpg", 35, 730, 50, 50)
       pdf.text output
-      pdf.save_as("storemyprice.pdf")
-      send_file("storemyprice.pdf")
+      send_data pdf.render, :filename => "storemyprices.pdf", :type => "application/pdf"
     else
       redirect_to root_path
     end

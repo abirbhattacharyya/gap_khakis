@@ -4,6 +4,10 @@ class Product < ActiveRecord::Base
 
   validates_uniqueness_of :style_num_full, :scope => [:user_id]
 
+  def color
+    self.color_description.gsub(/\d+/, '').strip
+  end
+
   def images
     Product.all(:conditions => ["style_num = ? and image_url <> ? ", self.style_num, self.image_url])
   end

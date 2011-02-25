@@ -4,12 +4,12 @@
         <div class="capsule2">
           <div class="cinner">
               <h4>Coupon# <%=@payment.promotion_code.code %></h4>
-              <h5>You Won!</h5>
+              <h5>Your Price: <%= (@payment.offer.price > 0) ? number_to_currency(@payment.offer.price) : "Free" %></h5>
               <p>
-                  1 pair of <%= @payment.offer.product.style_description %><br />
+                  1 pair of <%= @payment.offer.product.style_description.titleize %><br />
                   Regular price = <%= number_to_currency(@payment.offer.product.ticketed_retail) %><br />
                   You Pay = <%= (@payment.offer.price > 0) ? number_to_currency(@payment.offer.price) : "Free" %><br />
-                  Color = <%= @payment.offer.product.color_description %><br />
+                  Color = <%= @payment.offer.product.color.titleize %><br />
                   Style# = <%= @payment.offer.product.style_num_full %><br />
                   Expires = 04/30/2011<br />
               </p>
