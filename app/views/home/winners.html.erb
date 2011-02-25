@@ -11,8 +11,8 @@
                 <%for payment in @payments%>
                     <li>
                       <p class="feed-informer">
-                        <%= (payment.email and !payment.email.strip.blank?) ? auto_link(payment.email) : "Someone" %>
-                        Won <%= payment.offer.product.style_description.titleize %> (<%= payment.offer.product.color_description.titleize %>).
+                        <%#= (payment.email and !payment.email.strip.blank?) ? auto_link(payment.email) : "Someone" %>
+                        a lucky customer Won <%= payment.offer.product.style_description.titleize %> (<%= payment.offer.product.color_description.titleize %>).
                         Negotiated Price= <%= (payment.offer.price > 0) ? number_to_currency(payment.offer.price) : "Free" %>;
                         Reg. Price= <%= number_to_currency(payment.offer.product.ticketed_retail) %><br />
                         <span>Won on <%=payment.created_at.strftime("%b %d, %I:%M %p") %></span>
