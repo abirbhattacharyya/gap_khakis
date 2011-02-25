@@ -49,9 +49,9 @@
                   <% else %>
                       <% if @accepted_offer %>
                           <% form_tag payments_path(@accepted_offer.id) do %>
-                              <h2><%= (@accepted_offer.price.ceil > 0) ? "Total Price= $" + number_with_delimiter(@accepted_offer.price.ceil) : "Free of cost" %></h2>
+                              <h2><%= (@accepted_offer.price.ceil > 0) ? "Your Price is $" + number_with_delimiter(@accepted_offer.price.ceil) : "Free of cost" %></h2>
                               <p class="ctrls">
-                                <span class="button-green-ctrl-fat"><%= submit_tag "Get Code" %></span>
+                                <span class="button-green-ctrl-fat"><%= submit_tag "Get Voucher" %></span>
                               </p>
                           <% end %>
                       <% else %>
@@ -96,12 +96,12 @@
 
             <div class="divider"></div>
 
-            <p><%= link_to(capsule_url(product.id), capsule_path(product.id), :class => "myprice") %></p>
-            <p>
+            <p><%= "Regular Price is $" + number_with_delimiter(product.ticketed_retail) %></p>
+            <div>
                 <%= product.description[1] %>
-                <%#= "Reg. Price=$" + number_with_delimiter(product.ticketed_retail) %>
                 <%#= link_to("More Info", "javascript:void();", :class => "more") %>
-            </p>
+            </div>
+            <p><%= link_to(capsule_url(product.id), capsule_path(product.id), :class => "myprice") %></p>
         </div><!-- .info -->
     </div><!-- .cinner -->
     <div class="ctl"></div><div class="ctc"></div><div class="ctr"></div>

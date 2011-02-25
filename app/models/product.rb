@@ -10,75 +10,90 @@ class Product < ActiveRecord::Base
 
   def description
     if self.style_description.strip.eql? "CLASSIC STRAIGHT KHAKI"
-      ["Fit for any occasion, you'll turn to the classic khaki again, and again.",
-        "<b>fabric & care</b><br />
-          100% Cotton. <br />
-          Machine wash.<br />
-          Imported.<br /><br />
+      ["Fit for any occasion, you'll turn to the classic khaki again and again.",
+        "
+          <p><b>overview</b></p><ul>
+          <li style='list-style: disc inside'>High-quality wrinkle-resistant and fade-proof cotton khaki pants.</li>
+          <li style='list-style: disc inside'>Sits just below the waist.</li>
+          <li style='list-style: disc inside'>Straight through the leg.</li>
+          <li style='list-style: disc inside'>Straight leg opening.<br />
+          <li style='list-style: disc inside'>Flat front, button closure, zip fly.</li>
+          <li style='list-style: disc inside'>On-seam pockets, back button-welt pockets.</li></ul><br />
 
-          <b>overview</b><br />
-          High-quality wrinkle-resistant and fade-proof cotton khaki pants.<br />
-          Sits just below the waist.<br />
-          Straight through the leg.<br />
-          Straight leg opening.<br />
-          Flat front, button closure, zip fly.<br />
-          On-seam pockets, back button-welt pockets.<br />"]
+          <p><b>fabric & care</b></p><ul>
+          <li style='list-style: disc inside'>100% Cotton.</li>
+          <li style='list-style: disc inside'>Machine wash.</li>
+          <li style='list-style: disc inside'>Imported.</li></ul>
+        "
+      ]
     elsif self.style_description.strip.eql? "CLASSIC RELAXED KHAKI"
-      ["Fit for any occasion, you'll turn to the classic khaki again, and again.",
-        "<b>fabric & care</b><br />
-          100% Cotton. <br />
-          Machine wash.<br />
-          Imported.<br /><br />
+      ["Fit for any occasion, you'll turn to the classic khaki again and again.",
+        "
+          <p><b>overview</b></p><ul>
+          <li style='list-style: disc inside'>Soft, wrinkle-resistant and fade-proof cotton khaki pants.</li>
+          <li style='list-style: disc inside'>Sits just below the waist.</li>
+          <li style='list-style: disc inside'>Full through the leg.</li>
+          <li style='list-style: disc inside'>Straight leg opening.</li>
+          <li style='list-style: disc inside'>Flat front, button closure, zip fly.</li>
+          <li style='list-style: disc inside'>On-seam pockets, back button-welt pockets.</li></ul><br />
 
-          <b>overview</b><br />
-          Soft, wrinkle-resistant and fade-proof cotton khaki pants.<br />
-          Sits just below the waist.<br />
-          Full through the leg.<br />
-          Straight leg opening.<br />
-          Flat front, button closure, zip fly.<br />
-          On-seam pockets, back button-welt pockets.<br />"]
+          <p><b>fabric & care</b></p><ul>
+          <li style='list-style: disc inside'>100% Cotton.</li>
+          <li style='list-style: disc inside'>Machine wash.</li>
+          <li style='list-style: disc inside'>Imported.</li></ul>
+        "
+      ]
     elsif self.style_description.strip.eql? "TAILORED STRAIGHT KHAKI"
       ["Our dressiest pair. Designed w a creased leg & wrinkle-resistant twill.",
-        "<b>fabric & care</b><br />
-          100% Cotton. <br />
-          Machine wash.<br />
-          Imported.<br /><br />
+        "
+          <p><b>overview</b></p><ul>
+          <li style='list-style: disc inside'>High-quality wrinkle-resistant and fade-proof cotton khaki pants.</li>
+          <li style='list-style: disc inside'>Sits just below the waist.</li>
+          <li style='list-style: disc inside'>Straight through the leg.</li>
+          <li style='list-style: disc inside'>Straight leg opening.</li>
+          <li style='list-style: disc inside'>Flat front, hook & bar closure, zip fly.</li>
+          <li style='list-style: disc inside'>On-seam pockets, back button-welt pockets.</li></ul><br />
 
-          <b>overview</b><br />
-          High-quality wrinkle-resistant and fade-proof cotton khaki pants.<br />
-          Sits just below the waist.<br />
-          Straight through the leg.<br />
-          Straight leg opening.<br />
-          Flat front, hook & bar closure, zip fly.<br />
-          On-seam pockets, back button-welt pockets.<br />"]
+          <p><b>fabric & care</b></p><ul>
+          <li style='list-style: disc inside'>100% Cotton.</li>
+          <li style='list-style: disc inside'>Machine wash.</li>
+          <li style='list-style: disc inside'>Imported.</li></ul>
+        "
+      ]
     elsif self.style_description.strip.eql? "TAILORED RELAXED KHAKI"
       ["Our dressiest pair. Designed w a creased leg & wrinkle-resistant twill.",
-        "<b>fabric & care</b><br />
-          100% Cotton. <br />
-          Machine wash.<br />
-          Imported.<br /><br />
+        "
+          <p><b>overview</b></p><ul>
+          <li style='list-style: disc inside'>High-quality wrinkle-resistant and fade-proof cotton khaki pants.</li>
+          <li style='list-style: disc inside'>Sits just below the waist.</li>
+          <li style='list-style: disc inside'>Full through the leg.</li>
+          <li style='list-style: disc inside'>Straight leg opening.</li>
+          <li style='list-style: disc inside'>Flat front, hook & bar closure, zip fly.</li>
+          <li style='list-style: disc inside'>On-seam pockets, back button-welt pockets.</li></ul><br />
 
-          <b>overview</b><br />
-          High-quality wrinkle-resistant and fade-proof cotton khaki pants.<br />
-          Sits just below the waist.<br />
-          Full through the leg.<br />
-          Straight leg opening.<br />
-          Flat front, hook & bar closure, zip fly.<br />
-          On-seam pockets, back button-welt pockets.<br />"]
+          <p><b>fabric & care</b></p><ul>
+          <li style='list-style: disc inside'>100% Cotton.</li>
+          <li style='list-style: disc inside'>Machine wash.</li>
+          <li style='list-style: disc inside'>Imported.</li></ul>
+        "
+      ]
     elsif self.style_description.strip.eql? "VINTAGE KHAKI"
       ["Made of soft, prewashed cotton with a relaxed fit.",
-        "<b>fabric & care</b><br />
-          100% Cotton. <br />
-          Machine wash.<br />
-          Imported.<br /><br />
+        "
+          <p><b>overview</b></p><ul>
+          <li style='list-style: disc inside'>High-quality prewashed woven cotton khaki pants.</li>
+          <li style='list-style: disc inside'>Sits just below the waist.</li>
+          <li style='list-style: disc inside'>Easy through the leg.</li>
+          <li style='list-style: disc inside'>Straight leg opening.</li>
+          <li style='list-style: disc inside'>Button closure, zip fly.</li>
+          <li style='list-style: disc inside'>On-seam pockets, mini-coin welt pocket, back button-welt pockets.</li></ul><br />
 
-          <b>overview</b><br />
-          High-quality prewashed woven cotton khaki pants.<br />
-          Sits just below the waist.<br />
-          Easy through the leg.<br />
-          Straight leg opening.<br />
-          Button closure, zip fly.<br />
-          On-seam pockets, mini-coin welt pocket, back button-welt pockets.<br />"]
+          <p><b>fabric & care</b></p><ul>
+          <li style='list-style: disc inside'>100% Cotton.</li>
+          <li style='list-style: disc inside'>Machine wash.</li>
+          <li style='list-style: disc inside'>Imported.</li></ul>
+        "
+      ]
     elsif self.style_description.strip.eql? "TAILORED STRAIGHT MELANGE"
       ["missing","missing"]
     elsif self.style_description.strip.eql? "TAILORED RELAXED MELANGE"
