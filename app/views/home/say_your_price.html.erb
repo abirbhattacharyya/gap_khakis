@@ -3,7 +3,7 @@
     <%= hidden_field_tag(:page, @page) %>
   <% end %>
 
-  <div class="paginator w650px">
+  <div class="paginator w650px" style="display: none">
       <% if @page.to_i != @post_pages %>
               <% if(@page.to_i <= 1)%>
                   <%#= link_to("Next #{@per_page}", "javascript:void();", :class => "button next", :onclick => "alert(document.getElementById('page').value);") %>
@@ -27,7 +27,7 @@
     </div><!-- .columns -->
   <% end %>
 
-  <div class="paginator w650px">
+  <div class="paginator w650px" style="display: none">
       <% if @page.to_i != @post_pages %>
               <% if(@page.to_i <= 1)%>
                   <%= link_to("Next #{@per_page}", "javascript:void();", :class => "button next", :onclick => "var f = document.forms['page_form'];$('page').value=2;f.submit();return false;") %>

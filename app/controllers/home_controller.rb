@@ -93,6 +93,8 @@ class HomeController < ApplicationController
     @post_pages = (@size.to_f/@per_page).ceil;
     @page =1 if @page.to_i<=0 or @page.to_i > @post_pages
     @products = Product.all(:limit => "#{@per_page*(@page - 1)}, #{@per_page}")
+
+    @products = Product.all
   end
 
   def winners

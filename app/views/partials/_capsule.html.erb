@@ -16,10 +16,10 @@
         <div class="view">
             <span class="preview">
                 <%= image_tag((product.image_url || "/images/khakis.png"), :size => "215x290") %>
-                <%= link_to(content_tag(:span, nil, :class => "play"), (product.image_url || "/images/khakis.png"), :title => "#{product.style_description} (#{product.color_description})", :rel => "lightbox[#{product.style_num}]") %>
+                <%= link_to(content_tag(:span, nil, :class => "play"), (product.image_url || "/images/khakis.png"), :title => "#{product.style_description} (#{product.color_description})", :rel => "lightbox['#{product.style_num}']") %>
                 <div style="display: none">
                     <% for product_image in product.images %>
-                    <%= link_to(content_tag(:span, nil, :class => "play"), (product_image.image_url || "/images/khakis.png"), :title => "#{product_image.style_description} (#{product_image.color_description})", :rel => "lightbox[#{product.style_num}]") %>
+                    <%= link_to(content_tag(:span, nil, :class => "play"), (product_image.image_url || "/images/khakis.png"), :title => "#{product_image.style_description} (#{product_image.color_description})", :rel => "lightbox['#{product.style_num}']") %>
                     <% end %>
                 </div>
             </span>
@@ -58,9 +58,9 @@
                           <% form_tag capsule_path(product.id), :id => "submit_form" do %>
                               <%= hidden_field_tag(:submit_button, "counter") %>
                               <% if @counter %>
-                                <h2 class="long"><%#= "Final " if @last_offer == true %><%= (@new_price.ceil > 0) ? "Offer= $" + number_with_delimiter(@new_price.ceil) : "Free of cost" %></h2>
+                                <h2 class="long"><%#= "Final " if @last_offer == true %><%= (@new_price.ceil > 0) ? "Offer is $" + number_with_delimiter(@new_price.ceil) : "Free of cost" %></h2>
                                 <p class="ctrl">
-                                    <label>Buy <%=(@new_price.ceil > 0) ? "at $" + number_with_delimiter(@new_price.ceil) : "Free" %>?</label>
+                                    <label>Accept the deal</label>
                                     <span class="button-green-ctrl"><%= button_to_function("Yes", "var f = document.forms['submit_form'];$('submit_button').value='yes';f.submit();return false;") %></span>
                                     <span class="button-red-ctrl"><%= button_to_function("No", "var f = document.forms['submit_form'];$('submit_button').value='no';f.submit();return false;") %></span>
                                 </p>
