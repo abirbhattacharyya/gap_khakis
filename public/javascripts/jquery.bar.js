@@ -66,8 +66,8 @@
 function showNotification(message, messageType, time){
     /* we can custom by parameter setting */
     var messagePosition = 'top';
-    var backgroundColor = '#FFFFFF';
-    var textColor = 'Crimson'; //(messageType == 'error') ? 'Crimson' : '#000';//'#1E90FF';
+    var backgroundColor = 'Red';
+    var textColor = 'White'; //(messageType == 'error') ? 'Crimson' : '#000';//'#1E90FF';
     var removeButton = true;
 
     if(!$j('.jbar').length){

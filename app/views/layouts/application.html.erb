@@ -84,9 +84,9 @@
     <% if flash[:error] or flash[:notice] %>
       <% javascript_tag do %>
           <% if flash[:error] %>
-            showNotification("<%= flash.now[:error] %>", 'error', 8000);
+            showNotification("<%= flash.now[:error] %>", 'error', 10000);
           <% elsif flash[:notice] %>
-            showNotification("<%= flash.now[:notice] %>", 'notice', 8000);
+            showNotification("<%= flash.now[:notice] %>", 'notice', 10000);
           <% end %>
           <% flash.discard %>
       <% end %>
