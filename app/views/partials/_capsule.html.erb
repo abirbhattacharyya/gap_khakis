@@ -75,14 +75,14 @@
                                 </p>
                                 <% end %>
                               <% else %>
-                                <h2>Let's Play?</h2>
+                                <h2>Say Your Price</h2>
 
                                 <p class="ctrl">
-                                    <label>Your offer?</label>
+                                    <label>Make an offer</label>
                                     <%= text_field_tag :price, '', :class => "w120px", :maxLength => 2, :onKeyPress => "return keyAllowed(event,'0123456789')", :onblur => "this.value=removeChars(this.value)" %>
                                 </p>
                                 <p class="ctrls">
-                                    <span class="button-green-ctrl-fat"><%= submit_tag "Say your price!" %></span>
+                                    <span class="button-green-ctrl-fat"><%= submit_tag "Go!" %></span>
                                 </p>
                               <% end %>
                           <% end %>
