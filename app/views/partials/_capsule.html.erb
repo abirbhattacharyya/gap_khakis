@@ -15,11 +15,12 @@
 
         <div class="view">
             <span class="preview">
-                <%= image_tag((product.image_url || "/images/khakis.png"), :size => "215x290") %>
-                <%= link_to(content_tag(:span, nil, :class => "play"), (product.image_url || "/images/khakis.png"), :title => "#{product.style_description} (#{product.color_description})", :rel => "lightbox['#{product.style_num}']") %>
+                <%#= image_tag((product.image_url || "/images/khakis.png"), :size => "215x290") %>
+                <%#= link_to(content_tag(:span, nil, :class => "play"), (product.image_url || "/images/khakis.png"), :title => "#{product.style_description} (#{product.color_description})", :rel => "lightbox[#{product.style_description.titleize.titleize.gsub(/\s+/, '')}]") %>
+                <%= link_to(image_tag((product.image_url || "/images/khakis.png"), :size => "215x290"), (product.image_url || "/images/khakis.png"), :title => "#{product.style_description.titleize} (#{product.color_description.titleize})", :rel => "lightbox[#{product.style_description.titleize.gsub(/\s+/, '')}]") %>
                 <div style="display: none">
                     <% for product_image in product.images %>
-                    <%= link_to(content_tag(:span, nil, :class => "play"), (product_image.image_url || "/images/khakis.png"), :title => "#{product_image.style_description} (#{product_image.color_description})", :rel => "lightbox['#{product.style_num}']") %>
+                    <%= link_to(content_tag(:span, nil, :class => "play"), (product_image.image_url || "/images/khakis.png"), :title => "#{product_image.style_description.titleize} (#{product_image.color_description.titleize})", :rel => "lightbox['#{product.style_description.titleize.gsub(/\s+/, '')}']") %>
                     <% end %>
                 </div>
             </span>
@@ -96,7 +97,7 @@
 
             <div class="divider"></div>
 
-            <p><%= "Regular Price is $" + number_with_delimiter(product.ticketed_retail) %></p>
+            <p><%= "Regular Price is " + number_to_currency(product.ticketed_retail, :precision => 2) %></p>
             <div>
                 <%= product.description[1] %>
                 <%#= link_to("More Info", "javascript:void();", :class => "more") %>
