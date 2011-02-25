@@ -327,7 +327,7 @@ class ProductsController < ApplicationController
             if(price.to_i >= reg_price)
               msg = "Hey, don't overspend. Buy it @ a special discount of $#{@accepted_offer.price.ceil}"
             else
-              msg = "Your offer=$#{@accepted_offer.price.ceil} is accepted for the wardrobe!"
+              msg = "You won! Congratulations!"
             end
             flash[:error] = msg
           end
