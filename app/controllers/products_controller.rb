@@ -117,7 +117,7 @@ class ProductsController < ApplicationController
 
       @payment = @offer.payment
       if @payment.nil?
-        @promotion_code = PromotionCode.last(:conditions => ["price_point = ? and used = 0", @offer.price], :order => "rand()")
+        @promotion_code = PromotionCode.first(:conditions => ["price_point = ? and used = 0", @offer.price])
         if @promotion_code
           @payment = Payment.create(:offer_id => @offer.id, :promotion_code_id => @promotion_code.id)
           @promotion_code.update_attribute(:used, true)
