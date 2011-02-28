@@ -101,7 +101,7 @@ class ProductsController < ApplicationController
           unless @payment.email.strip.blank?
             Notification.deliver_sendcoupon(@payment.email, @payment)
           end
-          redirect_to root_path
+#          redirect_to root_path
           return
         else
           flash[:error]= "Hey, please enter a valid email address"

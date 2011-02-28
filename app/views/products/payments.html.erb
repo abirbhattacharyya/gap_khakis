@@ -1,6 +1,11 @@
+<% if @payment.email and !@payment.email.strip.blank?  %>
 <h1>Congratulations! You won a pair of Gap khakis for <%= (@payment.offer.price > 0) ? number_to_currency(@payment.offer.price) : "Free" %>. Go get them at your local Gap store.</h1>
+<% else %>
+<h1>Enter your email id</h1>
+<% end %>
 <div class="columns">
     <div class="column wide">
+        <% if @payment.email and !@payment.email.strip.blank?  %>
         <div class="capsule2">
           <div class="cinner">
               <h4>Coupon# <%=@payment.promotion_code.code %></h4>
@@ -13,29 +18,31 @@
                   Style# = <%= @payment.offer.product.style_num_full %><br />
                   Expires = 04/30/2011<br />
               </p>
-
-              <% form_for :payment, :url => payments_path(@payment.id) do |f| %>
-                <p class="ctrl">
-                    <%= label_tag(:email, "Your email? {optional}") %>
-                    <%= f.text_field :email, :class => "w250px" %>
-                </p>
-                <p class="ctrls">
-                    <span class="button-green"><%= f.submit("Email my voucher") %></span>
-                    <%#= link_to "Cancel", capsule_path(@payment.offer.product.id), :class => "alter-link" %>
-                    <%= link_to("Download PDF", "javascript::void();", :onclick => "window.location.href='#{download_pdf_path(@payment.id)}'", :class => "alter-link") %>
-                </p>
-              <% end %>
-
+              <%= content_tag(:p, button_to_function("Download PDF", "window.location.href='#{download_pdf_path(@payment.id)}'"), :class => "button-green") %>
+              <%#= link_to("Download PDF", "javascript::void();", :onclick => "window.location.href='#{download_pdf_path(@payment.id)}'", :class => "alter-link") %>
             </div><!-- .cinner -->
             <div class="ctl"></div><div class="ctc"></div><div class="ctr"></div>
             <div class="cml"></div><div class="cmr"></div>
             <div class="cbl"></div><div class="cbc"></div><div class="cbr"></div>
         </div><!-- .capsule -->
+        <% else %>
+            <% form_for :payment, :url => payments_path(@payment.id) do |f| %>
+              <p class="ctrl">
+                  <%= label_tag(:email, "Your email?") %>
+                  <%= f.text_field :email, :class => "w250px" %>
+              </p>
+              <p class="ctrls">
+                  <span class="button-green"><%= f.submit("Email my voucher") %></span>
+              </p>
+            <% end %>
+        <% end %>
 
     </div><!-- .column.wide -->
 </div><!-- .columns -->
 
+<% if @payment.email and !@payment.email.strip.blank?  %>
 <b>Terms & Conditions:</b>
 Offer valid from March 3, 2011 through March 17, 2011 in the U.S. only (including Puerto Rico) at Gap stores. Not valid at Gap Outlet, Gap Factory Store or The Gap Generation stores or online. Offer is good for one time use only and must be surrendered at time of
 in-store purchase. Discount applies to Gap Men's Khaki merchandise only, not to GiftCards or applicable taxes. No adjustments on previous purchases. The value of the purchase must be greater than or equal to the value of the coupon. Not valid for cash or cash equivalent. Offer cannot be combined with any other offers or discounts, including the Gap Inc. employee discount. Not responsible for lost or stolen coupons. Offer is not transferable. 
 <b>Cashiers:</b> enter code above to process the discount.
+<% end %>
