@@ -202,6 +202,10 @@ class ProductsController < ApplicationController
       @counter = (@counter_offer ? true : false)
       @last_offer = (@counter_offer ? true : false)
       if request.post?
+        if @accepted_offer
+          return
+        end
+
         @offer = @product.offers.last(:conditions => ["ip = (?) and (response IS NULL OR response = ?)", request.remote_ip, "counter"])
         if params[:submit_button]
           submit = params[:submit_button].strip.downcase
@@ -231,29 +235,16 @@ class ProductsController < ApplicationController
               return
           end
         end
-        if @accepted_offer or @last_offer
-          return
-        end
         price = params[:price].to_i
         if price.to_i <= 0
           flash[:error] = "Hey you can't get something for nothing"
         else
           reg_price = @product.ticketed_retail.ceil
           if @offer
-            if price > @offer.price
-              @offer.update_attribute(:price, price)
-              @offer.update_attribute(:counter, @offer.counter+1)
-            else
-              flash[:error] = "Your offer=$#{price} is rejected for the wardrobe!"
-              for offer in @product.offers.all(:conditions => ["ip = (?) and id <= ?", request.remote_ip, @offer.id])
-                  offer.update_attribute(:response, "expired") unless ['paid', 'accepted'].include? offer.response
-              end
-              @offer.update_attribute(:response, "rejected")
-              return
-            end
+            return
           else
-              @offer = Offer.new(:ip => request.remote_ip, :product_id => @product.id, :price => price, :counter => 1)
-              @offer.save
+            @offer = Offer.new(:ip => request.remote_ip, :product_id => @product.id, :price => price, :counter => 1)
+            @offer.save
           end
           if(Offer.accepted_offers.count.to_i == 0)
             if @product.ticketed_retail.to_f == 49.5
