@@ -103,7 +103,7 @@ class ProductsController < ApplicationController
             @found = false
             if @payments.size > 1
               for payment in @payments
-                if payment.offer.price == @payment.offer.price
+                if((payment.id != @payment.id) and (payment.offer.price == @payment.offer.price))
                   @found = true
                   break;
                 end
