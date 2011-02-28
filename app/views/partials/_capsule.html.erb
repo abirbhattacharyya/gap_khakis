@@ -97,7 +97,7 @@
 
             <div class="divider"></div>
 
-            <p><%= "Regular Price is " + number_to_currency(product.ticketed_retail.ceil, :precision => 0) %></p>
+            <p><%= "Regular Price : " + number_to_currency(product.ticketed_retail.ceil, :precision => 0) %></p>
             <div>
                 <%= product.description[1] %>
                 <%#= link_to("More Info", "javascript:void();", :class => "more") %>
