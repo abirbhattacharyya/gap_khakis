@@ -98,12 +98,35 @@ class ProductsController < ApplicationController
       if params[:payment]
         @payment = Payment.find(params[:id])
         if @payment.update_attributes(params[:payment])
-          unless @payment.email.strip.blank?
-            Notification.deliver_sendcoupon(@payment.email, @payment)
+          if [0,1,5].include? @payment.offer.price
+            @payments = Payment.find_all_by_email(@payment.email)
+            @found = false
+            if @payments.size > 1
+              for payment in @payments
+                if payment.offer.price == @payment.offer.price
+                  @found = true
+                  break;
+                end
+              end
+            end
+            if @found == true
+              if @payment.offer.product.ticketed_retail.to_f == 49.5
+                @payment.offer.update_attribute(:price, 30)
+              else
+                @payment.offer.update_attribute(:price, 35)
+              end
+              @payment.promotion_code.update_attribute(:used, false)
+              @promotion_code = PromotionCode.first(:conditions => ["price_point = ? and used = 0", @payment.offer.price])
+              @payment.update_attribute(:promotion_code_id, @promotion_code.id)
+              @promotion_code.update_attribute(:used, true)
+              flash[:notice] = "hey only 1 free/$1/$5 per email"
+            end
           end
+          Notification.deliver_sendcoupon(@payment.email, @payment)
 #          redirect_to root_path
           return
         else
+          @payment.email = nil
           flash[:error]= "Hey, please enter a valid email address"
           return
         end
