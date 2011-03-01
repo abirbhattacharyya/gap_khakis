@@ -132,20 +132,7 @@ class Product < ActiveRecord::Base
           <li style='list-style: disc inside'>Imported.</li></ul>
         "
       ]
-    elsif self.style_description.strip.eql? "TS NAVY STRIPE (TAILORED STRAIGHT)"
-      ["Our dressiest: Designed with a creased leg, and heathered twill.",
-        "
-          <p><b>overview</b></p><ul>
-          <li style='list-style: disc inside'>Flat front, hook & bar closure, zip fly.</li>
-          <li style='list-style: disc inside'>On-seam pockets, back button-welt pockets.</li></ul><br />
-
-          <p><b>fabric & care</b></p><ul>
-          <li style='list-style: disc inside'>100% Cotton.</li>
-          <li style='list-style: disc inside'>Machine wash.</li>
-          <li style='list-style: disc inside'>Imported.</li></ul>
-        "
-      ]
-    elsif self.style_description.strip.eql? "TS GREY DOT STRIPE (TAILORED STRAIGHT)"
+    elsif self.style_description.strip.eql? "TAILORED STRAIGHT"
       ["Our dressiest: Designed with a creased leg, and heathered twill.",
         "
           <p><b>overview</b></p><ul>
