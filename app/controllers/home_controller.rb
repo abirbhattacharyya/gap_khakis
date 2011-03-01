@@ -35,36 +35,60 @@ class HomeController < ApplicationController
     else
       @page = 1
     end
-    @size = 5
+    @size = 6
     @per_page = 1
     @post_pages = (@size.to_f/@per_page).ceil;
     @page =1 if @page.to_i<=0 or @page.to_i > @post_pages
     @titleX = "Time Period"
     @titleY = "#"
     @colors = []
+    @i = 0
 
     case @page
-      when 1
+      when @i+=1
+        @title = "% said= (Yes, No)"
+        @titleY = "%"
+        @titleX = "response"
+        @offer_yes = Offer.count(:conditions => "response LIKE 'accepted' OR response LIKE 'paid'")
+        @offer_no = Offer.count(:conditions => "response LIKE 'rejected'")
+        @chart_data1 = [["Yes", (@offer_yes.to_i*100/(@offer_yes.to_i+@offer_no.to_i))], ["No", (@offer_no.to_i*100/(@offer_yes.to_i+@offer_no.to_i))]]
+      when @i+=1
+        @title = "% Of Yes Hit Get Coupon"
+        @titleY = "%"
+        @titleX = "response"
+        @offer_yes = Offer.count(:conditions => "response LIKE 'accepted'")
+        @offer_paid = Offer.count(:conditions => "response LIKE 'paid'")
+        @chart_data1 = [["coupon", (@offer_paid.to_i*100/(@offer_yes.to_i+@offer_paid.to_i))]]
+      when @i+=1
+        @title = "# of coupons by day"
+        @titleY = "#"
+        @titleX = "date"
+        @payments = Payment.all(:select => "COUNT(id) as total, Date(created_at) as date", :group => "Date(created_at)")
+        @chart_data1 = []
+        for payment in @payments
+          @chart_data1 << [payment.date.to_date.strftime("%b %d"), payment.total.to_i]
+        end
+      when @i+=1
         @title = "# Came to SYP Capsule"
         @offer_today = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and Date(offers.updated_at)='#{Date.today}'")
         @offer_yesterday = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and Date(offers.updated_at)='#{Date.today - 1.day}'")
         @chart_data1 = [["Yesterday", @offer_yesterday.total.to_i], ["Today", @offer_today.total.to_i]]
-      when 2
+      when @i+=1
         @title = "# Started Negotiating"
         @offer_today = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and Date(offers.updated_at)='#{Date.today}'")
         @offer_yesterday = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and Date(offers.updated_at)='#{Date.today - 1.day}'")
         @chart_data1 = [["Yesterday", @offer_yesterday.total.to_i], ["Today", @offer_today.total.to_i]]
-      when 3
+      when @i+=1
         @title = "# Reached Pricing Agreement"
         @offer_today = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and offers.response='accepted' and Date(offers.updated_at)='#{Date.today}'")
         @offer_yesterday = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and offers.response='accepted' and Date(offers.updated_at)='#{Date.today - 1.day}'")
         @chart_data1 = [["Yesterday", @offer_yesterday.total.to_i], ["Today", @offer_today.total.to_i]]
-      when 4
+      when @i+=1
         @title = "# Completed Sale"
         @offer_today = Payment.first(:select => "COUNT(id) as total", :conditions => "Date(payments.updated_at)='#{Date.today}'")
         @offer_yesterday = Payment.first(:select => "COUNT(id) as total", :conditions => "Date(payments.updated_at)='#{Date.today - 1.day}'")
         @chart_data1 = [["Yesterday", @offer_yesterday.total.to_i], ["Today", @offer_today.total.to_i]]
-      when 5
+      when @i+=1
         @title = "$ Completed Sales"
         @titleY = "$"
         @offer_today = Payment.first(:select => "SUM(price) as total", :joins => "INNER JOIN offers ON payments.offer_id=offers.id and Date(payments.updated_at)='#{Date.today}'")
@@ -94,7 +118,11 @@ class HomeController < ApplicationController
     @page =1 if @page.to_i<=0 or @page.to_i > @post_pages
     @products = Product.all(:limit => "#{@per_page*(@page - 1)}, #{@per_page}")
 
-    @products = Product.all
+    @page_start_num = ((@page - 4) > 0) ? (@page - 4) : 1
+    @page_end_num = ((@page_start_num + 8) > @post_pages) ? @post_pages : (@page_start_num + 8)
+    @page_start_num = ((@post_pages - @page_end_num) < 8) ? (@page_end_num - 8) : @page_start_num
+
+#    @products = Product.all
   end
 
   def winners
@@ -133,6 +161,51 @@ class HomeController < ApplicationController
     end
     flash[:notice] = "#{@total} new records added"
     redirect_to root_path
+  end
+
+  def get_codes
+    @files = Dir.glob("dealkat_codes/*")
+    print "\n\nPromotion Codes Inserting \n"
+
+    @file = File.open("42315-CROSSBRAND-01_FREE.txt","r")
+    @price_point = 0
+    print "\nPrice Point: #{@price_point}\n"
+    sleep(3)
+    @file.each do |line|
+      if line
+        # render :text=>line and return false
+        line.match(/(.*?)\|([a-zA-Z0-9]*)/)
+        @keyword = $1
+        @keyword2 = $2
+
+        print "\tCode: #{@keyword}\n"
+        PromotionCode.create(:price_point => @price_point, :code => @keyword, :used => false)
+        # render :text=>@keyword2.inspect and return false
+      end
+    end
+    @file.close
+
+    for file in @files
+      @file = File.open(file,"r")
+      @price_point = file.split("$")[1].split(".")[0]
+      print "\nPrice Point: #{@price_point}\n"
+      sleep(3)
+      @file.each do |line|
+        if line
+          # render :text=>line and return false
+          line.match(/(.*?)\|([a-zA-Z0-9]*)/)
+          @keyword = $1
+          @keyword2 = $2
+
+          print "\tCode: #{@keyword}\n"
+          PromotionCode.create(:price_point => @price_point, :code => @keyword, :used => false)
+          # render :text=>@keyword2.inspect and return false
+        end
+      end
+      @file.close
+    end
+    print "\nTask Completed\n\n"
+    render :text => "Done...".inspect and return false
   end
 
 	def code_generate

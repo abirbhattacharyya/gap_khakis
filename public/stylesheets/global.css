@@ -537,6 +537,65 @@ INPUT[type="submit"] {
             line-height: 1.5em;
             }
 
+.paging {
+    *border: 1px solid #fff; /* IE7 fix */
+    text-align: center;
+    margin: 2em 0;
+    }
+
+    .paging .prev,
+    .paging .next {
+        text-indent: -9999px;
+        vertical-align: middle;
+        margin: 0;
+        width: 30px;
+        height: 42px;
+        display: inline-block;
+        }
+
+    .paging .prev {
+        background: url(/images/buttons/prev-next.gif) 0px 0px no-repeat;
+        float: left;
+        }
+
+    .paging .prev:hover {
+        background: url(/images/buttons/prev-next.gif) 0px 0px no-repeat;
+        filter: progid:DXImageTransform.Microsoft.Alpha(opacity=65);
+        opacity: 0.65;
+        -moz-opacity: 0.65;
+        }
+
+    .paging .next {
+        background: url(/images/buttons/prev-next.gif) -50px 0px no-repeat;
+        float: right;
+        }
+
+    .paging .next:hover {
+        background: url(/images/buttons/prev-next.gif) -50px 0px no-repeat;
+        filter: progid:DXImageTransform.Microsoft.Alpha(opacity=65);
+        opacity: 0.65;
+        -moz-opacity: 0.65;
+        }
+
+    .paging A {
+        color: #888;
+        font-size: 18px;
+        line-height: 19px;
+        padding: 0 10px;
+        margin: 10px 0;
+        display: inline-block;
+        }
+
+    .paging A.current {
+        color: #000;
+        text-decoration: none;
+        }
+
+    .paging A:hover {
+        color: #444;
+        text-decoration: underline;
+        }
+
 /* -------------------------------------------------------------------------- */
 /* CSS solutions */
 

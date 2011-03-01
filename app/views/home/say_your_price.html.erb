@@ -3,42 +3,57 @@
     <%= hidden_field_tag(:page, @page) %>
   <% end %>
 
-  <div class="paginator w650px" style="display: none">
-      <% if @page.to_i != @post_pages %>
+  <div class="columns">
+    <div class="column widest">
+        <p class="paging">
+          <% if @page.to_i != @post_pages %>
               <% if(@page.to_i <= 1)%>
-                  <%#= link_to("Next #{@per_page}", "javascript:void();", :class => "button next", :onclick => "alert(document.getElementById('page').value);") %>
-                  <%#= link_to("Next #{@per_page}", "javascript:void();", :class => "button next", :onclick => "alert($('page').value);") %>
-                  <%#= link_to("Next #{@per_page}", "javascript:void();", :class => "button next", :onclick => "alert(jQuery('#page').attr('value'));") %>
-                  <%= link_to("Next #{@per_page}", "javascript:void();", :class => "button next", :onclick => "var f = document.forms['page_form'];$('page').value=2;f.submit();return false;") %>
+                  <% @page_start_num.upto(@page_end_num).each do |page| %>
+                    <%= link_to("#{0 if(page < 10)}#{page}", "javascript:void();", :class => (@page == page) ? "current" : nil, :onclick => "var f = document.forms['page_form'];$('page').value=#{page.to_i};f.submit();return false;") %>
+                  <% end %>
+                  <%= link_to("Next #{@per_page}", "javascript:void();", :class => "next", :onclick => "var f = document.forms['page_form'];$('page').value=2;f.submit();return false;") %>
               <% else %>
-                  <%= link_to("Prev #{@per_page}", "javascript:void();", :class => "button prev", :onclick => "var f = document.forms['page_form'];$('page').value=#{@page.to_i-1};f.submit();return false;") %>
-                  <%= link_to("Next #{@per_page}", "javascript:void();", :class => "button next", :onclick => "var f = document.forms['page_form'];$('page').value=#{@page.to_i+1};f.submit();return false;") %>
+                  <%= link_to("Prev #{@per_page}", "javascript:void();", :class => "prev", :onclick => "var f = document.forms['page_form'];$('page').value=#{@page.to_i-1};f.submit();return false;") %>
+                  <% @page_start_num.upto(@page_end_num).each do |page| %>
+                    <%= link_to("#{0 if(page < 10)}#{page}", "javascript:void();", :class => (@page == page) ? "current" : nil, :onclick => "var f = document.forms['page_form'];$('page').value=#{page.to_i};f.submit();return false;") %>
+                  <% end %>
+                  <%= link_to("Next #{@per_page}", "javascript:void();", :class => "next", :onclick => "var f = document.forms['page_form'];$('page').value=#{@page.to_i+1};f.submit();return false;") %>
               <% end %>
-      <% elsif @page.to_i > 1 %>
-              <%= link_to("Prev #{@per_page}", "javascript:void();", :class => "button prev", :onclick => "var f = document.forms['page_form'];$('page').value=#{@page.to_i-1};f.submit();return false;") %>
-      <% end -%>
-  </div>
+          <% elsif @page.to_i > 1 %>
+              <%= link_to("Prev #{@per_page}", "javascript:void();", :class => "prev", :onclick => "var f = document.forms['page_form'];$('page').value=#{@page.to_i-1};f.submit();return false;") %>
+              <% @page_start_num.upto(@page_end_num).each do |page| %>
+                <%= link_to("#{0 if(page < 10)}#{page}", "javascript:void();", :class => (@page == page) ? "current" : nil, :onclick => "var f = document.forms['page_form'];$('page').value=#{page.to_i};f.submit();return false;") %>
+              <% end %>
+          <% end -%>
+        </p>
 
-  <% for product in @products %>
-    <div class="columns">
-        <div class="column widest">
-          <%= render :partial => "partials/capsule", :object => product %>
-        </div><!-- .column.wide -->
-    </div><!-- .columns -->
-  <% end %>
+        <% for product in @products %>
+            <%= render :partial => "partials/capsule", :object => product %>
+        <% end %>
 
-  <div class="paginator w650px" style="display: none">
-      <% if @page.to_i != @post_pages %>
+        <p class="paging">
+          <% if @page.to_i != @post_pages %>
               <% if(@page.to_i <= 1)%>
-                  <%= link_to("Next #{@per_page}", "javascript:void();", :class => "button next", :onclick => "var f = document.forms['page_form'];$('page').value=2;f.submit();return false;") %>
+                  <% @page_start_num.upto(@page_end_num).each do |page| %>
+                    <%= link_to("#{0 if(page < 10)}#{page}", "javascript:void();", :class => (@page == page) ? "current" : nil, :onclick => "var f = document.forms['page_form'];$('page').value=#{page.to_i};f.submit();return false;") %>
+                  <% end %>
+                  <%= link_to("Next #{@per_page}", "javascript:void();", :class => "next", :onclick => "var f = document.forms['page_form'];$('page').value=2;f.submit();return false;") %>
               <% else %>
-                  <%= link_to("Prev #{@per_page}", "javascript:void();", :class => "button prev", :onclick => "var f = document.forms['page_form'];$('page').value=#{@page.to_i-1};f.submit();return false;") %>
-                  <%= link_to("Next #{@per_page}", "javascript:void();", :class => "button next", :onclick => "var f = document.forms['page_form'];$('page').value=#{@page.to_i+1};f.submit();return false;") %>
+                  <%= link_to("Prev #{@per_page}", "javascript:void();", :class => "prev", :onclick => "var f = document.forms['page_form'];$('page').value=#{@page.to_i-1};f.submit();return false;") %>
+                  <% @page_start_num.upto(@page_end_num).each do |page| %>
+                    <%= link_to("#{0 if(page < 10)}#{page}", "javascript:void();", :class => (@page == page) ? "current" : nil, :onclick => "var f = document.forms['page_form'];$('page').value=#{page.to_i};f.submit();return false;") %>
+                  <% end %>
+                  <%= link_to("Next #{@per_page}", "javascript:void();", :class => "next", :onclick => "var f = document.forms['page_form'];$('page').value=#{@page.to_i+1};f.submit();return false;") %>
               <% end %>
-      <% elsif @page.to_i > 1 %>
-              <%= link_to("Prev #{@per_page}", "javascript:void();", :class => "button prev", :onclick => "var f = document.forms['page_form'];$('page').value=#{@page.to_i-1};f.submit();return false;") %>
-      <% end -%>
-  </div>
+          <% elsif @page.to_i > 1 %>
+              <%= link_to("Prev #{@per_page}", "javascript:void();", :class => "prev", :onclick => "var f = document.forms['page_form'];$('page').value=#{@page.to_i-1};f.submit();return false;") %>
+              <% @page_start_num.upto(@page_end_num).each do |page| %>
+                <%= link_to("#{0 if(page < 10)}#{page}", "javascript:void();", :class => (@page == page) ? "current" : nil, :onclick => "var f = document.forms['page_form'];$('page').value=#{page.to_i};f.submit();return false;") %>
+              <% end %>
+          <% end -%>
+        </p>
+    </div><!-- .column.wide -->
+  </div><!-- .columns -->
 <% else %>
   <div style="height: 200px;"></div>
 <% end %>
