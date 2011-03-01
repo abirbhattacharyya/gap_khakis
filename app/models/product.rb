@@ -48,7 +48,7 @@ class Product < ActiveRecord::Base
         "
       ]
     elsif self.style_description.strip.eql? "TAILORED STRAIGHT KHAKI"
-      ["Our dressiest pair. Designed w a creased leg & wrinkle-resistant twill.",
+      ["Our dressiest: designed with a creased leg, and wrinkle-resistant twill.",
         "
           <p><b>overview</b></p><ul>
           <li style='list-style: disc inside'>High-quality wrinkle-resistant and fade-proof cotton khaki pants.</li>
@@ -65,7 +65,7 @@ class Product < ActiveRecord::Base
         "
       ]
     elsif self.style_description.strip.eql? "TAILORED RELAXED KHAKI"
-      ["Our dressiest pair. Designed w a creased leg & wrinkle-resistant twill.",
+      ["Our dressiest: designed with a creased leg, and wrinkle-resistant twill.",
         "
           <p><b>overview</b></p><ul>
           <li style='list-style: disc inside'>High-quality wrinkle-resistant and fade-proof cotton khaki pants.</li>
@@ -99,13 +99,65 @@ class Product < ActiveRecord::Base
         "
       ]
     elsif self.style_description.strip.eql? "TAILORED STRAIGHT MELANGE"
-      ["missing","missing"]
+      ["Our dressiest: Designed with a creased leg, and heathered twill.",
+        "
+          <p><b>overview</b></p><ul>
+          <li style='list-style: disc inside'>High-quality cotton melange pants.</li>
+          <li style='list-style: disc inside'>Sits just below the waist.</li>
+          <li style='list-style: disc inside'>Straight through the leg.</li>
+          <li style='list-style: disc inside'>Straight leg opening.</li>
+          <li style='list-style: disc inside'>Flat front, hook & bar closure, zip fly.</li>
+          <li style='list-style: disc inside'>On-seam pockets, back button-welt pockets</li></ul><br />
+
+          <p><b>fabric & care</b></p><ul>
+          <li style='list-style: disc inside'>100% Cotton.</li>
+          <li style='list-style: disc inside'>Machine wash.</li>
+          <li style='list-style: disc inside'>Imported.</li></ul>
+        "
+      ]
     elsif self.style_description.strip.eql? "TAILORED RELAXED MELANGE"
-      ["missing","missing"]
+      ["Our dressiest: Designed with a creased leg, and heathered twill.",
+        "
+          <p><b>overview</b></p><ul>
+          <li style='list-style: disc inside'>High-quality cotton melange pants.</li>
+          <li style='list-style: disc inside'>Sits just below the waist.</li>
+          <li style='list-style: disc inside'>Full through the leg.</li>
+          <li style='list-style: disc inside'>Straight leg opening.</li>
+          <li style='list-style: disc inside'>Flat front, hook & bar closure, zip fly.</li>
+          <li style='list-style: disc inside'>On-seam pockets, back button-welt pockets</li></ul><br />
+
+          <p><b>fabric & care</b></p><ul>
+          <li style='list-style: disc inside'>100% Cotton.</li>
+          <li style='list-style: disc inside'>Machine wash.</li>
+          <li style='list-style: disc inside'>Imported.</li></ul>
+        "
+      ]
     elsif self.style_description.strip.eql? "TS NAVY STRIPE (TAILORED STRAIGHT)"
-      ["missing","missing"]
+      ["Our dressiest: Designed with a creased leg, and heathered twill.",
+        "
+          <p><b>overview</b></p><ul>
+          <li style='list-style: disc inside'>Flat front, hook & bar closure, zip fly.</li>
+          <li style='list-style: disc inside'>On-seam pockets, back button-welt pockets.</li></ul><br />
+
+          <p><b>fabric & care</b></p><ul>
+          <li style='list-style: disc inside'>100% Cotton.</li>
+          <li style='list-style: disc inside'>Machine wash.</li>
+          <li style='list-style: disc inside'>Imported.</li></ul>
+        "
+      ]
     elsif self.style_description.strip.eql? "TS GREY DOT STRIPE (TAILORED STRAIGHT)"
-      ["missing","missing"]
+      ["Our dressiest: Designed with a creased leg, and heathered twill.",
+        "
+          <p><b>overview</b></p><ul>
+          <li style='list-style: disc inside'>Flat front, hook & bar closure, zip fly.</li>
+          <li style='list-style: disc inside'>On-seam pockets, back button-welt pockets.</li></ul><br />
+
+          <p><b>fabric & care</b></p><ul>
+          <li style='list-style: disc inside'>100% Cotton.</li>
+          <li style='list-style: disc inside'>Machine wash.</li>
+          <li style='list-style: disc inside'>Imported.</li></ul>
+        "
+      ]
     else
       ["missing","missing"]
     end
