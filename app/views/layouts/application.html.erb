@@ -61,13 +61,14 @@
         <% end %>
 
         <div id="footer">
-            <div class="copyright">&copy; 2011 Gap Inc. engine by Dealkat</div>
+            <div class="copyright">&copy; 2011 Gap Inc.</div>
             <% content_tag :ul do %>
+                <%= content_tag(:li, "engine by Dealkat") %>
                 <%  if logged_in? %>
                   <%= content_tag(:li, link_to("Edit Profile", profile_path), :class => ([profile_path].include? request.path) ? "current" : nil) if current_user.profile %>
                   <%= content_tag(:li, link_to("Download", download_emails_path)) if Payment.count(:conditions => "email IS NOT NULL and email <> ''").to_i > 0 %>
                 <% else %>
-                  <%= content_tag(:li, link_to("FAQ", faqs_path), :class => ([faqs_path].include? request.path) ? "current" : nil) %>
+                  <%#= content_tag(:li, link_to("FAQ", faqs_path), :class => ([faqs_path].include? request.path) ? "current" : nil) %>
                 <% end %>
             <% end %>
             <% if Profile.first %>
@@ -75,7 +76,7 @@
                   <%#= "#{Profile.first.name} " %>
                   <%#= "#{Profile.first.address.strip}; " %>
                   <%= number_to_phone(Profile.first.phone, :delimiter => "-") + "; " %>
-                  <%= auto_link(Profile.first.email) + "; "%>
+                  <%= auto_link(Profile.first.email) %>
                   <%#= "@#{link_to("#{Profile.first.twitter} ", Profile.first.twitter_url, :target => "_new")} " %>
               </address>
             <% end %>
