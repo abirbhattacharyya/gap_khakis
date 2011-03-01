@@ -1,6 +1,6 @@
 <%# if @payment.email and !@payment.email.strip.blank?  %>
 <% if @payment  %>
-<h1>Congratulations! You won a pair of Gap Khakis for <%= (@payment.offer.price > 0) ? number_to_currency(@payment.offer.price.ceil, :precision => 0) : "Free" %>.</h1>
+<h1>Congrats! You won a pair of khakis for <%= (@payment.offer.price > 0) ? number_to_currency(@payment.offer.price) : "Free" %>. See you at the store.</h1>
 <% else %>
 <h1>Enter your email id</h1>
 <% end %>
