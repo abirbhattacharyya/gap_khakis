@@ -1,8 +1,8 @@
 <% @payment = pdf_letter %>
 
 
-<b>Here's your exclusive coupon code, you lucky winner you!</b>
--------------------------------------------------------------------------------------
+<b>Congrats! You won a pair of khakis for <%= (@payment.offer.price > 0) ? number_to_currency(@payment.offer.price) : "Free" %>. See you at the store.</b>
+-----------------------------------------------------------------------------------------------
 
 <b>Coupon# <%=@payment.promotion_code.code %></b>
 
