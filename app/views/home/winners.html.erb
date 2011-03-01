@@ -15,7 +15,7 @@
                         a lucky customer Won <%= payment.offer.product.style_description.titleize %> (<%= payment.offer.product.color_description.titleize %>).
                         Negotiated Price: <%= (payment.offer.price > 0) ? number_to_currency(payment.offer.price) : "Free" %>;
                         Reg. Price: <%= number_to_currency(payment.offer.product.ticketed_retail) %><br />
-                        <span>Won on <%=payment.created_at.strftime("%b %d, %I:%M %p %Z") %></span>
+                        <span>Won on <%=payment.created_at.in_time_zone("Pacific Time (US & Canada)").strftime("%b %d, %I:%M %p %Z") %></span>
                       </p>
                       <p class="feed-ctrls">
                           <%= content_tag(:span, button_to_function("Gimme a Khaki!", "window.location.href='#{capsule_path(payment.offer.product.id)}'"), :class => "button-green") %>
