@@ -310,6 +310,7 @@ class ProductsController < ApplicationController
             else
               if(price.to_i >= reg_price)
                 @counter_offer.update_attribute(:price, price_point)
+                flash[:notice] = "Hey, why not pay a bit lower? Yours for $#{price_point}"
               else
                 @promotion_code = PromotionCode.first(:conditions => ["price_point = ? and used = 0", price.to_i])
                 if @promotion_code.nil?
