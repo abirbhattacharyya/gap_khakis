@@ -300,7 +300,6 @@ class ProductsController < ApplicationController
           @last_offer = true
 
           target_price = (@product.ticketed_retail == 49.5) ? 30 : 35
-          price_point = (@product.ticketed_retail == 49.5) ? 45 : 59
           if(price.to_i >= target_price)
             @counter_offer = @product.offers.last(:conditions => ["ip = ? and response = ?", request.remote_ip, 'counter'])
             for offer in @product.offers.all(:conditions => ["ip = (?) and id <= ?", request.remote_ip, @offer.id])
@@ -308,19 +307,13 @@ class ProductsController < ApplicationController
             end
             if [96,97,98,99].include? remainder
             else
-              if(price.to_i >= reg_price)
-                @counter_offer.update_attribute(:price, price_point)
-                flash[:notice] = "Hey, why not pay a bit lower? Yours for $#{price_point}"
+              @promotion_code = PromotionCode.first(:conditions => ["price_point = ? and used = 0", 35])
+              if @promotion_code.price_point != price.to_i
+                flash[:notice] = "Hey, why not pay a bit lower? Yours for $#{@promotion_code.price_point}"
               else
-                @promotion_code = PromotionCode.first(:conditions => ["price_point = ? and used = 0", price.to_i])
-                if @promotion_code.nil?
-                  @promotion_code = PromotionCode.last(:conditions => ["price_point < ? and used = 0", price.to_i])
-                  flash[:notice] = "Hey, why not pay a bit lower? Yours for $#{@promotion_code.price_point}"
-                else
-                  flash[:notice] = "Cool, come on down to the store!"
-                end
-                @counter_offer.update_attribute(:price, @promotion_code.price_point)
+                flash[:notice] = "Cool, come on down to the store!"
               end
+              @counter_offer.update_attribute(:price, @promotion_code.price_point)
             end
             @counter_offer.update_attribute(:response, "accepted")
             @accepted = true

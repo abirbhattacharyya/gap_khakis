@@ -51,14 +51,16 @@ class HomeController < ApplicationController
         @titleX = "response"
         @offer_yes = Offer.count(:conditions => "response LIKE 'accepted' OR response LIKE 'paid'")
         @offer_no = Offer.count(:conditions => "response LIKE 'rejected'")
-        @chart_data1 = [["Yes", (@offer_yes.to_i*100/(@offer_yes.to_i+@offer_no.to_i))], ["No", (@offer_no.to_i*100/(@offer_yes.to_i+@offer_no.to_i))]]
+        total = ((@offer_yes.to_i+@offer_no.to_i) > 0) ? (@offer_yes.to_i+@offer_no.to_i) : 1
+        @chart_data1 = [["Yes", (@offer_yes.to_i*100/total)], ["No", (@offer_no.to_i*100/total)]]
       when @i+=1
         @title = "% Of Yes Hit Get Coupon"
         @titleY = "%"
         @titleX = "response"
         @offer_yes = Offer.count(:conditions => "response LIKE 'accepted'")
         @offer_paid = Offer.count(:conditions => "response LIKE 'paid'")
-        @chart_data1 = [["coupon", (@offer_paid.to_i*100/(@offer_yes.to_i+@offer_paid.to_i))]]
+        total = ((@offer_yes.to_i+@offer_paid.to_i) > 0) ? (@offer_yes.to_i+@offer_paid.to_i) : 1
+        @chart_data1 = [["coupon", (@offer_paid.to_i*100/total)]]
       when @i+=1
         @title = "# of coupons by day"
         @titleY = "#"
