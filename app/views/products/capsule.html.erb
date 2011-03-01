@@ -1,10 +1,10 @@
 <h1>
     <% if @accepted == true and @accepted_offer %>
-      Done deal. Plz click to get your 1 time use exclusive voucher now!
-    <% elsif @counter %>
-      Come on let's make a deal!
+      Done deal. Get your 1 time use exclusive coupon now!
+    <% elsif @counter or @last_offer %>
+      This is our best offer, a great deal. Hope you accept!
     <% else %>
-      Game on! Say your price & let's make a deal!
+      Game on! Say your price and let’s make a deal!
     <% end %>
 </h1>
 <div class="columns">

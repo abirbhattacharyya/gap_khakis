@@ -50,7 +50,7 @@
                   <% else %>
                       <% if @accepted_offer %>
                           <% form_tag payments_path(@accepted_offer.id) do %>
-                              <h2><%= (@accepted_offer.price.ceil > 0) ? "Your Price is $" + number_with_delimiter(@accepted_offer.price.ceil) : "Free of cost" %></h2>
+                              <h2>Your Price: <%= (@accepted_offer.price.ceil > 0) ? "$" + number_with_delimiter(@accepted_offer.price.ceil) : "Free of cost" %></h2>
                               <p class="ctrls">
                                 <span class="button-green-ctrl-fat"><%= submit_tag "Get Coupon!" %></span>
                               </p>
@@ -59,7 +59,7 @@
                           <% form_tag capsule_path(product.id), :id => "submit_form" do %>
                               <%= hidden_field_tag(:submit_button, "counter") %>
                               <% if @counter %>
-                                <h2 class="long"><%#= "Final " if @last_offer == true %><%= (@new_price.ceil > 0) ? "Offer is $" + number_with_delimiter(@new_price.ceil) : "Free of cost" %></h2>
+                                <h2 class="long">Best Offer : <%= (@new_price.ceil > 0) ? "$" + number_with_delimiter(@new_price.ceil) : "Free of cost" %></h2>
                                 <p class="ctrl">
                                     <label>Accept the deal</label>
                                     <span class="button-green-ctrl"><%= button_to_function("Yes", "var f = document.forms['submit_form'];$('submit_button').value='yes';f.submit();return false;") %></span>
