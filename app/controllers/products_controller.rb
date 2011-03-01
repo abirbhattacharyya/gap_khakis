@@ -314,7 +314,7 @@ class ProductsController < ApplicationController
                 @promotion_code = PromotionCode.first(:conditions => ["price_point = ? and used = 0", price.to_i])
                 if @promotion_code.nil?
                   @promotion_code = PromotionCode.last(:conditions => ["price_point < ? and used = 0", price.to_i])
-                  flash[:notice] = "Hey, why not pay a bit lower? Yours for $#{@counter_offer.price}"
+                  flash[:notice] = "Hey, why not pay a bit lower? Yours for $#{@promotion_code.price_point}"
                 else
                   flash[:notice] = "Cool, come on down to the store!"
                 end
