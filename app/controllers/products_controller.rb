@@ -255,6 +255,7 @@ class ProductsController < ApplicationController
                 end
               end
               @counter = false
+              @last_offer = false
               return
           end
         end

@@ -1,7 +1,7 @@
 <h1>
     <% if @accepted == true %>
       Done deal. Get your 1 time use exclusive coupon now!
-    <% elsif @counter or @last_offer %>
+    <% elsif @counter == true or @last_offer == true %>
       This is our best offer, a great deal. Hope you accept!
     <% else %>
       Game on! Say your price and let's make a deal!

@@ -61,7 +61,7 @@
                               <% if @counter %>
                                 <h2 class="long">Best Offer : <%= (@new_price.ceil > 0) ? "$" + number_with_delimiter(@new_price.ceil) : "Free of cost" %></h2>
                                 <p class="ctrl">
-                                    <label>Accept the deal</label>
+                                    <label>Accept the deal?</label>
                                     <span class="button-green-ctrl"><%= button_to_function("Yes", "var f = document.forms['submit_form'];$('submit_button').value='yes';f.submit();return false;") %></span>
                                     <span class="button-red-ctrl"><%= button_to_function("No", "var f = document.forms['submit_form'];$('submit_button').value='no';f.submit();return false;") %></span>
                                 </p>
@@ -79,7 +79,7 @@
                                 <h2>Say Your Price</h2>
 
                                 <p class="ctrl">
-                                    <label>Make an offer</label>
+                                    <label>Make an offer?</label>
                                     <%= text_field_tag :price, '', :class => "w120px", :maxLength => 2, :onKeyPress => "return keyAllowed(event,'0123456789')", :onblur => "this.value=removeChars(this.value)" %>
                                 </p>
                                 <p class="ctrls">
