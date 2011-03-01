@@ -241,7 +241,7 @@ class ProductsController < ApplicationController
               if submit == "no"
                 if @counter_offer
                   @counter_offer.update_attribute(:response, "rejected")
-                  flash[:error] = "Hey, Sorry we can’t agree on a deal."
+                  flash[:error] = "Hey, Sorry we can't agree on a deal."
                 end
               elsif submit == "yes"
                 if @counter_offer
