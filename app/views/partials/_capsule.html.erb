@@ -52,7 +52,7 @@
                           <% form_tag payments_path(@accepted_offer.id) do %>
                               <h2><%= (@accepted_offer.price.ceil > 0) ? "Your Price is $" + number_with_delimiter(@accepted_offer.price.ceil) : "Free of cost" %></h2>
                               <p class="ctrls">
-                                <span class="button-green-ctrl-fat"><%= submit_tag "Get Voucher" %></span>
+                                <span class="button-green-ctrl-fat"><%= submit_tag "Get Coupon!" %></span>
                               </p>
                           <% end %>
                       <% else %>
