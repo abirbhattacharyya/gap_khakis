@@ -1,6 +1,6 @@
 <%# if @payment.email and !@payment.email.strip.blank?  %>
 <% if @payment  %>
-<h1>Congratulations! You won a pair of Gap khakis for <%= (@payment.offer.price > 0) ? number_to_currency(@payment.offer.price) : "Free" %>. Go get them at your local Gap store.</h1>
+<h1>Congratulations! You won a pair of Gap Khakis for <%= (@payment.offer.price > 0) ? number_to_currency(@payment.offer.price.ceil, :precision => 0) : "Free" %>.</h1>
 <% else %>
 <h1>Enter your email id</h1>
 <% end %>
@@ -8,25 +8,35 @@
     <div class="column wide">
         <%# if @payment.email and !@payment.email.strip.blank?  %>
         <% if @payment  %>
-        <div class="capsule2">
+        <div class="capsule2 w550px">
           <div class="cinner">
-              <h4>Coupon# <%=@payment.promotion_code.code %></h4>
-              <h5>Your Price: <%= (@payment.offer.price > 0) ? number_to_currency(@payment.offer.price) : "Free" %></h5>
+              <h2>Coupon# <%=@payment.promotion_code.code %></h2>
+              <div class="divider"></div>
               <p>
-                  1 pair of <%= @payment.offer.product.style_description.titleize %><br />
-                  Regular price = <%= number_to_currency(@payment.offer.product.ticketed_retail) %><br />
-                  You Pay = <%= (@payment.offer.price > 0) ? number_to_currency(@payment.offer.price) : "Free" %><br />
-                  Color = <%= @payment.offer.product.color.titleize %><br />
-                  Style# = <%= @payment.offer.product.style_num_full %><br />
-                  Expires = 04/30/2011<br />
+                  Your Price: <%= (@payment.offer.price > 0) ? number_to_currency(@payment.offer.price.ceil, :precision => 0) : "Free" %>
+                  <span class="expires">Expires at 04/30/11</span>
               </p>
-              <%= content_tag(:p, button_to_function("Download PDF", "window.location.href='#{download_pdf_path(@payment.id)}'"), :class => "button-green") %>
-              <%#= link_to("Download PDF", "javascript::void();", :onclick => "window.location.href='#{download_pdf_path(@payment.id)}'", :class => "alter-link") %>
+              <p>
+                  <%= @payment.offer.product.style_description %> (<%= @payment.offer.product.color.titleize %>)<br>
+                  Style#: <%= @payment.offer.product.style_num_full %>
+              </p>
+              <p class="terms">
+                  <b>Terms and Conditions:</b>
+                  Offer valid in the U.S. only (including Puerto Rico) at Gap stores.
+                  Not valid at Gap Outlet, Gap Factory Store or The Gap Generation stores or online.
+                  Offer is good for one time use only and must be surrendered at time of in-store purchase.
+                  Discount applies to Gap Men's Khaki merchandise only, not to GiftCards or applicable taxes.
+                  No adjustments on previous purchases. Not valid for cash or cash equivalent.
+                  Offer cannot be combined with any other offers or discounts, including the Gap Inc.
+                  employee discount. Not responsible for lost or stolen coupons. Offer is not transferable.
+                  Cashiers: enter the code above to process the discount.
+              </p>
             </div><!-- .cinner -->
             <div class="ctl"></div><div class="ctc"></div><div class="ctr"></div>
             <div class="cml"></div><div class="cmr"></div>
             <div class="cbl"></div><div class="cbc"></div><div class="cbr"></div>
         </div><!-- .capsule -->
+        <%= content_tag(:p, button_to_function("Download PDF", "window.location.href='#{download_pdf_path(@payment.id)}'"), :class => "button-green small-font") %>
         <% else %>
             <% form_for :payment, :url => payments_path(@payment.id) do |f| %>
               <p class="ctrl">
@@ -41,11 +51,3 @@
 
     </div><!-- .column.wide -->
 </div><!-- .columns -->
-
-<%# if @payment.email and !@payment.email.strip.blank?  %>
-<% if @payment  %>
-<b>Terms & Conditions:</b>
-Offer valid from March 3, 2011 through March 17, 2011 in the U.S. only (including Puerto Rico) at Gap stores. Not valid at Gap Outlet, Gap Factory Store or The Gap Generation stores or online. Offer is good for one time use only and must be surrendered at time of
-in-store purchase. Discount applies to Gap Men's Khaki merchandise only, not to GiftCards or applicable taxes. No adjustments on previous purchases. The value of the purchase must be greater than or equal to the value of the coupon. Not valid for cash or cash equivalent. Offer cannot be combined with any other offers or discounts, including the Gap Inc. employee discount. Not responsible for lost or stolen coupons. Offer is not transferable. 
-<b>Cashiers:</b> enter code above to process the discount.
-<% end %>

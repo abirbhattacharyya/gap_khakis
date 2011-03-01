@@ -408,6 +408,16 @@ INPUT[type="submit"] {
         display: inline-block;
         }
 
+.expires {
+    color: #e54145;
+    float: right;
+    }
+
+.terms {
+    font-size: 10px;
+    line-height: 1.3em;
+    }
+
 .feed-ctrl {
     margin: .5em 0 .5em 15px;
     }
@@ -724,6 +734,9 @@ INPUT[type="submit"] {
         padding: 0 5px 0 30px;
         margin: 0 25px 0 0;
         height: 50px;
+        }
+    .button-green.small-font * {
+        font-size: 14px;
         }
 
 .button-green.current,
