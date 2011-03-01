@@ -312,14 +312,8 @@ class ProductsController < ApplicationController
                 @counter_offer.update_attribute(:price, price_point)
               else
                 @promotion_code = PromotionCode.first(:conditions => ["price_point = ? and used = 0", price.to_i])
-                @i = 0
-                while(@i < price.to_i)
-                  if @promotion_code
-                    break;
-                  else
-                    @i += 1
-                    @promotion_code = PromotionCode.first(:conditions => ["price_point = ? and used = 0", price.to_i - @i])
-                  end
+                if @promotion_code.nil?
+                  @promotion_code = PromotionCode.last(:conditions => ["price_point < ? and used = 0", price.to_i])
                 end
                 @counter_offer.update_attribute(:price, @promotion_code.price_point)
               end
