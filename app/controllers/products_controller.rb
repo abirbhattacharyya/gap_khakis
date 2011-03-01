@@ -241,12 +241,12 @@ class ProductsController < ApplicationController
               if submit == "no"
                 if @counter_offer
                   @counter_offer.update_attribute(:response, "rejected")
-                  flash[:error] = "Hey, sorry it didn't work out."
+                  flash[:error] = "Hey, Sorry we can’t agree on a deal."
                 end
               elsif submit == "yes"
                 if @counter_offer
                   @counter_offer.update_attribute(:response, "accepted")
-                  flash[:notice] = "Cool, the wardrobe is yours for #{(@counter_offer.price.ceil > 0) ? "$#{@counter_offer.price.ceil}" : "Free of cost"}"
+                  flash[:notice] = "Cool, come on down to the store!"
                 end
                 @accepted = true
                 @accepted_offer = @product.offers.last(:conditions => ["ip = ? and (response = ? OR response = ?)", request.remote_ip, 'accepted', 'paid'])
@@ -260,7 +260,7 @@ class ProductsController < ApplicationController
         end
         price = params[:price].to_i
         if price.to_i <= 0
-          flash[:error] = "Hey you can't get something for nothing"
+          flash[:error] = "Hey, please don't enter a 0 or blank offer. Thanks."
         else
           reg_price = @product.ticketed_retail.ceil
           if @offer
@@ -314,10 +314,12 @@ class ProductsController < ApplicationController
                 @promotion_code = PromotionCode.first(:conditions => ["price_point = ? and used = 0", price.to_i])
                 if @promotion_code.nil?
                   @promotion_code = PromotionCode.last(:conditions => ["price_point < ? and used = 0", price.to_i])
+                  flash[:notice] = "Hey, why not pay a bit lower? Yours for $#{@counter_offer.price}"
+                else
+                  flash[:notice] = "Cool, come on down to the store!"
                 end
                 @counter_offer.update_attribute(:price, @promotion_code.price_point)
               end
-              flash[:notice] = "Hey, why not pay a bit lower? Yours for $#{@counter_offer.price}"
             end
             @counter_offer.update_attribute(:response, "accepted")
             @accepted = true
