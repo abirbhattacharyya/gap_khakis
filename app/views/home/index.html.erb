@@ -1,21 +1,26 @@
-<h1><%= link_to("Want to make a deal? Choose to say your price!", say_your_price_path) %></h1>
+<h1 class="home">Let's make a deal. Say your price.</h1>
 
-<ol class="intro-steps" onclick="window.location.href='<%= say_your_price_path %>'" style="cursor:pointer;">
-    <li><span class="num-1">1.</span> Pick a favorite from 9 khakis & say your price! Play games w us & win if the price is right</li>
-    <li><span class="num-2">2.</span> Hit the stores & buy @yourprice. Share the love, gift special coupons 2 twitter+facebook friends</li>
-</ol>
+<h2 class="home">
+    <a href="<%=say_your_price_path%>">
+    Check out our latest khakis and choose your favorite.<br>
+    Just say your price and score an exclusive coupon to<br>
+    redeem at your local Gap store.
+    </a>
+</h2>
 
 <div class="intro-slides capsule2">
     <div class="cinner">
-      <%= link_to(image_tag("/images/samples/pants-240x360px-1.jpg"), say_your_price_path) %>
-      <%= link_to(image_tag("/images/samples/pants-240x360px-2.jpg"), say_your_price_path) %>
-      <%= link_to(image_tag("/images/samples/pants-240x360px-3.jpg"), say_your_price_path) %>
+
+        <%= link_to(image_tag("/images/samples/pants-240x360px-1.jpg"), say_your_price_path) %>
+        <%= link_to(image_tag("/images/samples/pants-240x360px-2.jpg"), say_your_price_path) %>
+        <%= link_to(image_tag("/images/samples/pants-240x360px-3.jpg"), say_your_price_path) %>
+
     </div><!-- .iinner -->
     <div class="ctl"></div><div class="ctc"></div><div class="ctr"></div>
     <div class="cml"></div><div class="cmr"></div>
     <div class="cbl"></div><div class="cbc"></div><div class="cbr"></div>
-</div><!-- .ibox -->
+</div><!-- .capsule2 -->
 
-<p class="intro-ctrls">
-    <%= content_tag(:span, button_to_function("Let's Deal", "window.location.href='#{say_your_price_path}'"), :class => "button-green-fat") %>
+<p class="intro-ctrls w775px">
+    <%= link_to(content_tag(:span, "Let's make a deal!"), say_your_price_path, :class => "button-green") %>
 </p>

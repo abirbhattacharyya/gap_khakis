@@ -22,8 +22,32 @@ H1 {
     padding-bottom: 4px;
     margin: .5em 0;
     }
+H1.home {
+    color: #0c103d;
+    font-size: 38px;
+    font-weight: bold;
+    }
 
-H2 {}
+H2 {
+    color: #000;
+    font-size: 18px;
+    margin: .5em 0;
+    }
+H2.home {
+    color: #707070;
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 1.2em;
+    }
+
+    H2.home A {
+        color: #707070;
+        }
+
+    H2.home A:hover {
+        color: #999;
+        text-decoration: none;
+        }
 
 H3 {
     color: #606060;
@@ -65,6 +89,8 @@ UL.list {
 /* common */
 
 .w250px { width: 250px; }
+.w550px { width: 550px !important; }
+.w775px { width: 775px !important; }
 
 .divider {
     border-bottom: 1px solid #e1e2e3;
@@ -255,16 +281,16 @@ INPUT[type="submit"] {
             }
 
 .intro-slides {
-    width: 100%;
+    width: 775px !important;
     overflow: hidden;
     }
 
     .intro-slides .cinner {
-        margin-left: 35px !important;
+        margin-left: 10px !important;
         }
 
     .intro-slides A {
-        margin-left: 60px;
+        margin-left: 10px;
         width: 240px;
         float: left;
         }
