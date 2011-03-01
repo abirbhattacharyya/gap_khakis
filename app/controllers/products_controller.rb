@@ -308,7 +308,11 @@ class ProductsController < ApplicationController
             end
             if [96,97,98,99].include? remainder
             else
-              @promotion_code = PromotionCode.first(:conditions => ["price_point = ? and used = 0", 35])
+              if(@product.ticketed_retail == 49.5)
+                @promotion_code = PromotionCode.first(:conditions => ["price_point = ? and used = 0", ((price.to_i >35) ? 35 : 30)])
+              else
+                @promotion_code = PromotionCode.first(:conditions => ["price_point = ? and used = 0", 35])
+              end
               if @promotion_code.price_point != price.to_i
                 flash[:notice] = "Hey, why not pay a bit lower? Yours for $#{@promotion_code.price_point}"
               else
