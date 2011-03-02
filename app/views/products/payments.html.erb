@@ -36,7 +36,7 @@
             <div class="cml"></div><div class="cmr"></div>
             <div class="cbl"></div><div class="cbc"></div><div class="cbr"></div>
         </div><!-- .capsule -->
-        <%= content_tag(:p, button_to_function("Download PDF", "window.location.href='#{download_pdf_path(@payment.id)}'"), :class => "button-green small-font") %>
+        <%= content_tag(:span, button_to_function("Download PDF", "window.location.href='#{download_pdf_path(@payment.id)}'"), :class => "button-green small-font") %>
         <% else %>
             <% form_for :payment, :url => payments_path(@payment.id) do |f| %>
               <p class="ctrl">
