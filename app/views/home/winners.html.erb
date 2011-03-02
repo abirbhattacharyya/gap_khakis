@@ -18,7 +18,7 @@
                         <span>Won on <%=payment.created_at.in_time_zone("Pacific Time (US & Canada)").strftime("%b %d, %I:%M %p %Z") %></span>
                       </p>
                       <p class="feed-ctrls">
-                          <%= content_tag(:span, button_to_function("Gimme a Khaki!", "window.location.href='#{capsule_path(payment.offer.product.id)}'"), :class => "button-green") %>
+                          <%= content_tag(:span, button_to_function("Let's deal", "window.location.href='#{capsule_path(payment.offer.product.id)}'"), :class => "button-green") %>
                           <span class="share-line">
                               <%= link_to(image_tag("/images/icons/twitter-20x20px.gif", :size => "20x20", :alt => "Twitter", :title => "Twitter"), "http://twitter.com/home?status=I just scored a sweet deal on Gap khakis! You can too. Say your price now at www.gapmyprice.com", :target => "_new") %>
                               <%= link_to(image_tag("/images/icons/facebook-20x20px.gif", :size => "20x20", :alt => "Facebook", :title => "Facebook"), "http://www.facebook.com/sharer.php?u=#{root_url}&t=Say your price", :target => "_new") %>
