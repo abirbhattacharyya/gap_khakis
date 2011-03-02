@@ -12,7 +12,7 @@
                     <li>
                       <p class="feed-informer">
                         <%#= (payment.email and !payment.email.strip.blank?) ? auto_link(payment.email) : "Someone" %>
-                        a lucky customer Won <%= payment.offer.product.style_description.titleize %> (<%= payment.offer.product.color_description.titleize %>).
+                        A lucky Gap customer scored a great deal on a pair of <%= payment.offer.product.style_description.titleize %> (<%= payment.offer.product.color_description.titleize %>).
                         Negotiated Price: <%= (payment.offer.price > 0) ? number_to_currency(payment.offer.price, :precision => 0) : "Free" %>;
                         Reg. Price: <%= number_to_currency(payment.offer.product.ticketed_retail.ceil, :precision => 0) %><br />
                         <span>Won on <%=payment.created_at.in_time_zone("Pacific Time (US & Canada)").strftime("%b %d, %I:%M %p %Z") %></span>
@@ -20,8 +20,8 @@
                       <p class="feed-ctrls">
                           <%= content_tag(:span, button_to_function("Gimme a Khaki!", "window.location.href='#{capsule_path(payment.offer.product.id)}'"), :class => "button-green") %>
                           <span class="share-line">
-                              <%= link_to(image_tag("/images/icons/twitter-20x20px.gif", :size => "20x20", :alt => "Twitter", :title => "Twitter"), "http://twitter.com/home?status=Let's make a deal. Say your price on cool khakis from Gap http://gapmyprice.com", :target => "_new") %>
-                              <%= link_to(image_tag("/images/icons/facebook-20x20px.gif", :size => "20x20", :alt => "Facebook", :title => "Facebook"), "http://www.facebook.com/sharer.php?u=#{root_url}&t=Let's make a deal. Say your price on cool khakis from Gap http://gapmyprice.com", :target => "_new") %>
+                              <%= link_to(image_tag("/images/icons/twitter-20x20px.gif", :size => "20x20", :alt => "Twitter", :title => "Twitter"), "http://twitter.com/home?status=I just scored a sweet deal on Gap khakis! You can too. Say your price now at www.gapmyprice.com", :target => "_new") %>
+                              <%= link_to(image_tag("/images/icons/facebook-20x20px.gif", :size => "20x20", :alt => "Facebook", :title => "Facebook"), "http://www.facebook.com/sharer.php?u=#{root_url}&t=Say your price", :target => "_new") %>
                               <%#= link_to(image_tag("/images/icons/email-20x20px.gif", :size => "20x20", :alt => "Email", :title => "Email"), send_to_path(payment.offer.product.id)) %>
                           </span>
                           <span class="divider"></span>

@@ -177,7 +177,7 @@ class ProductsController < ApplicationController
       pdf = PDF::Writer.new
       pdf.add_image_from_file("#{Rails.root}/public/images/logo-gap.jpg", 35, 730, 50, 50)
       pdf.text output
-      send_data pdf.render, :filename => "storemyprices.pdf", :type => "application/pdf"
+      send_data pdf.render, :filename => "mypricecoupon.pdf", :type => "application/pdf"
     else
       redirect_to root_path
     end
@@ -241,7 +241,7 @@ class ProductsController < ApplicationController
               if submit == "no"
                 if @counter_offer
                   @counter_offer.update_attribute(:response, "rejected")
-                  flash[:error] = "Hey, Sorry we can't agree on a deal."
+                  flash[:error] = "Sorry we can’t make a deal right now. Try again later?"
                 end
               elsif submit == "yes"
                 if @counter_offer
@@ -261,7 +261,7 @@ class ProductsController < ApplicationController
         end
         price = params[:price].to_i
         if price.to_i <= 0
-          flash[:error] = "Hey, please don't enter a 0 or blank offer. Thanks."
+          flash[:error] = "Oops! you need to enter a price to play!"
         else
           reg_price = @product.ticketed_retail.ceil
           if @offer
@@ -297,7 +297,7 @@ class ProductsController < ApplicationController
             end
           end
           Offer.create(:ip => request.remote_ip, :product_id => @product.id, :price => @new_offer, :response => "counter", :counter => 1)
-          flash[:notice] = "Hey, the best we can do is #{(@new_offer > 0) ? "$#{@new_offer.ceil}" : "Free of cost"}. Deal?"
+          flash[:notice] = "The best we can do is #{(@new_offer > 0) ? "$#{@new_offer.ceil}" : "Free of cost"}. Deal?"
           @last_offer = true
 
           target_price = (@product.ticketed_retail == 49.5) ? 30 : 35
@@ -339,7 +339,7 @@ class ProductsController < ApplicationController
             end
             @accepted_offer = @product.offers.last(:conditions => ["ip = (?) and (response = ? OR response = ?)", request.remote_ip, 'accepted', 'paid'])
             if(price.to_i >= reg_price)
-              msg = "Hey, don't overspend. Buy it @ a special discount of $#{@accepted_offer.price.ceil}"
+              msg = "Hey, don't overspend. Get it for less than the regular price."
             else
               msg = "You won! Congratulations!"
             end
