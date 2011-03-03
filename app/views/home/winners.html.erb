@@ -14,7 +14,7 @@
                         <%#= (payment.email and !payment.email.strip.blank?) ? auto_link(payment.email) : "Someone" %>
                         A lucky Gap customer scored a great deal on a pair of <%= payment.offer.product.style_description.titleize %> (<%= payment.offer.product.color_description.titleize %>).
                         Negotiated Price: <%= (payment.offer.price > 0) ? number_to_currency(payment.offer.price, :precision => 0) : "Free" %>;
-                        Reg. Price: <%= number_to_currency(payment.offer.product.ticketed_retail.ceil, :precision => 0) %><br />
+                        Reg. Price: <%= number_to_currency(payment.offer.product.ticketed_retail, :precision => 2) %><br />
                         <span>Won on <%=payment.created_at.in_time_zone("Pacific Time (US & Canada)").strftime("%b %d, %I:%M %p %Z") %></span>
                       </p>
                       <p class="feed-ctrls">

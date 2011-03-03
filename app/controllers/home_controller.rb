@@ -72,18 +72,18 @@ class HomeController < ApplicationController
         end
       when @i+=1
         @title = "# Came to SYP Capsule"
-        @offer_today = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and Date(offers.updated_at)='#{Date.today}'")
-        @offer_yesterday = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and Date(offers.updated_at)='#{Date.today - 1.day}'")
+        @offer_today = Offer.first(:select => "SUM(counter) as total", :conditions => "Date(offers.updated_at)='#{Date.today}'")
+        @offer_yesterday = Offer.first(:select => "SUM(counter) as total", :conditions => "Date(offers.updated_at)='#{Date.today - 1.day}'")
         @chart_data1 = [["Yesterday", @offer_yesterday.total.to_i], ["Today", @offer_today.total.to_i]]
       when @i+=1
         @title = "# Started Negotiating"
-        @offer_today = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and Date(offers.updated_at)='#{Date.today}'")
-        @offer_yesterday = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and Date(offers.updated_at)='#{Date.today - 1.day}'")
+        @offer_today = Offer.first(:select => "SUM(counter) as total", :conditions => "Date(offers.updated_at)='#{Date.today}'")
+        @offer_yesterday = Offer.first(:select => "SUM(counter) as total", :conditions => "Date(offers.updated_at)='#{Date.today - 1.day}'")
         @chart_data1 = [["Yesterday", @offer_yesterday.total.to_i], ["Today", @offer_today.total.to_i]]
       when @i+=1
         @title = "# Reached Pricing Agreement"
-        @offer_today = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and offers.response='accepted' and Date(offers.updated_at)='#{Date.today}'")
-        @offer_yesterday = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id and offers.response='accepted' and Date(offers.updated_at)='#{Date.today - 1.day}'")
+        @offer_today = Offer.first(:select => "SUM(counter) as total", :conditions => "offers.response='paid' and Date(offers.updated_at)='#{Date.today}'")
+        @offer_yesterday = Offer.first(:select => "SUM(counter) as total", :conditions => "offers.response='paid' and Date(offers.updated_at)='#{Date.today - 1.day}'")
         @chart_data1 = [["Yesterday", @offer_yesterday.total.to_i], ["Today", @offer_today.total.to_i]]
       when @i+=1
         @title = "# Completed Sale"
@@ -93,8 +93,8 @@ class HomeController < ApplicationController
       when @i+=1
         @title = "$ Completed Sales"
         @titleY = "$"
-        @offer_today = Payment.first(:select => "SUM(price) as total", :joins => "INNER JOIN offers ON payments.offer_id=offers.id and Date(payments.updated_at)='#{Date.today}'")
-        @offer_yesterday = Payment.first(:select => "SUM(price) as total", :joins => "INNER JOIN offers ON payments.offer_id=offers.id and Date(payments.updated_at)='#{Date.today - 1.day}'")
+        @offer_today = Payment.first(:select => "SUM(price) as total", :conditions => "Date(payments.updated_at)='#{Date.today}'")
+        @offer_yesterday = Payment.first(:select => "SUM(price) as total", :conditions => "Date(payments.updated_at)='#{Date.today - 1.day}'")
         @chart_data1 = [["Yesterday", @offer_yesterday.total.to_i], ["Today", @offer_today.total.to_i]]
       else
         @title = "# Came to SYP Capsule"
