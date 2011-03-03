@@ -1,8 +1,12 @@
 <h1>
-    <% if @accepted == true %>
-      Done deal. Get your exclusive coupon now!
-    <% elsif @counter == true or @last_offer == true %>
-      This is our best offer, a great deal. Hope you accept!
+    <% if @last_offer %>
+      <% if @last_offer.accepted? %>
+        Done deal. Get your exclusive coupon now!
+      <% elsif @last_offer.counter? %>
+        This is our best offer, a great deal. Hope you accept!
+      <% else %>
+        Game on! Say your price and let's make a deal!
+      <% end %>
     <% else %>
       Game on! Say your price and let's make a deal!
     <% end %>

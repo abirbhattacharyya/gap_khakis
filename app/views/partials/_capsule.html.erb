@@ -1,12 +1,5 @@
 <% product = capsule %>
-<%
-  @accepted_offer = product.offers.last(:conditions => ["ip = ? and (response = ? OR response = ?)", request.remote_ip, 'accepted', 'paid'])
-  @accepted = (@accepted_offer.nil? ? false: true)
-  @counter_offer = product.offers.last(:conditions => ["ip = ? and response = ?", request.remote_ip, 'counter'])
-  @new_price = @counter_offer.price if @counter_offer
-  @counter = (@counter_offer ? true : false)
-  @last_offer = (@counter_offer ? true : false)
-%>
+<% @last_offer = product.offers.last(:conditions => ["ip = ?", request.remote_ip]) %>
 
 <div class="capsule2">
     <div class="cinner">
@@ -15,8 +8,6 @@
 
         <div class="view">
             <span class="preview">
-                <%#= image_tag((product.image_url || "/images/khakis.png"), :size => "215x290") %>
-                <%#= link_to(content_tag(:span, nil, :class => "play"), (product.image_url || "/images/khakis.png"), :title => "#{product.style_description} (#{product.color_description})", :rel => "lightbox[#{product.style_description.titleize.titleize.gsub(/\s+/, '')}]") %>
                 <%= link_to(image_tag((product.image_url || "/images/khakis.png"), :size => "215x290"), (product.image_url || "/images/khakis.png"), :title => "#{product.style_description.titleize} (#{product.color_description.titleize})", :rel => "lightbox[#{product.style_description.titleize.gsub(/\s+/, '')}]") %>
                 <div style="display: none">
                     <% for product_image in product.images %>
@@ -48,46 +39,51 @@
                       </p>
                       <% end %>
                   <% else %>
-                      <% if @accepted_offer %>
-                          <% form_tag payments_path(@accepted_offer.id) do %>
-                              <h2>Your Price: <%= (@accepted_offer.price.ceil > 0) ? "$" + number_with_delimiter(@accepted_offer.price.ceil) : "Free of cost" %></h2>
-                              <p class="ctrls">
-                                <span class="button-green-ctrl-fat"><%= submit_tag "Get Coupon!" %></span>
-                              </p>
+                      <% if @last_offer %>
+                          <% if @last_offer.accepted? %>
+                              <% form_tag payments_path(@last_offer.id) do %>
+                                  <h2>Your Price: <%= (@last_offer.price.ceil > 0) ? "$" + number_with_delimiter(@last_offer.price.ceil) : "Free of cost" %></h2>
+                                  <p class="ctrls">
+                                    <span class="button-green-ctrl-fat"><%= submit_tag "Get Coupon!" %></span>
+                                  </p>
+                              <% end %>
+                          <% elsif @last_offer.counter? %>
+                              <% form_tag capsule_path(product.id), :id => "submit_form" do %>
+                                  <%= hidden_field_tag(:submit_button, "counter") %>
+                                  <h2 class="long">Best Offer : <%= (@last_offer.price.ceil > 0) ? "$" + number_with_delimiter(@last_offer.price.ceil) : "Free of cost" %></h2>
+                                  <p class="ctrl">
+                                      <label>Accept the deal?</label>
+                                      <span class="button-green-ctrl"><%= button_to_function("Yes", "var f = document.forms['submit_form'];$('submit_button').value='yes';f.submit();return false;") %></span>
+                                      <span class="button-red-ctrl"><%= button_to_function("No", "var f = document.forms['submit_form'];$('submit_button').value='no';f.submit();return false;") %></span>
+                                  </p>
+                              <% end %>
+                          <% else %>
+                              <% form_tag capsule_path(product.id), :id => "submit_form" do %>
+                                  <%= hidden_field_tag(:submit_button, "counter") %>
+                                  <h2>Say Your Price</h2>
+
+                                  <p class="ctrl">
+                                      <label>Make an offer?</label>
+                                      <%= text_field_tag :price, '', :class => "w120px", :maxLength => 2, :onKeyPress => "return keyAllowed(event,'0123456789')", :onblur => "this.value=removeChars(this.value)" %>
+                                  </p>
+                                  <p class="ctrls">
+                                      <span class="button-green-ctrl-fat"><%= submit_tag "Go!" %></span>
+                                  </p>
+                              <% end %>
                           <% end %>
                       <% else %>
                           <% form_tag capsule_path(product.id), :id => "submit_form" do %>
-                              <%= hidden_field_tag(:submit_button, "counter") %>
-                              <% if @counter %>
-                                <h2 class="long">Best Offer : <%= (@new_price.ceil > 0) ? "$" + number_with_delimiter(@new_price.ceil) : "Free of cost" %></h2>
-                                <p class="ctrl">
-                                    <label>Accept the deal?</label>
-                                    <span class="button-green-ctrl"><%= button_to_function("Yes", "var f = document.forms['submit_form'];$('submit_button').value='yes';f.submit();return false;") %></span>
-                                    <span class="button-red-ctrl"><%= button_to_function("No", "var f = document.forms['submit_form'];$('submit_button').value='no';f.submit();return false;") %></span>
-                                </p>
-                                <% if @last_offer == false %>
-                                
-                                <p>
-                                    <label>OR Your Counter Offer?</label>
-                                    <%= text_field_tag :price, '', :class => "w120px", :maxLength => 2, :onKeyPress => "return keyAllowed(event,'0123456789')", :onblur => "this.value=removeChars(this.value)" %>
-                                </p>
-                                <p>
-                                  <span class="button-orange-ctrl-fat"><%= submit_tag "Counter" %></span>
-                                </p>
-                                <% end %>
-                              <% else %>
-                                <h2>Say Your Price</h2>
+                              <h2>Say Your Price</h2>
 
-                                <p class="ctrl">
-                                    <label>Make an offer?</label>
-                                    <%= text_field_tag :price, '', :class => "w120px", :maxLength => 2, :onKeyPress => "return keyAllowed(event,'0123456789')", :onblur => "this.value=removeChars(this.value)" %>
-                                </p>
-                                <p class="ctrls">
-                                    <span class="button-green-ctrl-fat"><%= submit_tag "Go!" %></span>
-                                </p>
-                              <% end %>
+                              <p class="ctrl">
+                                  <label>Make an offer?</label>
+                                  <%= text_field_tag :price, '', :class => "w120px", :maxLength => 2, :onKeyPress => "return keyAllowed(event,'0123456789')", :onblur => "this.value=removeChars(this.value)" %>
+                              </p>
+                              <p class="ctrls">
+                                  <span class="button-green-ctrl-fat"><%= submit_tag "Go!" %></span>
+                              </p>
                           <% end %>
-                        <% end %>
+                      <% end %>
                   <% end %>
 
                 </div><!-- .sinner -->
@@ -98,10 +94,7 @@
             <div class="divider"></div>
 
             <p><%= "Regular Price : " + number_to_currency(product.ticketed_retail, :precision => 2) %></p>
-            <div>
-                <%= product.description[1] %>
-                <%#= link_to("More Info", "javascript:void();", :class => "more") %>
-            </div>
+            <div><%= product.description[1] %></div>
             <p><%= link_to(capsule_url(product.id), capsule_path(product.id), :class => "myprice") %></p>
         </div><!-- .info -->
     </div><!-- .cinner -->
