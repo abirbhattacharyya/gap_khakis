@@ -229,24 +229,24 @@ class ProductsController < ApplicationController
             if submit == "no"
               min_price = (@product.ticketed_retail == 49.5) ? 15 : 18
               @offer = @product.offers.last(:conditions => ["ip = ? and response IS NULL", request.remote_ip])
-              if @offer.price > min_price
-                if((rand(999)%2) == 1)
-                  @price_codes = []
-                  if(@product.ticketed_retail == 49.5)
-                    for price_code in PromotionCode::PRICE_CODES_50
-                      @price_codes << price_code if(price_code > @offer.price and price_code < @last_offer.price)
+              if @offer
+                if((@offer.price > min_price) and ((rand(999)%2) == 1))
+                    @price_codes = []
+                    if(@product.ticketed_retail == 49.5)
+                      for price_code in PromotionCode::PRICE_CODES_50
+                        @price_codes << price_code if(price_code > @offer.price and price_code < @last_offer.price)
+                      end
+                    else
+                      for price_code in PromotionCode::PRICE_CODES_60
+                        @price_codes << price_code if(price_code > @offer.price and price_code < @last_offer.price)
+                      end
                     end
-                  else
-                    for price_code in PromotionCode::PRICE_CODES_60
-                      @price_codes << price_code if(price_code > @offer.price and price_code < @last_offer.price)
+                    if @price_codes.size > 0
+                      @new_offer = @price_codes[rand(999)%@price_codes.size]
+                      @last_offer.update_attributes(:price => @new_offer, :counter => (@last_offer.counter + 1))
+                      flash[:notice] = "Hi, we are so close, let's make a deal at $#{@new_offer}"
+                      return
                     end
-                  end
-                  if @price_codes.size > 0
-                    @new_offer = @price_codes[rand(999)%@price_codes.size]
-                    @last_offer.update_attributes(:price => @new_offer, :counter => (@last_offer.counter + 1))
-                    flash[:notice] = "Hi, we are so close, let's make a deal at $#{@new_offer}"
-                    return
-                  end
                 end
               end
               @last_offer.update_attribute(:response, "rejected")
