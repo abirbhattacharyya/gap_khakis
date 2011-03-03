@@ -123,7 +123,6 @@ class ProductsController < ApplicationController
             end
           end
           Notification.deliver_sendcoupon(@payment.email, @payment)
-#          redirect_to root_path
           return
         else
           @payment.email = nil
@@ -219,6 +218,7 @@ class ProductsController < ApplicationController
         return
       end
       @last_offer = @product.offers.last(:conditions => ["ip = ?", request.remote_ip])
+#      render :text => "Under Maintainance.......Coming Soon........" and return false
       if request.post?
         if @last_offer and @last_offer.accepted?
           return
@@ -226,22 +226,44 @@ class ProductsController < ApplicationController
         if params[:submit_button]
           submit = params[:submit_button].strip.downcase
           if ["yes", "no"].include? submit
-            for offer in @product.offers.all(:conditions => ["ip = (?) and id <= ?", request.remote_ip, @last_offer.id])
-              offer.update_attribute(:response, "expired") unless ["paid", "accepted", "rejected"].include? offer.response
-            end
             if submit == "no"
+              min_price = (@product.ticketed_retail == 49.5) ? 15 : 18
+              @offer = @product.offers.last(:conditions => ["ip = ? and response IS NULL", request.remote_ip])
+              if @offer.price > min_price
+                if((rand(999)%2) == 1)
+                  @price_codes = []
+                  if(@product.ticketed_retail == 49.5)
+                    for price_code in PromotionCode::PRICE_CODES_50
+                      @price_codes << price_code if(price_code > @offer.price and price_code < @last_offer.price)
+                    end
+                  else
+                    for price_code in PromotionCode::PRICE_CODES_60
+                      @price_codes << price_code if(price_code > @offer.price and price_code < @last_offer.price)
+                    end
+                  end
+                  if @price_codes.size > 0
+                    @new_offer = @price_codes[rand(999)%@price_codes.size]
+                    @last_offer.update_attributes(:price => @new_offer, :counter => (@last_offer.counter + 1))
+                    flash[:notice] = "Hi, we are so close, let's make a deal at $#{@new_offer}"
+                    return
+                  end
+                end
+              end
               @last_offer.update_attribute(:response, "rejected")
               flash[:error] = "Sorry we can't make a deal right now. Try again later?"
             elsif submit == "yes"
               @last_offer.update_attribute(:response, "accepted")
               flash[:notice] = "Cool, come on down to the store!"
             end
+            for offer in @product.offers.all(:conditions => ["ip = (?) and id < ? and (response IS NULL OR response LIKE 'counter')", request.remote_ip, @last_offer.id])
+              offer.update_attribute(:response, "expired") unless ["paid", "accepted", "rejected"].include? offer.response
+            end
             return
           end
         end
         price = params[:price].to_i
         if price <= 0
-          flash[:error] = "Oops! you need to enter a price to play!"
+          flash[:error] = "Hi, please enter a non-zero number and we can play"
         else
           if @last_offer and @last_offer.counter?
             return
@@ -249,58 +271,46 @@ class ProductsController < ApplicationController
             @offer = Offer.new(:ip => request.remote_ip, :product_id => @product.id, :price => price, :counter => 1)
             @offer.save
           end
-          if(Offer.accepted_offers.count.to_i == 0)
-            if @product.ticketed_retail.to_f == 49.5
-              @new_offer = 30
-            else
-              @new_offer = 35
-            end
-          else
-            divider = (100)**(Offer.accepted_offers.count.to_s.size-1)
-            modulo = Offer.accepted_offers.count.to_i/divider
-            remainder = (divider == 1) ? modulo : Offer.accepted_offers.count.to_i-(divider*modulo)
-#            remainder = Offer.accepted_offers.count.to_i%100
-
-            if(remainder == 96)
-              @new_offer = 0
-            elsif(remainder == 97)
-              @new_offer = 1
-            elsif(remainder == 98)
-              @new_offer = 5
-            elsif(remainder == 99)
-              @new_offer = 40
-            else
-              if @product.ticketed_retail.to_f == 49.5
-                @new_offer = 30
-              else
-                @new_offer = 35
-              end
-            end
-          end
-          Offer.create(:ip => request.remote_ip, :product_id => @product.id, :price => @new_offer, :response => "counter", :counter => 1)
-          flash[:notice] = "The best we can do is #{(@new_offer > 0) ? "$#{@new_offer.ceil}" : "Free of cost"}. Deal?"
-
+#          reg_price = @product.ticketed_retail
+          reg_price = ((@product.ticketed_retail == 49.5) ? 45 : 59)
           target_price = (@product.ticketed_retail == 49.5) ? 30 : 35
-          if(price >= target_price)
-            @counter_offer = @product.offers.last(:conditions => ["ip = ? and response = ?", request.remote_ip, 'counter'])
-            for offer in @product.offers.all(:conditions => ["ip = (?) and id <= ?", request.remote_ip, @offer.id])
-              offer.update_attribute(:response, "expired") unless ["paid", "accepted", "rejected"].include? offer.response
-            end
-            if [96,97,98,99].include? remainder
-            else
-              if(@product.ticketed_retail == 49.5)
-                @promotion_code = PromotionCode.first(:conditions => ["price_point = ? and used = 0", ((price >35) ? 35 : 30)])
-              else
-                @promotion_code = PromotionCode.first(:conditions => ["price_point = ? and used = 0", 35])
+          min_price = (@product.ticketed_retail == 49.5) ? 15 : 18
+
+          if(price <= min_price)
+              @new_offer = ((@product.ticketed_retail == 49.5) ? 45 : 59)
+              Offer.create(:ip => request.remote_ip, :product_id => @product.id, :price => @new_offer, :response => "counter", :counter => 1)
+              flash[:notice] = "Hi $#{price} is too low. How about $#{@new_offer}"
+          elsif(price >= reg_price)
+              @new_offer = ((@product.ticketed_retail == 49.5) ? 45 : 55)
+              Offer.create(:ip => request.remote_ip, :product_id => @product.id, :price => @new_offer, :response => "counter", :counter => 1)
+              @counter_offer = @product.offers.last(:conditions => ["ip = ? and response = ?", request.remote_ip, 'counter'])
+              for offer in @product.offers.all(:conditions => ["ip = (?) and id <= ? and (response IS NULL OR response LIKE 'counter')", request.remote_ip, @offer.id])
+                offer.update_attribute(:response, "expired") unless ["paid", "accepted", "rejected"].include? offer.response
               end
-              if @promotion_code.price_point != price
-                flash[:notice] = "Hey, why not pay a bit lower? Yours for $#{@promotion_code.price_point}"
+              @counter_offer.update_attribute(:response, "accepted")
+              flash[:notice] = "Cool, come on down to the store!"
+          else
+              if price > target_price
+                @price_codes = []
+                if(@product.ticketed_retail == 49.5)
+                  for price_code in PromotionCode::PRICE_CODES_50
+                    @price_codes << price_code if price_code > price
+                  end
+                else
+                  for price_code in PromotionCode::PRICE_CODES_60
+                    @price_codes << price_code if price_code > price
+                  end
+                end
+                @new_offer = @price_codes[rand(999)%@price_codes.size]
               else
-                flash[:notice] = "Cool, come on down to the store!"
+                if(@product.ticketed_retail == 49.5)
+                  @new_offer = PromotionCode::PRICE_CODES_50[rand(999)%PromotionCode::PRICE_CODES_50.size]
+                else
+                  @new_offer = PromotionCode::PRICE_CODES_60[rand(999)%PromotionCode::PRICE_CODES_60.size]
+                end
               end
-              @counter_offer.update_attribute(:price, @promotion_code.price_point)
-            end
-            @counter_offer.update_attribute(:response, "accepted")
+              Offer.create(:ip => request.remote_ip, :product_id => @product.id, :price => @new_offer, :response => "counter", :counter => 1)
+              flash[:notice] = "Hi, we are so close, let's make a deal at $#{@new_offer}"
           end
           @last_offer = @product.offers.last(:conditions => ["ip = ?", request.remote_ip])
         end
