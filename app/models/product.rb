@@ -8,6 +8,14 @@ class Product < ActiveRecord::Base
     self.color_description.gsub(/\d+/, '').strip
   end
 
+  def target_price
+    (self.ticketed_retail == 49.5) ? 30 : 35
+  end
+
+  def min_price
+    (self.ticketed_retail == 49.5) ? 15 : 18
+  end
+
   def images
     Product.all(:conditions => ["style_num = ? and image_url <> ? ", self.style_num, self.image_url])
   end

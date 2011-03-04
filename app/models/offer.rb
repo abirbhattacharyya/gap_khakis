@@ -22,4 +22,8 @@ class Offer < ActiveRecord::Base
   def counter?
     (self.response.eql? "counter")
   end
+
+  def last?
+    (self.response.eql? "last")
+  end
 end
