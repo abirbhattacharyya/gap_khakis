@@ -291,7 +291,8 @@ class ProductsController < ApplicationController
                     end
                     return
                 else
-                    flash[:notice] = "Hey, make an offer higher than $#{@offer.price.ceil}"
+#                    flash[:notice] = "Hey, make an offer higher than $#{@offer.price.ceil}"
+                    flash[:notice] = "Hey, please enter an offer greater than the last one!"
                     return
                 end
               else
