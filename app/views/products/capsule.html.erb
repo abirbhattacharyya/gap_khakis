@@ -3,6 +3,8 @@
       <% if @last_offer.accepted? %>
         Done deal. Get your exclusive coupon now!
       <% elsif @last_offer.counter? %>
+        This is our offer. So hey, what do you say?
+      <% elsif @last_offer.last? %>
         This is our best offer, a great deal. Hope you accept!
       <% else %>
         Game on! Say your price and let's make a deal!
