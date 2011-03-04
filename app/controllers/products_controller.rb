@@ -266,28 +266,29 @@ class ProductsController < ApplicationController
                     if @price_codes.size > 0
                       @new_offer = @price_codes[rand(999)%@price_codes.size]
                       if @new_offer == @last_offer.price or @new_offer <= price
-                      @last_offer.update_attributes(:price => @new_offer, :response => "accepted")
+                        @last_offer.update_attributes(:price => @new_offer, :response => "accepted")
                         flash[:notice] = "Cool, come on down to the store!"
                         return
                       end
                       @last_offer.update_attributes(:price => @new_offer, :counter => (@last_offer.counter + 1))
                       if((rand(999)%2) == 1)
                         @last_offer.update_attributes(:response => "last")
-                        flash[:notice] = "Hey, the best we can do is $#{@new_offer}. Deal?"
                       else
-                        if @new_offer > @offer.product.target_price
-                          flash[:notice] = "Hi, we are so close, let's make a deal at $#{@new_offer}"
-                        else
+                        if @new_offer <= @offer.product.target_price
                           @last_offer.update_attributes(:response => "last")
-                          flash[:notice] = "Hey, the best we can do is $#{@new_offer}. Deal?"
                         end
                       end
                     elsif price >= @product.target_price
                       @last_offer.update_attributes(:response => "last")
-                      flash[:notice] = "Hey, the best we can do is $#{@last_offer.price.ceil.to_i}. Deal?"
                     else
                       @last_offer.update_attribute(:response, "accepted")
+                    end
+                    if @last_offer.last?
+                      flash[:notice] = "Hey, the best we can do is $#{@last_offer.price.ceil.to_i}. Deal?"
+                    elsif @last_offer.accepted?
                       flash[:notice] = "Cool, come on down to the store!"
+                    else
+                      flash[:notice] = "Hey, we can do $#{@last_offer.price.ceil.to_i}? Deal?"
                     end
                     return
                 else
@@ -347,7 +348,7 @@ class ProductsController < ApplicationController
                   flash[:notice] = "Hey, the best we can do is $#{@new_offer}. Deal?"
                 else
                   Offer.create(:ip => request.remote_ip, :product_id => @product.id, :price => @new_offer, :response => "counter", :counter => 1)
-                  flash[:notice] = "Hi, we are so close, let's make a deal at $#{@new_offer}"
+                  flash[:notice] = "Hey, we can do $#{@new_offer}? Deal?"
                 end
               end
           end

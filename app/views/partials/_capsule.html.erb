@@ -51,7 +51,7 @@
                           <% elsif @last_offer.counter? or @last_offer.last? %>
                               <% form_tag capsule_path(product.id), :id => "submit_form" do %>
                                   <%= hidden_field_tag(:submit_button, "counter") %>
-                                  <h2 class="long">Best Offer : <%= (@last_offer.price.ceil > 0) ? "$" + number_with_delimiter(@last_offer.price.ceil) : "Free of cost" %></h2>
+                                  <h2 class="long"><%= (@last_offer.counter?) ? "Current Offer" : "Best Offer" %> : <%= (@last_offer.price.ceil > 0) ? "$" + number_with_delimiter(@last_offer.price.ceil) : "Free of cost" %></h2>
                                   <p class="ctrl">
                                       <label>Accept the deal?</label>
                                       <span class="button-green-ctrl"><%= button_to_function("Yes", "var f = document.forms['submit_form'];$('submit_button').value='yes';f.submit();return false;") %></span>
@@ -105,7 +105,8 @@
 
             <p><%= "Regular Price : " + number_to_currency(product.ticketed_retail, :precision => 2) %></p>
             <div><%= product.description[1] %></div>
-            <p><%= link_to(capsule_url(product.id), capsule_path(product.id), :class => "myprice") %></p>
+            <p><%#= link_to(capsule_url(product.id), capsule_path(product.id), :class => "myprice") %></p>
+            <p><%= link_to("http://gapmyprice.com/".concat(product.id.to_s), capsule_path(product.id), :class => "myprice") %></p>
         </div><!-- .info -->
     </div><!-- .cinner -->
     <div class="ctl"></div><div class="ctc"></div><div class="ctr"></div>
