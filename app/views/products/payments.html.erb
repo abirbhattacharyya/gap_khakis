@@ -14,7 +14,7 @@
               <div class="divider"></div>
               <p>
                   Your Price: <%= (@payment.offer.price > 0) ? number_to_currency(@payment.offer.price.ceil, :precision => 0) : "Free" %>
-                  <span class="expires">Expires: 04/30/11</span>
+                  <span class="expires">Expires: 3/31/11</span>
               </p>
               <p>
                   <%= @payment.offer.product.style_description %> (<%= @payment.offer.product.color.titleize %>)<br>
