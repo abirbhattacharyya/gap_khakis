@@ -324,11 +324,11 @@ class ProductsController < ApplicationController
                 @price_codes = []
                 if(@product.ticketed_retail == 49.5)
                   for price_code in PromotionCode::PRICE_CODES_50
-                    @price_codes << price_code if price_code > price
+                    @price_codes << price_code if(price_code > @product.target_price and price_code > price)
                   end
                 else
                   for price_code in PromotionCode::PRICE_CODES_60
-                    @price_codes << price_code if price_code > price
+                    @price_codes << price_code if(price_code > @product.target_price and price_code > price)
                   end
                 end
                 @new_offer = @price_codes[rand(999)%@price_codes.size]
@@ -339,10 +339,10 @@ class ProductsController < ApplicationController
                   @new_offer = PromotionCode::PRICE_CODES_60[rand(999)%PromotionCode::PRICE_CODES_60.size]
                 end
               end
-              if((rand(999)%2) == 1)
-                Offer.create(:ip => request.remote_ip, :product_id => @product.id, :price => @new_offer, :response => "last", :counter => 1)
-                flash[:notice] = "Hey, the best we can do is $#{@new_offer}. Deal?"
-              else
+#              if((rand(999)%2) == 1)
+#                Offer.create(:ip => request.remote_ip, :product_id => @product.id, :price => @new_offer, :response => "last", :counter => 1)
+#                flash[:notice] = "Hey, the best we can do is $#{@new_offer}. Deal?"
+#              else
                 if @new_offer == @product.target_price
                   Offer.create(:ip => request.remote_ip, :product_id => @product.id, :price => @new_offer, :response => "last", :counter => 1)
                   flash[:notice] = "Hey, the best we can do is $#{@new_offer}. Deal?"
@@ -350,7 +350,7 @@ class ProductsController < ApplicationController
                   Offer.create(:ip => request.remote_ip, :product_id => @product.id, :price => @new_offer, :response => "counter", :counter => 1)
                   flash[:notice] = "Hey, we can do $#{@new_offer}? Deal?"
                 end
-              end
+#              end
           end
           @last_offer = @product.offers.last(:conditions => ["ip = ?", request.remote_ip])
         end
