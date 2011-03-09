@@ -1,0 +1,99 @@
+<h2>Say Your Price Daily Summary <%= Date.today.strftime("%B %d, %Y") %></h2>
+<table border="1">
+  <tr>
+    <td><b>Price</b></td>
+    <td><b>Quantity</b></td>
+  </tr>
+  <% total = 0 %>
+  <% amount = 0 %>
+  <% @todays_coupons.each_with_index do |notify, index| %>
+    <tr>
+      <td>$<%= notify.price.to_i %></td>
+      <td><%= notify.total.to_i %></td>
+    </tr>
+    <% total += notify.total.to_i %>
+    <% amount += (notify.price.to_i*notify.total.to_i) %>
+  <% end %>
+  <tr>
+    <td><b>Total</b></td>
+    <td><%= content_tag(:b, total.to_i) %></td>
+  </tr>
+  <tr>
+    <td><b>Total $</b></td>
+    <td><%= content_tag(:b, amount.to_i) %></td>
+  </tr>
+  <tr>
+    <td><b>Weighted average Price</b></td>
+    <td><%= content_tag(:b, number_to_currency((amount.to_f/total), :precision => 2)) %></td>
+  </tr>
+  <tr>
+    <td><br/></td>
+  </tr>
+  <tr>
+    <td><b>Page Views</b></td>
+    <td><%= content_tag(:b, number_with_delimiter(@analytics_today.fetch("pageviews"))) %></td>
+  </tr>
+  <tr>
+    <td><b>Visits</b></td>
+    <td><%= content_tag(:b, number_with_delimiter(@analytics_today.fetch("visits"))) %></td>
+  </tr>
+<%
+  @total_time = (@analytics_today.fetch("timeOnSite").to_f/@analytics_today.fetch("visits").to_f).ceil
+  @min = @total_time/60
+  @sec = @total_time%60
+%>
+  <tr>
+    <td><b>Average Time On Site</b></td>
+    <td><%= content_tag(:b, "#{(@min < 10 ? '0' : '')}#{@min}:#{(@sec < 10 ? '0' : '')}#{@sec}") %></td>
+  </tr>
+</table>
+<br />
+<h2>Cumulative Campaign To Date</h2>
+<table border="1">
+  <tr>
+    <td><b>Price</b></td>
+    <td><b>Quantity</b></td>
+  </tr>
+  <% total = 0 %>
+  <% amount = 0 %>
+  <% @all_coupons.each_with_index do |notify, index| %>
+    <tr>
+      <td>$<%= notify.price.to_i %></td>
+      <td><%= notify.total.to_i %></td>
+    </tr>
+    <% total += notify.total.to_i %>
+    <% amount += (notify.price.to_i*notify.total.to_i) %>
+  <% end %>
+  <tr>
+    <td><b>Total</b></td>
+    <td><%= content_tag(:b, total.to_i) %></td>
+  </tr>
+  <tr>
+    <td><b>Total $</b></td>
+    <td><%= content_tag(:b, amount.to_i) %></td>
+  </tr>
+  <tr>
+    <td><b>Weighted average Price</b></td>
+    <td><%= content_tag(:b, number_to_currency((amount.to_f/total), :precision => 2)) %></td>
+  </tr>
+  <tr>
+    <td><br/></td>
+  </tr>
+  <tr>
+    <td><b>Page Views</b></td>
+    <td><%= content_tag(:b, number_with_delimiter(@analytics_overall.fetch("pageviews"))) %></td>
+  </tr>
+  <tr>
+    <td><b>Visits</b></td>
+    <td><%= content_tag(:b, number_with_delimiter(@analytics_overall.fetch("visits"))) %></td>
+  </tr>
+<%
+  @total_time = (@analytics_overall.fetch("timeOnSite").to_f/@analytics_overall.fetch("visits").to_f).ceil
+  @min = @total_time/60
+  @sec = @total_time%60
+%>
+  <tr>
+    <td><b>Average Time On Site</b></td>
+    <td><%= content_tag(:b, "#{(@min < 10 ? '0' : '')}#{@min}:#{(@sec < 10 ? '0' : '')}#{@sec}") %></td>
+  </tr>
+</table>

@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_filter :check_login, :only => [:notifications, :analytics]
+  before_filter :check_login, :only => [:notifications, :analytics, :daily_report]
 
   def index
     flash.discard
@@ -98,8 +98,8 @@ class HomeController < ApplicationController
         @chart_data1 = [["Yesterday", @offer_yesterday.total.to_i], ["Today", @offer_today.total.to_i]]
       else
         @title = "# Came to SYP Capsule"
-        @offer_today = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id INNER JOIN wardrobes ON products.wardrobe_id=wardrobes.id and wardrobes.user_id=#{current_user.id} and Date(offers.updated_at)='#{Date.today}'")
-        @offer_yesterday = Offer.first(:select => "SUM(counter) as total", :joins => "INNER JOIN products ON offers.product_id=products.id INNER JOIN wardrobes ON products.wardrobe_id=wardrobes.id and wardrobes.user_id=#{current_user.id} and Date(offers.updated_at)='#{Date.today - 1.day}'")
+        @offer_today = Offer.first(:select => "SUM(counter) as total", :conditions => "Date(offers.updated_at)='#{Date.today}'")
+        @offer_yesterday = Offer.first(:select => "SUM(counter) as total", :conditions => "Date(offers.updated_at)='#{Date.today - 1.day}'")
         @chart_data1 = [["Yesterday", @offer_yesterday.total.to_i], ["Today", @offer_today.total.to_i]]
     end
   end
@@ -229,4 +229,24 @@ class HomeController < ApplicationController
     render :text=> "Done".inspect and return false
   end
 
+	def send_daily_report
+    recipients = "abstartup@gmail.com, dhaval.parikh33@gmail.com"
+    @todays_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["Date(updated_at) = ? and response LIKE 'paid'", Date.today], :group => "price")
+    @all_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["response LIKE 'paid'"], :group => "price")
+
+    @analytics_overall = analytics_details('2011-03-02', Date.today)
+    @analytics_today = analytics_details(Date.today, Date.today)
+
+    Notification.deliver_dailyreport(recipients,@todays_coupons,@all_coupons,@analytics_today,@analytics_overall)
+    flash[:notice] = "Report Sent"
+    redirect_to root_path
+  end
+
+	def daily_report
+    @todays_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["Date(updated_at) = ? and response LIKE 'paid'", Date.today], :group => "price")
+    @all_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["response LIKE 'paid'"], :group => "price")
+
+    @analytics_overall = analytics_details('2011-03-02', Date.today)
+    @analytics_today = analytics_details(Date.today, Date.today)
+  end
 end

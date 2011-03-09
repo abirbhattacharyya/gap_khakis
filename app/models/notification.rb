@@ -16,11 +16,22 @@ class Notification < ActionMailer::Base
     #recipients recipient
     bcc recipient
     from       sender_email
-    reply_to   "dealkat@dealkat.com"
+    reply_to   "custserv@gap.com"
 
     body      :payment => payment
     sent_on    Time.now
     content_type 'text/html'
+  end
+
+  def dailyreport(recipient, todays_coupons, all_coupons, analytics_today, analytics_overall)
+    subject    'daily status report'
+    #recipients recipient
+    bcc recipient
+    from       sender_email
+    reply_to   "custserv@gap.com"
+
+    body      :todays_coupons => todays_coupons, :all_coupons => all_coupons, :analytics_today => analytics_today, :analytics_overall => analytics_overall
+    sent_on    Time.now
   end
 
   def sendto(recipient, product, name, message)
@@ -28,7 +39,7 @@ class Notification < ActionMailer::Base
     #recipients recipient
     bcc recipient
     from       sender_email
-    reply_to   "dealkat@dealkat.com"
+    reply_to   "custserv@gap.com"
 
     body      :product => product, :name => name, :message => message
     sent_on    Time.now
@@ -38,6 +49,6 @@ class Notification < ActionMailer::Base
   protected
 
   def sender_email
-      '"Dealkat" <dealkat@dealkat.com>'
+      '"GapMyPrice" <myprice@gapmyprice.com>'
   end
 end
