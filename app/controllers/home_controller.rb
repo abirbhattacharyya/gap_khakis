@@ -231,22 +231,25 @@ class HomeController < ApplicationController
 
 	def send_daily_report
     recipients = "abstartup@gmail.com, dhaval.parikh33@gmail.com"
-    @todays_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["Date(updated_at) = ? and response LIKE 'paid'", Date.today], :group => "price")
+    @today = Date.today-1.day
+    @todays_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["Date(updated_at) = ? and response LIKE 'paid'", @today], :group => "price")
     @all_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["response LIKE 'paid'"], :group => "price")
 
-    @analytics_overall = analytics_details('2011-03-02', Date.today)
-    @analytics_today = analytics_details(Date.today, Date.today)
+    @analytics_overall = analytics_details('2011-03-02', @today)
+    @analytics_today = analytics_details(@today, @today)
 
-    Notification.deliver_dailyreport(recipients,@todays_coupons,@all_coupons,@analytics_today,@analytics_overall)
+    Notification.deliver_dailyreport(recipients,@todays_coupons,@all_coupons,@analytics_today,@analytics_overall,@today)
     flash[:notice] = "Report Sent"
     redirect_to root_path
   end
 
 	def daily_report
-    @todays_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["Date(updated_at) = ? and response LIKE 'paid'", Date.today], :group => "price")
+    @today = Date.today-1.day
+    @todays_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["Date(updated_at) = ? and response LIKE 'paid'", @today], :group => "price")
     @all_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["response LIKE 'paid'"], :group => "price")
 
-    @analytics_overall = analytics_details('2011-03-02', Date.today)
-    @analytics_today = analytics_details(Date.today, Date.today)
+    @analytics_overall = analytics_details('2011-03-02', @today)
+    @analytics_today = analytics_details(@today, @today)
+    render :layout => false
   end
 end

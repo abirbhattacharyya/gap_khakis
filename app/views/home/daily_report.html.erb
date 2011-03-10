@@ -1,99 +1,120 @@
-<h2>Say Your Price Daily Summary <%= Date.today.strftime("%B %d, %Y") %></h2>
-<table border="1">
-  <tr>
-    <td><b>Price</b></td>
-    <td><b>Quantity</b></td>
-  </tr>
-  <% total = 0 %>
-  <% amount = 0 %>
-  <% @todays_coupons.each_with_index do |notify, index| %>
-    <tr>
-      <td>$<%= notify.price.to_i %></td>
-      <td><%= notify.total.to_i %></td>
-    </tr>
-    <% total += notify.total.to_i %>
-    <% amount += (notify.price.to_i*notify.total.to_i) %>
-  <% end %>
-  <tr>
-    <td><b>Total</b></td>
-    <td><%= content_tag(:b, total.to_i) %></td>
-  </tr>
-  <tr>
-    <td><b>Total $</b></td>
-    <td><%= content_tag(:b, amount.to_i) %></td>
-  </tr>
-  <tr>
-    <td><b>Weighted average Price</b></td>
-    <td><%= content_tag(:b, number_to_currency((amount.to_f/total), :precision => 2)) %></td>
-  </tr>
-  <tr>
-    <td><br/></td>
-  </tr>
-  <tr>
-    <td><b>Page Views</b></td>
-    <td><%= content_tag(:b, number_with_delimiter(@analytics_today.fetch("pageviews"))) %></td>
-  </tr>
-  <tr>
-    <td><b>Visits</b></td>
-    <td><%= content_tag(:b, number_with_delimiter(@analytics_today.fetch("visits"))) %></td>
-  </tr>
 <%
-  @total_time = (@analytics_today.fetch("timeOnSite").to_f/@analytics_today.fetch("visits").to_f).ceil
-  @min = @total_time/60
-  @sec = @total_time%60
+  total_time = (@analytics_today["timeOnSite"].to_f/(@analytics_today["visits"].to_f > 0 ? @analytics_today["visits"].to_f : 1)).ceil
+  min_t = total_time/60
+  sec_t = total_time%60
+
+  total_time = (@analytics_overall["timeOnSite"].to_f/(@analytics_overall["visits"].to_f > 0 ? @analytics_overall["visits"].to_f : 1)).ceil
+  min_o = total_time/60
+  sec_o = total_time%60
+
+  today_dollars = 0
+  overall_dollars = 0
+  t_price_15 = 0
+  t_price_15_29 = 0
+  t_price_30_39 = 0
+  t_price_40 = 0
+  o_price_15 = 0
+  o_price_15_29 = 0
+  o_price_30_39 = 0
+  o_price_40 = 0
+  @todays_coupons.each do |notify|
+    today_dollars += (notify.price.to_i*notify.total.to_i)
+    t_price_15 += notify.total.to_i if notify.price.to_i < 15
+    t_price_15_29 += notify.total.to_i if (15..29).to_a.include? notify.price.to_i
+    t_price_30_39 += notify.total.to_i if (30..39).to_a.include? notify.price.to_i
+    t_price_40 += notify.total.to_i if notify.price.to_i >= 40
+  end
+  @all_coupons.each do |notify|
+    overall_dollars += (notify.price.to_i*notify.total.to_i)
+    o_price_15 += notify.total.to_i if notify.price.to_i < 15
+    o_price_15_29 += notify.total.to_i if (15..29).to_a.include? notify.price.to_i
+    o_price_30_39 += notify.total.to_i if (30..39).to_a.include? notify.price.to_i
+    o_price_40 += notify.total.to_i if notify.price.to_i >= 40
+  end
 %>
-  <tr>
-    <td><b>Average Time On Site</b></td>
-    <td><%= content_tag(:b, "#{(@min < 10 ? '0' : '')}#{@min}:#{(@sec < 10 ? '0' : '')}#{@sec}") %></td>
-  </tr>
-</table>
-<br />
-<h2>Cumulative Campaign To Date</h2>
-<table border="1">
-  <tr>
-    <td><b>Price</b></td>
-    <td><b>Quantity</b></td>
-  </tr>
-  <% total = 0 %>
-  <% amount = 0 %>
-  <% @all_coupons.each_with_index do |notify, index| %>
-    <tr>
-      <td>$<%= notify.price.to_i %></td>
-      <td><%= notify.total.to_i %></td>
+
+<h1>Daily dealkat say your price report</h1>
+<h2>
+  Campaign Start Date= March 2, 2011<br />
+  Time made= <%= @today.strftime("%B %d, %Y") %>, 12AM PST
+</h2>
+<h3>Salient Metrics</h3>
+
+<table style="border:medium none;border-collapse:collapse;width:624px">
+  <colgroup><col width="*"><col width="*"><col width="*"></colgroup>
+  <tbody>
+    <tr style="min-height:0px">
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:bold;font-style:normal;text-decoration:underline;vertical-align:baseline">Metric</span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:bold;font-style:normal;text-decoration:underline;vertical-align:baseline">Yesterday</span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:bold;font-style:normal;text-decoration:underline;vertical-align:baseline">Cumulative</span></td>
     </tr>
-    <% total += notify.total.to_i %>
-    <% amount += (notify.price.to_i*notify.total.to_i) %>
-  <% end %>
-  <tr>
-    <td><b>Total</b></td>
-    <td><%= content_tag(:b, total.to_i) %></td>
-  </tr>
-  <tr>
-    <td><b>Total $</b></td>
-    <td><%= content_tag(:b, amount.to_i) %></td>
-  </tr>
-  <tr>
-    <td><b>Weighted average Price</b></td>
-    <td><%= content_tag(:b, number_to_currency((amount.to_f/total), :precision => 2)) %></td>
-  </tr>
-  <tr>
-    <td><br/></td>
-  </tr>
-  <tr>
-    <td><b>Page Views</b></td>
-    <td><%= content_tag(:b, number_with_delimiter(@analytics_overall.fetch("pageviews"))) %></td>
-  </tr>
-  <tr>
-    <td><b>Visits</b></td>
-    <td><%= content_tag(:b, number_with_delimiter(@analytics_overall.fetch("visits"))) %></td>
-  </tr>
-<%
-  @total_time = (@analytics_overall.fetch("timeOnSite").to_f/@analytics_overall.fetch("visits").to_f).ceil
-  @min = @total_time/60
-  @sec = @total_time%60
-%>
-  <tr>
-    <td><b>Average Time On Site</b></td>
-    <td><%= content_tag(:b, "#{(@min < 10 ? '0' : '')}#{@min}:#{(@sec < 10 ? '0' : '')}#{@sec}") %></td>
-  </tr>
+    <tr style="min-height:0px">
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"># of visits</span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(@analytics_today["visits"]) %></span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(@analytics_overall["visits"]) %></span></td>
+    </tr>
+    <tr style="min-height:0px">
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"># of pageviews</span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(@analytics_today["pageviews"]) %></span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(@analytics_overall["pageviews"]) %></span></td>
+    </tr>
+    <tr style="min-height:0px">
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline">Average pages/visit</span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_to_currency((@analytics_today["pageviews"].to_i/(@analytics_today["visits"].to_f >0 ? @analytics_today["visits"].to_f : 1)), :precision => 2, :unit => "") %></span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_to_currency((@analytics_overall["pageviews"].to_i/(@analytics_overall["visits"].to_f >0 ? @analytics_overall["visits"].to_f : 1)), :precision => 2, :unit => "") %></span></td>
+    </tr>
+    <tr style="min-height:0px">
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline">Average time on site</span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= content_tag(:b, "#{(min_t < 10 ? '0' : '')}#{min_t}:#{(sec_t < 10 ? '0' : '')}#{sec_t}") %></span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= content_tag(:b, "#{(min_o < 10 ? '0' : '')}#{min_o}:#{(sec_o < 10 ? '0' : '')}#{sec_o}") %></span></td>
+    </tr>
+    <tr style="min-height:0px">
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"># Of coupons viewed</span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(Offer.count(:conditions => "Date(offers.updated_at)='#{@today}'")) %></span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(Offer.count(:conditions => "Date(offers.updated_at)='#{@today-1.day}'")) %></span></td>
+    </tr>
+  </tbody>
 </table>
+
+<h3>Coupon Details</h3>
+
+<table style="border:medium none;border-collapse:collapse;width:624px">
+  <colgroup><col width="*"><col width="*"><col width="*"></colgroup>
+  <tbody>
+    <tr style="min-height:0px">
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:bold;font-style:normal;text-decoration:underline;vertical-align:baseline">Metric</span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:bold;font-style:normal;text-decoration:underline;vertical-align:baseline">Yesterday</span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:bold;font-style:normal;text-decoration:underline;vertical-align:baseline">Cumulative</span></td>
+    </tr>
+    <tr style="min-height:0px">
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline">Total coupon sales @100% redemption</span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_to_currency(today_dollars, :precision => 2) %></span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_to_currency(overall_dollars, :precision => 2) %></span></td>
+    </tr>
+    <tr style="min-height:0px">
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"># Coupons <$15</span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(t_price_15) %></span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(o_price_15) %></span></td>
+    </tr>
+    <tr style="min-height:0px">
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"># Coupons $15-29</span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(t_price_15_29) %></span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(o_price_15_29) %></span></td>
+    </tr>
+    <tr style="min-height:0px">
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"># Coupons $30-39</span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(t_price_30_39) %></span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(o_price_30_39) %></span></td>
+    </tr>
+    <tr style="min-height:0px">
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"># Coupons $40+</span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(t_price_40) %></span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(o_price_40) %></span></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+<a href="mailto:dealkat@dealkat.com" target="_blank"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 153);background-color:transparent;font-weight:bold;font-style:normal;text-decoration:underline;vertical-align:baseline">dealkat@dealkat.com</span></a>
+<span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:bold;font-style:normal;text-decoration:underline;vertical-align:baseline"> &nbsp;650.210.3772</span>
+</p>
