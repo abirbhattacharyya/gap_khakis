@@ -36,7 +36,7 @@
 <h1>Daily dealkat say your price report</h1>
 <h2>
   Campaign Start Date= March 2, 2011<br />
-  Time made= <%= @today.strftime("%B %d, %Y") %>, 12AM PST
+  Time made= <%= Date.today.strftime("%B %d, %Y") %>, 12AM PST
 </h2>
 <h3>Salient Metrics</h3>
 
@@ -70,8 +70,8 @@
     </tr>
     <tr style="min-height:0px">
       <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"># Of coupons viewed</span></td>
-      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(Offer.count(:conditions => "Date(offers.updated_at)='#{@today}'")) %></span></td>
-      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(Offer.count(:conditions => "Date(offers.updated_at)='#{@today-1.day}'")) %></span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(Offer.count(:conditions => ["response <> ? and Date(offers.updated_at) = ?", "expired", @today])) %></span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(Offer.count(:conditions => ["response <> ?", "expired"])) %></span></td>
     </tr>
   </tbody>
 </table>
