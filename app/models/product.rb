@@ -2,7 +2,15 @@ class Product < ActiveRecord::Base
   belongs_to :user
   has_many :offers
 
-  validates_uniqueness_of :style_num_full, :scope => [:user_id]
+  validates_uniqueness_of :style_description, :scope => [:user_id, :color_description]
+
+  def new_price_points
+    if(self.ticketed_retail == 49.5)
+      PromotionCode::PRICE_CODES_50
+    else
+      PromotionCode::PRICE_CODES_60
+    end
+  end
 
   def color
     self.color_description.gsub(/\d+/, '').strip
@@ -17,7 +25,7 @@ class Product < ActiveRecord::Base
   end
 
   def images
-    Product.all(:conditions => ["style_num = ? and image_url <> ? ", self.style_num, self.image_url])
+    Product.all(:conditions => ["style_description = ? and image_url <> ? ", self.style_description, self.image_url])
   end
 
   def description

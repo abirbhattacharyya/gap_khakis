@@ -1,0 +1,28 @@
+<h1>
+    <%= "#{@pageviews} Page Views" %>, 
+    <%= "#{@visits} Visits" %>, 
+    <%= "#{(@min < 10 ? '0' : '')}#{@min}:#{(@sec < 10 ? '0' : '')}#{@sec} Average Time On Site" %>
+</h1>
+
+<table border="1">
+    <tr>
+        <td><b>Refferals</b>&nbsp;&nbsp;</td>
+        <td><b>Views</b>&nbsp;&nbsp;</td>
+        <td><b>Visits</b>&nbsp;&nbsp;</td>
+        <td><b>Average Time</b>&nbsp;&nbsp;</td>
+    </tr>
+    <% 0.upto(@sources.size-1) do |i| %>
+      <tr>
+            <td><%=@sources[i]%>&nbsp;&nbsp;</td>
+            <td><%=@entry_pageviews[i]%>&nbsp;&nbsp;</td>
+            <td><%=@entry_visits[i]%>&nbsp;&nbsp;</td>
+            <%
+                @total_time = (@entry_timeOnSite[i].to_f/@entry_visits[i].to_f).ceil
+                @min = @total_time/60
+                @sec = @total_time%60
+            %>
+            <td><%="#{(@min < 10 ? '0' : '')}#{@min}:#{(@sec < 10 ? '0' : '')}#{@sec}"%>&nbsp;&nbsp;</td>
+      </tr>
+    <% end %>
+</table>
+

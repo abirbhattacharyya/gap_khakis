@@ -9,8 +9,8 @@
 Your Price: <%= (@payment.offer.price > 0) ? number_to_currency(@payment.offer.price.ceil, :precision => 0) : "Free" %>
 
 <%= @payment.offer.product.style_description %> (<%= @payment.offer.product.color.titleize %>)
-Style#: <%= @payment.offer.product.style_num_full %>
-Expires: 3/31/11
+Style#: <%= @payment.offer.product.style_num %>
+Expires: <%= @payment.expiry.strftime("%m/%d/%y") %>[1..-1]
 
 
 <b>Terms & Conditions:</b>

@@ -1,6 +1,5 @@
 class User < ActiveRecord::Base
   has_one :profile, :dependent => :destroy
-  has_one :schedule, :dependent => :destroy
   has_many :products, :dependent => :destroy
 
   validates_presence_of :email, :message => "^Hey, email can't be blank"

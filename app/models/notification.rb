@@ -1,7 +1,7 @@
 class Notification < ActionMailer::Base
   default_url_options[:host] = "dealkat.com"
 
-  def forgot_password(user)
+  def forgot(user)
     subject    'Your forgotten password for Dealkat'
     recipients user.email
     from       sender_email
@@ -12,7 +12,7 @@ class Notification < ActionMailer::Base
   end
 
   def sendcoupon(recipient, payment)
-    subject    'Your exclusive coupon code'
+    subject    'Your Say Your Price Coupon'
     #recipients recipient
     bcc recipient
     from       sender_email
@@ -20,7 +20,6 @@ class Notification < ActionMailer::Base
 
     body      :payment => payment
     sent_on    Time.now
-    content_type 'text/html'
   end
 
   def dailyreport(recipient, todays_coupons, all_coupons, analytics_today, analytics_overall, today)
@@ -32,18 +31,6 @@ class Notification < ActionMailer::Base
 
     body      :todays_coupons => todays_coupons, :all_coupons => all_coupons, :analytics_today => analytics_today, :analytics_overall => analytics_overall, :today => today
     sent_on    Time.now
-  end
-
-  def sendto(recipient, product, name, message)
-    subject    'Say your price with GAP'
-    #recipients recipient
-    bcc recipient
-    from       sender_email
-    reply_to   "custserv@gap.com"
-
-    body      :product => product, :name => name, :message => message
-    sent_on    Time.now
-    content_type 'text/html'
   end
 
   protected

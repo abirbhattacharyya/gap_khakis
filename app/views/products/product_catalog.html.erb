@@ -1,0 +1,25 @@
+<%= render :partial => "/partials/my_dashboard" if @products and @products.size > 0 %>
+<h1>Upload a CSV with your product catalog</h1>
+<p>Make sure your CSV file contains the columns listed below. Click on the sample file to see an example.</p>
+
+<ul class="list">
+  <li>9 Digit Style #</li>
+  <li>Style Description</li>
+  <li>Color Description</li>
+  <li>Cost</li>
+  <li>P</li>
+  <li>Margin</li>
+  <li>@60% Margin</li>
+  <li>Selling Price Point</li>
+</ul>
+
+<% form_tag product_catalog_path, :multipart => true do %>
+  <p class="ctrl">
+      <%= file_field_tag 'uploaded_file', {:style => "vertical-align: bottom;", :size => 20} %>
+      <%= link_to("Sample file", "/sample.jpg", :target => "_new") %>
+  </p>
+  <p class="ctrls">
+      <span class="button-green-fat"><%= submit_tag "Go!" %></span>
+      <%= link_to("Cancel", root_path, :class => "alter-link") if @products and @products.size > 0 %>
+  </p>
+<% end %>

@@ -1,4 +1,4 @@
-<%= content_tag(:h1, "Sign in") %>
+<h1>Sign in</h1>
 <div class="columns">
     <div class="column wide">
       <%#= error_messages_for(:user, :order => [:email, :password], :message => "", :header_message => "")%>
@@ -13,7 +13,7 @@
         </p>
         <%= content_tag :p, @message, :style => "color:red;" if @message %>
         <p class="ctrls">
-            <span class="button-green-fat"><%= f.submit("Go!") %></span>
+            <span class="button-green"><%= f.submit("Go!") %></span>
             <%= link_to "Forgot Password?", forgot_path, :class => "alter-link" %>
         </p>
       <% end %>

@@ -22,9 +22,10 @@ H1 {
     padding-bottom: 4px;
     margin: .5em 0;
     }
+
 H1.home {
     color: #0c103d;
-    font-size: 38px;
+    font-size: 36px;
     font-weight: bold;
     }
 
@@ -33,6 +34,7 @@ H2 {
     font-size: 18px;
     margin: .5em 0;
     }
+
 H2.home {
     color: #707070;
     font-size: 25px;
@@ -88,7 +90,7 @@ UL.list {
 
 /* common */
 
-.w250px { width: 250px; }
+.w250px { width: 250px !important; }
 .w550px { width: 550px !important; }
 .w775px { width: 775px !important; }
 
@@ -122,7 +124,7 @@ UL.list {
 
     #header .logo {
         text-indent: -999px;
-        background: url(/images/logo-gap.gif) top left no-repeat;
+        background: url(/images/logo-gap.jpg) top left no-repeat;
         width: 89px;
         height: 83px;
         float: left;
@@ -143,6 +145,7 @@ UL.list {
                 font-size: 14px;
                 font-weight: bold;
                 text-decoration: none;
+                display: inline-block;
                 padding: 3px 5px;
                 }
 
@@ -191,6 +194,12 @@ UL.list {
             float: left;
             }
 
+        #footer UL LI A {}
+
+        #footer UL LI A.current {
+            font-weight: bold;
+            }
+
     #footer ADDRESS {
         font-style: normal;
         float: right;
@@ -198,7 +207,7 @@ UL.list {
 
 /* forms */
 
-FORM { 
+FORM {
     padding: 0;
     margin: 0;
     display: inline;
@@ -247,56 +256,99 @@ INPUT[type="submit"] {
     overflow: hidden;
     }
 
-    .intro-steps LI {
-        color: #666;
-        font-size: 18px;
-        line-height: 1.5em;
-        border-left: 1px solid #e1e2e3;
-        padding: 0 20px;
-        width: 420px;
+    .intro-steps A {
+        text-decoration: none !important;
+        margin-left: 15px;
+        width: 295px;
+        min-height: 50px;
         float: left;
         }
 
-    .intro-steps LI:first-child {
-        border: none;
-        padding-left: 0;
+    .intro-steps A:first-child {
+        margin-left: 0;
         }
 
-        .intro-steps LI SPAN {
-            text-indent: -999px;
-            background-position: top left;
-            background-repeat: no-repeat;
-            margin-right: 20px;
-            width: 67px;
-            height: 67px;
+        .intro-steps A SPAN {
+            color: #fff;
+            font-size: 36px;
+            font-weight: bold;
+            line-height: 1.2em;
+            text-decoration: none !important;
+            text-indent: 12px;
+            background: url(/images/intro-step-no.gif) top left no-repeat;
+            width: 50px;
+            height: 50px;
             float: left;
+            cursor: pointer;
+            cursor: hand;
             }
 
-        .intro-steps LI SPAN.num-1 {
-            background-image: url(/images/intro-step-1.gif);
+        .intro-steps A:hover SPAN {
+            text-decoration: none !important;
+            background: url(/images/intro-step-no-hover.gif) top left no-repeat;
             }
 
-        .intro-steps LI SPAN.num-2 {
-            background-image: url(/images/intro-step-2.gif);
+        .intro-steps A LABEL {
+            color: #333;
+            font-size: 14px;
+            line-height: 1.6em;
+            margin-top: 3px;
+            width: 235px;
+            float: right;
+            cursor: pointer;
+            cursor: hand;
             }
+
+        .intro-steps A:hover LABEL { color: #999; }
 
 .intro-slides {
-    width: 775px !important;
-    overflow: hidden;
+    border: 8px solid #111541;
+    width: 909px;
+    height: 460px;
+    position: relative;
     }
 
-    .intro-slides .cinner {
-        margin-left: 10px !important;
-        }
-
     .intro-slides A {
-        margin-left: 10px;
-        width: 240px;
+        width: 303px;
+        height: 460px;
         float: left;
         }
 
-    .intro-slides A:first-child {
-        margin-left: 0;
+    .intro-slides A:hover {
+        filter:progid:DXImageTransform.Microsoft.Alpha(opacity=70);
+        opacity: 0.7;
+        -moz-opacity: 0.7;
+        }
+
+    .intro-slides .tl, .intro-slides .tr,
+    .intro-slides .bl, .intro-slides .br {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        }
+
+    .intro-slides .tl {
+        background: url(/images/capsules/intro-slides-rounder.png) 0px 0px no-repeat;
+        top: -8px;
+        left: -8px;
+        }
+
+    .intro-slides .tr {
+        background: url(/images/capsules/intro-slides-rounder.png) -20px 0px no-repeat;
+        top: -8px;
+        right: -8px;
+        }
+
+    .intro-slides .bl {
+        background: url(/images/capsules/intro-slides-rounder.png) 0px -20px no-repeat;
+        bottom: -8px;
+        left: -8px;
+        }
+
+    .intro-slides .br {
+        background: url(/images/capsules/intro-slides-rounder.png) -20px -20px no-repeat;
+        bottom: -8px;
+        right: -8px;
         }
 
 .intro-ctrls {
@@ -357,66 +409,6 @@ INPUT[type="submit"] {
         .fixed-side-ctrls UL LI .button-green * {
             width: 185px;
             }
-.paginator {
-    text-align: center;
-    margin: 1em 0;
-    }
-
-    .paginator .button {
-        text-indent: -9999px;
-        *text-indent: 0;
-        *font-size: 0;
-        *line-height: 0;
-        margin: 0 1em;
-        display: inline-block;
-        width: 70px;
-        height: 70px;
-        }
-
-        .paginator .button.prev { background: url(/images/buttons/button-left.gif) 0 0 no-repeat; }
-        .paginator .button.prev:hover { background: url(/images/buttons/button-left.gif) -70px 0 no-repeat; }
-
-        .paginator .button.next { background: url(/images/buttons/button-right.gif) 0 0 no-repeat; }
-        .paginator .button.next:hover { background: url(/images/buttons/button-right.gif) -70px 0 no-repeat; }
-
-.feed-informer {
-    font-size: 14px;
-    font-weight: bold;
-    margin: 1.5em 40px;
-    }
-
-    .feed-informer A {
-        color: #4267af;
-        }
-
-    .feed-informer SPAN {
-        color: #888888;
-        }
-
-.feed-ctrls {
-    border-bottom: 1px solid #e1e2e3;
-    padding-bottom: 1.5em;
-    margin: 0 40px 1.5em;
-    overflow: hidden;
-    }
-
-    .feed-ctrls .share-line {
-        vertical-align: middle;
-        background: url(../i/share-line-bg.gif) top repeat-x;
-        padding: 4px 10px;
-        margin: 0 1em;
-        display: inline-block;
-        }
-
-.expires {
-    color: #e54145;
-    float: right;
-    }
-
-.terms {
-    font-size: 10px;
-    line-height: 1.3em;
-    }
 
 .feed-ctrl {
     margin: .5em 0 .5em 15px;
@@ -455,7 +447,17 @@ INPUT[type="submit"] {
     padding-bottom: 4px;
     margin: .3em 0 .7em;
     }
-
+.capsule2.inline {
+   display: inline-block;
+   zoom:1;
+   *display:inline;
+   }
+.capsule2.addlink {
+   vertical-align: bottom;
+   margin-left: 15px;
+   display: inline-block;
+   width: 180px;
+   }
 .capsule2 A {
     color: DarkBlue;
     }
@@ -486,6 +488,7 @@ INPUT[type="submit"] {
                 width: 215px;
                 height: 290px;
                 }
+
             .capsule2 .view .preview .play {
                 background: url(/images/buttons/button-play.png) 0px 0px no-repeat;
                 position: absolute;
@@ -495,7 +498,7 @@ INPUT[type="submit"] {
                 height: 70px;
                 }
 
-            .capsule2 .view .preview .play:hover {
+            .capsule2 .view .preview:hover .play {
                 background: url(/images/buttons/button-play.png) -70px 0px no-repeat;
                 }
 
@@ -596,6 +599,67 @@ INPUT[type="submit"] {
         text-decoration: underline;
         }
 
+.buttons-set {
+    width: 100%;
+    overflow: hidden;
+    }
+
+    .buttons-set P {
+        margin: .75em 0;
+        width: 330px;
+        float: left;
+        }
+
+        .buttons-set P .button-green * {
+            width: 230px;
+            }
+
+.feed-informer {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.5em;
+    margin: 1.5em 40px;
+    }
+
+    .feed-informer A {
+        color: #4267af;
+        }
+
+    .feed-informer SPAN {
+        color: #888888;
+        }
+
+.feed-ctrls {
+    border-bottom: 1px solid #e1e2e3;
+    padding-bottom: 1.5em;
+    margin: 0 40px 1.5em;
+    overflow: hidden;
+    }
+
+    .feed-ctrls .share-line {
+        vertical-align: middle;
+        background: url(/images/share-line-bg.gif) top repeat-x;
+        padding: 4px 10px;
+        margin: 0 1em;
+        display: inline-block;
+        }
+
+.expires {
+    color: #e54145;
+    float: right;
+    }
+
+.terms {
+    font-size: 10px;
+    line-height: 1.3em;
+    }
+.share-with {
+   margin-left: 1em;
+   }
+
+   .share-with IMG {
+       vertical-align: middle;
+       }
 /* -------------------------------------------------------------------------- */
 /* CSS solutions */
 
@@ -729,9 +793,8 @@ INPUT[type="submit"] {
     background: #ece4d8; /* background color */
     position: relative;
     display: inline-block;
-*zoom: 1;
-*display: inline;
-
+    *zoom: 1;
+    *display: inline;
     }
 
     .ctrl-box .stl, .ctrl-box .str,
@@ -771,7 +834,7 @@ INPUT[type="submit"] {
     .button-orange-ctrl-fat *, .button-green-ctrl *, .button-red-ctrl * {
         text-align: center;
         text-decoration: none !important;
-        border: none;
+        border: none !important;
         display: inline-block;
         cursor: pointer;
         cursor: hand;
@@ -791,9 +854,10 @@ INPUT[type="submit"] {
         line-height: 50px;
         background: url(/images/buttons/green-bg.gif) left 0 no-repeat;
         padding: 0 5px 0 30px;
-        margin: 0 25px 0 0;
+        margin: 0px 25px 0px 0px;
         height: 50px;
         }
+
     .button-green.small-font * {
         font-size: 14px;
         }
@@ -842,13 +906,18 @@ INPUT[type="submit"] {
     .button-green-ctrl-fat * {
         color: White;
         font-family: Verdana, Arial, Helvetica, sans-serif;
-        font-size: 12px;
+        font-size: 20px;
         font-weight: bold;
         line-height: 63px;
         background: url(/images/buttons/green-ctrl-fat-bg.gif) left 0 no-repeat;
         padding: 0 5px 0 35px;
         margin: 0 30px 0 0;
         height: 63px;
+        }
+
+    .button-green-ctrl-fat.say-your-price *{
+        font-size: 13px;
+        font-weight: bold;
         }
 
 .button-green-ctrl-fat.current,
@@ -870,6 +939,7 @@ INPUT[type="submit"] {
         color: White;
         font-family: Verdana, Arial, Helvetica, sans-serif;
         font-size: 20px;
+        font-weight: bold;
         line-height: 63px;
         background: url(/images/buttons/orange-ctrl-fat-bg.gif) left 0 no-repeat;
         padding: 0 15px 0 45px;

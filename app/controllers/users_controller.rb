@@ -12,7 +12,7 @@ class UsersController < ApplicationController
       if @user
         @user.update_attribute(:is_blocked, false)
         session[@user.email] = nil
-        
+
         self.current_user = @user
         new_cookie_flag = (params[:remember_me] == "1")
         handle_remember_cookie! new_cookie_flag
@@ -30,13 +30,32 @@ class UsersController < ApplicationController
                 @new_user.update_attribute(:is_blocked, true)
                 @message = "Your account is locked. Click on Forgot Password"
               else
-                @message = "You have only #{3 - session[@new_user.email]} attempts"
+                @message = "You have only #{plural(3 - session[@new_user.email], 'attempt')}"
               end
               session[@new_user.email] += 1
             end
           end
         end
         flash[:error] = "Please enter valid information"
+      end
+    end
+  end
+
+  def forgot
+    flash.discard
+    if request.post?
+      email = params[:email]
+      if email.strip.blank?
+        flash[:error] = "Please enter valid information"
+      else
+        @user = User.find_by_email(email)
+        if @user.nil?
+          flash[:error] = "No such ID, want to join?"
+        else
+          Notification.deliver_forgot(@user)
+          flash[:notice] = "Yeah! Emailed you the password."
+          redirect_to root_path
+        end
       end
     end
   end
@@ -54,40 +73,6 @@ class UsersController < ApplicationController
       else
         flash[:error] = "Please enter valid information"
       end
-    end
-  end
-
-  def forgot
-    flash.discard
-    if request.post?
-      email = params[:email]
-      if email.strip.blank?
-        flash[:error] = "Please enter valid information"
-      else
-        @user = User.find_by_email(email)
-        if @user.nil?
-          flash[:error] = "No such ID, want to join?"
-        else
-          Notification.deliver_forgot_password(@user)
-          flash[:notice] = "Yeah! Emailed you the password."
-          redirect_to root_path
-        end
-      end
-    end
-  end
-
-  def change_password
-    if request.post?
-        if params[:password].strip.blank?
-          flash[:error] = "Please enter valid information"
-        else
-          if current_user.update_attribute("password", params[:password])
-            flash[:notice] = "Password changed successfully"
-            redirect_to root_path
-          else
-            flash[:error] = "Please enter valid information"
-          end
-        end
     end
   end
 

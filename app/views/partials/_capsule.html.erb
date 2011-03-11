@@ -1,6 +1,7 @@
 <% product = capsule %>
-<% @last_offer = product.offers.last(:conditions => ["ip = ?", request.remote_ip]) %>
-<% @offer = product.offers.last(:conditions => ["ip = ? and response IS NULL", request.remote_ip]) %>
+<% offer_token = (session[:_csrf_token] ||= ActiveSupport::SecureRandom.base64(32)) %>
+<% @last_offer = product.offers.last(:conditions => ["ip = ? and token = ?", request.remote_ip, offer_token]) %>
+<% @offer = product.offers.last(:conditions => ["ip = ? and token =? and response IS NULL", request.remote_ip, offer_token]) %>
 
 <div class="capsule2">
     <div class="cinner">
@@ -10,17 +11,17 @@
         <div class="view">
             <span class="preview">
                 <%= link_to(image_tag((product.image_url || "/images/khakis.png"), :size => "215x290"), (product.image_url || "/images/khakis.png"), :title => "#{product.style_description.titleize} (#{product.color_description.titleize})", :rel => "lightbox[#{product.style_description.titleize.gsub(/\s+/, '')}]") %>
-                <div style="display: none">
-                    <% for product_image in product.images %>
-                    <%= link_to(content_tag(:span, nil, :class => "play"), (product_image.image_url || "/images/khakis.png"), :title => "#{product_image.style_description.titleize} (#{product_image.color_description.titleize})", :rel => "lightbox['#{product.style_description.titleize.gsub(/\s+/, '')}']") %>
-                    <% end %>
-                </div>
+                <%#*<div style="display: none">%>
+                  <%# for product_image in product.images %>
+                    <%#= link_to("", (product_image.image_url || "/images/khakis.png"), :title => "#{product_image.style_description.titleize} (#{product_image.color_description.titleize})", :rel => "lightbox['#{product.style_description.titleize.gsub(/\s+/, '')}']") %>
+                  <%# end %>
+                <%#*</div>%>
             </span>
             <p>
                 Share:
-                <%= link_to(image_tag("/images/icons/twitter-18x18px.gif", :size => "15x14", :alt => "Twitter", :title => "Twitter"), "http://twitter.com/home?status=I just scored a sweet deal on Gap khakis! You can too. Say your price now at www.gapmyprice.com", :target => "_new") %>
-                <%= link_to(image_tag("/images/icons/facebook-18x18px.gif", :size => "15x14", :alt => "Facebook", :title => "Facebook"), "http://www.facebook.com/sharer.php?u=#{root_url}&t=Say your price", :target => "_new") %>
-                <%#= link_to(image_tag("/images/icons/email-18x18px.gif", :size => "15x14", :alt => "Email", :title => "Email"), send_to_path(product.id)) %>
+                <%= link_to(image_tag("/images/icons/twitter-20x20px.gif", :size => "15x14", :alt => "Twitter", :title => "Twitter"), "http://twitter.com/home?status=I just scored a sweet deal on Gap khakis! You can too. Say your price now at www.gapmyprice.com", :target => "_new") %>
+                <%= link_to(image_tag("/images/icons/facebook-20x20px.gif", :size => "15x14", :alt => "Facebook", :title => "Facebook"), "http://www.facebook.com/sharer.php?u=#{root_url}&t=Say your price", :target => "_new") %>
+                <%#= link_to(image_tag("/images/icons/email-20x20px.gif", :size => "15x14", :alt => "Email", :title => "Email"), send_to_path(product.id)) %>
             </p>
         </div><!-- .view -->
 
@@ -105,7 +106,6 @@
 
             <p><%= "Regular Price : " + number_to_currency(product.ticketed_retail, :precision => 2) %></p>
             <div><%= product.description[1] %></div>
-            <p><%#= link_to(capsule_url(product.id), capsule_path(product.id), :class => "myprice") %></p>
             <p><%= link_to("http://gapmyprice.com/".concat(product.id.to_s), capsule_path(product.id), :class => "myprice") %></p>
         </div><!-- .info -->
     </div><!-- .cinner -->

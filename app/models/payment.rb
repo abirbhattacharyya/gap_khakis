@@ -2,13 +2,10 @@ class Payment < ActiveRecord::Base
   belongs_to :offer
   belongs_to :promotion_code
 
-  validates_format_of :email, :if => :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :update
+  validates_format_of :email, :if => :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
 
-  def self.total_accepted_price(p1, p2)
-    Payment.first(:joins => "INNER JOIN offers ON offers.id=payments.offer_id INNER JOIN products ON products.id=offers.product_id", :select => "SUM(products.ticketed_retail) as total", :conditions => ["offers.price = ? OR offers.price = ?", p1, p2]).total
-  end
-
-  def self.total_prices
-    Payment.first(:joins => "INNER JOIN offers ON offers.id=payments.offer_id INNER JOIN products ON products.id=offers.product_id", :select => "SUM(products.ticketed_retail) as total").total
+  def new_expiry_date
+    @dates = ["2011-03-31", (self.created_at + 2.week), (self.created_at + 1.week)]
+    return @dates[rand(99)%@dates.size]
   end
 end

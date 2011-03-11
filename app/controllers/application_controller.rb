@@ -2,19 +2,17 @@
 # Likewise, all the methods added will be available for all controllers.
 require 'rubygems'
 require 'open-uri'
-require 'hpricot'
 require "csv"
 require 'pdf/writer'
-require "calendar_date_select"
-require 'fastercsv'
 require 'gattica'
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
+
   include AuthenticatedSystem # logged_in? and current_user
   include ApplicationHelper
 
-#  protect_from_forgery # See ActionController::RequestForgeryProtection for details
+  protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password

@@ -12,27 +12,17 @@
 
     <title>Say Your Price</title>
     <%= stylesheet_link_tag "reset", "global", "notification", "lightbox" %>
-    <%#= javascript_include_tag "prototype", "effects", "lightbox", "scriptaculous.js?load=effects,builder" %>
-    <script src="/javascripts/prototype.js" type="text/javascript"></script>
-    <script src="/javascripts/scriptaculous.js?load=effects,builder" type="text/javascript"></script>
-    <script src="/javascripts/lightbox.js" type="text/javascript"></script>
-    <%= javascript_include_tag 'application', 'jquery-1.4.2', 'jquery.bar' %>
-    <%= javascript_include_tag "jcarousellite_1.0.1c4" %>
+    <%= javascript_include_tag "prototype", "lightbox", "scriptaculous.js?load=effects,builder" %>
+    <%= javascript_include_tag "application", "jquery-1.4.2", "jquery.bar", "jcarousellite_1.0.1c4" %>
 
     <% javascript_tag do %>
-          jQuery.noConflict();
-          jQuery(function() {
-                jQuery("#newsticker-jcarousellite").jCarouselLite({
-                btnPlay: ".play",
-                btnPause: ".pause",
-                vertical: true,
-                hoverPause:true,
-                stop: false,
-                visible: 3,
-                auto:2000,
-                speed:2300
-                });
-          });
+        jQuery.noConflict();
+        jQuery(function() {
+            jQuery("#newsticker-jcarousellite").jCarouselLite({
+                btnPlay: ".play", btnPause: ".pause", vertical: true, hoverPause:true,
+                stop: false, visible: 3, auto:2000, speed:2300
+            });
+        });
     <% end %>
 
     <%= include_visualization_api %>
@@ -47,7 +37,6 @@
             <ul>
                 <%= content_tag(:li, link_to('Home', root_path)) if request.path != root_path %>
                 <% if logged_in? %>
-                    <%#= content_tag(:li, link_to("My Profile", profile_path), :class => ([profile_path].include? request.path) ? "current" : nil) if current_user.profile %>
                     <%= content_tag(:li, link_to('Sign Out', logout_path)) %>
                 <% else %>
                     <%= content_tag(:li, link_to("Say Your Price", say_your_price_path), :class => ([say_your_price_path].include? request.path) ? "current" : nil) %>
@@ -66,49 +55,24 @@
                 <%= content_tag(:li, "engine by dealkat") %>
                 <%  if logged_in? %>
                   <%= content_tag(:li, link_to("Edit Profile", profile_path), :class => ([profile_path].include? request.path) ? "current" : nil) if current_user.profile %>
-                  <%= content_tag(:li, link_to("Download", download_emails_path)) if Payment.count(:conditions => "email IS NOT NULL and email <> ''").to_i > 0 %>
+                  <%#= content_tag(:li, link_to("Download", download_emails_path)) if Payment.count(:conditions => "email IS NOT NULL and email <> ''").to_i > 0 %>
                 <% else %>
                   <%#= content_tag(:li, link_to("FAQ", faqs_path), :class => ([faqs_path].include? request.path) ? "current" : nil) %>
                 <% end %>
             <% end %>
             <% if Profile.first %>
               <address>
-                  <%#= "#{Profile.first.name} " %>
-                  <%#= "#{Profile.first.address.strip}; " %>
                   <%= number_to_phone(Profile.first.phone, :delimiter => "-") + "; " %>
                   <%= auto_link(Profile.first.email) %>
-                  <%#= "@#{link_to("#{Profile.first.twitter} ", Profile.first.twitter_url, :target => "_new")} " %>
               </address>
             <% end %>
         </div><!-- #footer -->
     </div><!-- #layout -->
     <% if flash[:error] or flash[:notice] %>
       <% javascript_tag do %>
-          <% if flash[:error] %>
-            showNotification("<%= flash.now[:error] %>", 'error', 10000);
-          <% elsif flash[:notice] %>
-            showNotification("<%= flash.now[:notice] %>", 'notice', 10000);
-          <% end %>
+          showNotification("<%= flash[:error] || flash[:notice] %>", 'error', 10000);
           <% flash.discard %>
       <% end %>
     <% end %>
-
-    <script type="text/javascript" charset="utf-8">
-        window._token = '<%= form_authenticity_token -%>';
-    </script>
-
-    <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-21743407-1']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-
-    </script>
-
   </body>
 </html>

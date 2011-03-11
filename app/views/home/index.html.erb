@@ -1,26 +1,19 @@
 <h1 class="home">Let's make a deal. Say your price.</h1>
 
-<h2 class="home">
-    <a href="<%=say_your_price_path%>">
-    Check out our latest men's khakis and choose your favorite.<br>
-    Just say your price and score an exclusive coupon to<br>
-    redeem at your local Gap store.
-    </a>
-</h2>
+<div class="intro-steps">
+    <%= link_to(content_tag(:span, 1)+label_tag("Check out the latest men's khakis and choose your favorite."), say_your_price_path) %>
+    <%= link_to(content_tag(:span, 2)+label_tag("Say your price : Score exclusive store coupons"), say_your_price_path) %>
+    <%= link_to(content_tag(:span, 3)+label_tag("Feel Lucky? Win FREE / $1/$5 khakis. Join the many winners!"), say_your_price_path) %>
+</div><!-- .steps -->
 
-<div class="intro-slides capsule2">
-    <div class="cinner">
+<div class="intro-slides">
+    <%= link_to(image_tag("/images/samples/pants-303x460px-1.jpg"), say_your_price_path) %>
+    <%= link_to(image_tag("/images/samples/pants-303x460px-2.jpg"), say_your_price_path) %>
+    <%= link_to(image_tag("/images/samples/pants-303x460px-3.jpg"), say_your_price_path) %>
+    <div class="tl"></div><div class="tr"></div>
+    <div class="bl"></div><div class="br"></div>
+</div><!-- .intro-slides -->
 
-        <%= link_to(image_tag("/images/samples/pants-240x360px-1.jpg"), say_your_price_path) %>
-        <%= link_to(image_tag("/images/samples/pants-240x360px-2.jpg"), say_your_price_path) %>
-        <%= link_to(image_tag("/images/samples/pants-240x360px-3.jpg"), say_your_price_path) %>
-
-    </div><!-- .iinner -->
-    <div class="ctl"></div><div class="ctc"></div><div class="ctr"></div>
-    <div class="cml"></div><div class="cmr"></div>
-    <div class="cbl"></div><div class="cbc"></div><div class="cbr"></div>
-</div><!-- .capsule2 -->
-
-<p class="intro-ctrls w775px">
+<p class="intro-ctrls">
     <%= link_to(content_tag(:span, "Let's make a deal!"), say_your_price_path, :class => "button-green") %>
 </p>
