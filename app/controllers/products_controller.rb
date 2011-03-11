@@ -196,7 +196,7 @@ class ProductsController < ApplicationController
                           for price_code in PromotionCode::PRICE_CODES_MIN
                             if(price_code > @offer.price and price_code < @last_offer.price)
                               if(Offer.min_offers_of(20).count >= (Offer.paid_offers.count*0.02).ceil)
-                                @price_codes << price_code if price_code > 10
+                                @price_codes << price_code if price_code > 20
                               else
                                 @price_codes << price_code
                               end
@@ -242,7 +242,7 @@ class ProductsController < ApplicationController
                       for price_code in PromotionCode::PRICE_CODES_MIN
                         if(price_code > price)
                           if(Offer.min_offers_of(20).count >= (Offer.paid_offers.count*0.02).ceil)
-                            @price_codes << price_code if price_code > 10
+                            @price_codes << price_code if price_code > 20
                           else
                             @price_codes << price_code
                           end
@@ -288,7 +288,7 @@ class ProductsController < ApplicationController
                         for price_code in PromotionCode::PRICE_CODES_MIN
                           if(price_code > @offer.price and price_code <= @last_offer.price)
                             if(Offer.min_offers_of(20).count >= (Offer.paid_offers.count*0.02).ceil)
-                              @price_codes << price_code if price_code > 10
+                              @price_codes << price_code if price_code > 20
                             else
                               @price_codes << price_code
                             end
