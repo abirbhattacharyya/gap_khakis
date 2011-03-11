@@ -195,7 +195,7 @@ class ProductsController < ApplicationController
                         else
                           for price_code in PromotionCode::PRICE_CODES_MIN
                             if(price_code > @offer.price and price_code < @last_offer.price)
-                              if(Offer.min_offers_of(10).count >= (Offer.paid_offers.count*0.02).ceil)
+                              if(Offer.min_offers_of(20).count >= (Offer.paid_offers.count*0.02).ceil)
                                 @price_codes << price_code if price_code > 10
                               else
                                 @price_codes << price_code
@@ -241,7 +241,7 @@ class ProductsController < ApplicationController
                       @price_codes = []
                       for price_code in PromotionCode::PRICE_CODES_MIN
                         if(price_code > price)
-                          if(Offer.min_offers_of(10).count >= (Offer.paid_offers.count*0.02).ceil)
+                          if(Offer.min_offers_of(20).count >= (Offer.paid_offers.count*0.02).ceil)
                             @price_codes << price_code if price_code > 10
                           else
                             @price_codes << price_code
@@ -287,7 +287,7 @@ class ProductsController < ApplicationController
                       else
                         for price_code in PromotionCode::PRICE_CODES_MIN
                           if(price_code > @offer.price and price_code <= @last_offer.price)
-                            if(Offer.min_offers_of(10).count >= (Offer.paid_offers.count*0.02).ceil)
+                            if(Offer.min_offers_of(20).count >= (Offer.paid_offers.count*0.02).ceil)
                               @price_codes << price_code if price_code > 10
                             else
                               @price_codes << price_code
