@@ -105,27 +105,30 @@ class HomeController < ApplicationController
   end
 
 	def send_daily_report
-    recipients = "abstartup@gmail.com, dhaval.parikh33@gmail.com, Summer_Riley@gap.com, Deepta_Banerjee@gap.com, Meena_Anvary@gap.com, dealkat2@gmail.com"
+#    recipients = "abstartup@gmail.com, dhaval.parikh33@gmail.com, Summer_Riley@gap.com, Deepta_Banerjee@gap.com, Meena_Anvary@gap.com, dealkat2@gmail.com"
+    recipients = "abstartup@gmail.com, dhaval.parikh33@gmail.com"
 #    recipients = "mailtoankitparekh@gmail.com, dhaval.parikh33@gmail.com"
+#    @today = DateTime.now.in_time_zone("Pacific Time (US & Canada)")
     @today = Date.today-1.day
-    @todays_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["Date(updated_at) = ? and response LIKE 'paid'", @today], :group => "price")
+    @todays_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["Date(updated_at) = ? and response LIKE 'paid'", @today.to_date], :group => "price")
     @all_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["response LIKE 'paid'"], :group => "price")
 
-    @analytics_overall = analytics_details('2011-03-02', @today)
-    @analytics_today = analytics_details(@today, @today)
+    @analytics_overall = analytics_details('2011-03-02', @today.to_date)
+    @analytics_today = analytics_details(@today.to_date, @today.to_date)
 
-    Notification.deliver_dailyreport(recipients,@todays_coupons,@all_coupons,@analytics_today,@analytics_overall,@today)
+    Notification.deliver_dailyreport(recipients,@todays_coupons,@all_coupons,@analytics_today,@analytics_overall,@today.to_date)
     flash[:notice] = "Report Sent"
     redirect_to root_path
   end
 
 	def daily_report
+#    @today = DateTime.now.in_time_zone("Pacific Time (US & Canada)")
     @today = Date.today-1.day
-    @todays_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["Date(updated_at) = ? and response LIKE 'paid'", @today], :group => "price")
+    @todays_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["Date(updated_at) = ? and response LIKE 'paid'", @today.to_date], :group => "price")
     @all_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["response LIKE 'paid'"], :group => "price")
 
-    @analytics_overall = analytics_details('2011-03-02', @today)
-    @analytics_today = analytics_details(@today, @today)
+    @analytics_overall = analytics_details('2011-03-02', @today.to_date)
+    @analytics_today = analytics_details(@today.to_date, @today.to_date)
     render :layout => false
   end
 end

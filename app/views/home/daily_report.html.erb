@@ -36,7 +36,7 @@
 <h1>Daily dealkat say your price report</h1>
 <h2>
   Campaign Start Date= March 2, 2011<br />
-  Time made= <%= Date.today.strftime("%B %d, %Y") %>, 12AM PST
+  Time made= <%= @today.beginning_of_day.strftime("%B %d, %Y, %I%p %Z") %>
 </h2>
 <h3>Salient Metrics</h3>
 
@@ -46,7 +46,7 @@
     <tr style="min-height:0px">
       <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:bold;font-style:normal;text-decoration:underline;vertical-align:baseline">Metric</span></td>
       <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:bold;font-style:normal;text-decoration:underline;vertical-align:baseline">Yesterday</span></td>
-      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:bold;font-style:normal;text-decoration:underline;vertical-align:baseline">Cumulative</span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:bold;font-style:normal;text-decoration:underline;vertical-align:baseline">Cumulative Since March 2</span></td>
     </tr>
     <tr style="min-height:0px">
       <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"># of visits</span></td>
@@ -68,11 +68,6 @@
       <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= content_tag(:b, "#{(min_t < 10 ? '0' : '')}#{min_t}:#{(sec_t < 10 ? '0' : '')}#{sec_t}") %></span></td>
       <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= content_tag(:b, "#{(min_o < 10 ? '0' : '')}#{min_o}:#{(sec_o < 10 ? '0' : '')}#{sec_o}") %></span></td>
     </tr>
-    <tr style="min-height:0px">
-      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"># Of coupons viewed</span></td>
-      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(Offer.count(:conditions => ["response <> ? and Date(offers.updated_at) = ?", "expired", @today])) %></span></td>
-      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(Offer.count(:conditions => ["response <> ?", "expired"])) %></span></td>
-    </tr>
   </tbody>
 </table>
 
@@ -84,7 +79,12 @@
     <tr style="min-height:0px">
       <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:bold;font-style:normal;text-decoration:underline;vertical-align:baseline">Metric</span></td>
       <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:bold;font-style:normal;text-decoration:underline;vertical-align:baseline">Yesterday</span></td>
-      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:bold;font-style:normal;text-decoration:underline;vertical-align:baseline">Cumulative</span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:bold;font-style:normal;text-decoration:underline;vertical-align:baseline">Cumulative Since <%= @today.strftime("%B %d") %></span></td>
+    </tr>
+    <tr style="min-height:0px">
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"># Of coupons viewed</span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(Offer.count(:conditions => ["response <> ? and Date(offers.updated_at) = ?", "expired", @today.to_date])) %></span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(Offer.count(:conditions => ["response <> ?", "expired"])) %></span></td>
     </tr>
     <tr style="min-height:0px">
       <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline">Total coupon sales @100% redemption</span></td>
