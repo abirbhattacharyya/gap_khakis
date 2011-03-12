@@ -32,7 +32,7 @@
         <%= link_to("Download PDF", "javascript:void();", :class => "capsule2 addlink", :onclick => "window.location.href='#{download_pdf_path(@payment.id)}'") %>
         <% form_for :payment, :url => payments_path(@payment.id) do |f| %>
           <p class="ctrl">
-              <%= label_tag(:email, "Your email? (optional)") %>
+              <%= label_tag(:email, "Your email? (optional to send coupon)") %>
               <%= f.text_field :email, :class => "w250px" %>
           </p>
           <p class="ctrls">

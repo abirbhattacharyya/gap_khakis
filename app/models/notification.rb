@@ -36,6 +36,6 @@ class Notification < ActionMailer::Base
   protected
 
   def sender_email
-      '"GapMyPrice" <myprice@gapmyprice.com>'
+      '"Gapmyprice" <myprice@gapmyprice.com>'
   end
 end

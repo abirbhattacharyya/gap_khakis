@@ -70,12 +70,12 @@ class ProductsController < ApplicationController
         @payment = Payment.find(params[:id])
         if @payment.update_attributes(params[:payment])
           Notification.deliver_sendcoupon(@payment.email, @payment)
-          flash[:notice] = "Cool! Emailed your coupon. See you at the store soon."
+          flash[:notice] = "Emailed coupon. Will not use to market to you."
           redirect_to say_your_price_path
           return
         else
           @payment.email = nil
-          flash[:error]= "Hey, please enter a valid email address"
+          flash[:error]= "Hi, please enter a valid email address"
           return
         end
       else
@@ -250,16 +250,16 @@ class ProductsController < ApplicationController
                       end
                       @new_offer = @price_codes[rand(999)%@price_codes.size]
                       Offer.create(:ip => request.remote_ip, :token => offer_token, :product_id => @product.id, :price => @new_offer, :response => "counter", :counter => 1)
-                      flash[:notice] = "Hey, we can do $#{@new_offer}? Deal?"
+                      flash[:notice] = "Hi, we can do $#{@new_offer}. Deal?"
                     else
                       @new_offer = ((@product.ticketed_retail == 49.5) ? 45 : 59)
                       Offer.create(:ip => request.remote_ip, :token => offer_token, :product_id => @product.id, :price => @new_offer, :response => "last", :counter => 1)
-                      flash[:notice] = "Hi $#{price} is too low. How about $#{@new_offer}"
+                      flash[:notice] = "Hi, $#{price} is too low. How about $#{@new_offer}?"
                     end
                   else
                     @new_offer = ((@product.ticketed_retail == 49.5) ? 45 : 59)
                     Offer.create(:ip => request.remote_ip, :token => offer_token, :product_id => @product.id, :price => @new_offer, :response => "last", :counter => 1)
-                    flash[:notice] = "Hi $#{price} is too low. How about $#{@new_offer}"
+                    flash[:notice] = "Hi, $#{price} is too low. How about $#{@new_offer}?"
                   end
               elsif(price >= reg_price)
                   @new_offer = ((@product.ticketed_retail == 49.5) ? 45 : 55)
@@ -286,7 +286,7 @@ class ProductsController < ApplicationController
                         end
                       else
                         for price_code in PromotionCode::PRICE_CODES_MIN
-                          if(price_code > @offer.price and price_code <= @last_offer.price)
+                          if(price_code > @last_offer.price)
                             if(Offer.min_offers_of(20).count >= (Offer.paid_offers.count*0.02).ceil)
                               @price_codes << price_code if price_code > 20
                             else
@@ -310,7 +310,7 @@ class ProductsController < ApplicationController
                     flash[:notice] = "Cool, come on down to the store!"
                   else
                     Offer.create(:ip => request.remote_ip, :token => offer_token, :product_id => @product.id, :price => @new_offer, :response => "counter", :counter => 1)
-                    flash[:notice] = "Hey, we can do $#{@new_offer}? Deal?"
+                    flash[:notice] = "Hi, we can do $#{@new_offer}. Deal?"
                   end
               end
               return
@@ -321,7 +321,7 @@ class ProductsController < ApplicationController
           elsif @last_offer.accepted?
             flash[:notice] = "Cool, come on down to the store!"
           else
-            flash[:notice] = "Hey, we can do #{(@last_offer.price.ceil.to_i > 0) ? "$#{@last_offer.price.ceil.to_i}" : "Free of cost"}? Deal?"
+            flash[:notice] = "Hi, we can do #{(@last_offer.price.ceil.to_i > 0) ? "$#{@last_offer.price.ceil.to_i}" : "Free of cost"}. Deal?"
           end
           return
         end

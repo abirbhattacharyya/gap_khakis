@@ -1,11 +1,13 @@
+<% offer_token = (session[:_csrf_token] ||= ActiveSupport::SecureRandom.base64(32)) %>
+<% @last_offer = @product.offers.last(:conditions => ["ip = ? and token = ?", request.remote_ip, offer_token]) %>
 <h1>
     <% if @last_offer %>
       <% if @last_offer.accepted? %>
         Done deal. Get your exclusive coupon now!
       <% elsif @last_offer.counter? %>
-        This is our offer. So hey, what do you say?
+        Hi, Here's our next offer. What do you say? Thanks.
       <% elsif @last_offer.last? %>
-        This is our best offer, a great deal. Hope you accept!
+        This is our best offer. Let's make a deal? Thanks.
       <% else %>
         Game on! Say your price and let's make a deal!
       <% end %>
