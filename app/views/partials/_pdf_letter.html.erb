@@ -10,7 +10,7 @@ Your Price: <%= (@payment.offer.price > 0) ? number_to_currency(@payment.offer.p
 
 <%= @payment.offer.product.style_description %> (<%= @payment.offer.product.color.titleize %>)
 Style#: <%= @payment.offer.product.style_num %>
-Expires: <%= @payment.expiry.strftime("%m/%d/%y") %>[1..-1]
+Expires : <%= @payment.expiry.strftime("%m/%d/%y")[1..-1] %>
 
 
 <b>Terms & Conditions:</b>
