@@ -139,10 +139,7 @@ class ProductsController < ApplicationController
         redirect_to root_path
         return
       end
-          #avg_offer = Offer.last(:select => "AVG(price) as avg_price", :conditions => ["response = ?", 'paid'])
-          #render :text => avg_offer.avg_price.inspect and return false
       offer_token = (session[:_csrf_token] ||= ActiveSupport::SecureRandom.base64(32))
-      #render :text => offer_token.inspect and return false
 
       @last_offer = @product.offers.last(:conditions => ["ip = ? and token = ?", request.remote_ip, offer_token])
       if request.post?
@@ -193,10 +190,10 @@ class ProductsController < ApplicationController
                             @price_codes << price_code if(price_code > @offer.price and price_code < @last_offer.price)
                           end
                         else
-                          for price_code in PromotionCode::PRICE_CODES_MIN
+                          for price_code in @product.min_price_points
                             if(price_code > @offer.price and price_code < @last_offer.price)
-                              if(Offer.min_offers_of(20).count >= (Offer.paid_offers.count*0.02).ceil)
-                                @price_codes << price_code if price_code > 20
+                              if(Offer.min_offers_of(25).count >= (Offer.paid_offers.count*0.02).ceil)
+                                @price_codes << price_code if price_code >= 25
                               else
                                 @price_codes << price_code
                               end
@@ -239,10 +236,10 @@ class ProductsController < ApplicationController
                   if avg_offer.avg_price
                     if avg_offer.avg_price.to_f >= @product.target_price
                       @price_codes = []
-                      for price_code in PromotionCode::PRICE_CODES_MIN
+                      for price_code in @product.min_price_points
                         if(price_code > price)
-                          if(Offer.min_offers_of(20).count >= (Offer.paid_offers.count*0.02).ceil)
-                            @price_codes << price_code if price_code > 20
+                          if(Offer.min_offers_of(25).count >= (Offer.paid_offers.count*0.02).ceil)
+                            @price_codes << price_code if price_code >= 25
                           else
                             @price_codes << price_code
                           end
@@ -285,10 +282,10 @@ class ProductsController < ApplicationController
                           @price_codes << price_code
                         end
                       else
-                        for price_code in PromotionCode::PRICE_CODES_MIN
-                          if(price_code > @last_offer.price)
-                            if(Offer.min_offers_of(20).count >= (Offer.paid_offers.count*0.02).ceil)
-                              @price_codes << price_code if price_code > 20
+                        for price_code in @product.min_price_points
+                          if(price_code >= @last_offer.price)
+                            if(Offer.min_offers_of(25).count >= (Offer.paid_offers.count*0.02).ceil)
+                              @price_codes << price_code if price_code >= 25
                             else
                               @price_codes << price_code
                             end

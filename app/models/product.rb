@@ -5,11 +5,25 @@ class Product < ActiveRecord::Base
   validates_uniqueness_of :style_description, :scope => [:user_id, :color_description]
 
   def new_price_points
+    price_codes = []
+    for price_code in PromotionCode::PRICE_CODES
+      price_codes << price_code if(price_code >= self.target_price and price_code < self.ticketed_retail)
+    end
+    return price_codes
+
     if(self.ticketed_retail == 49.5)
       PromotionCode::PRICE_CODES_50
     else
       PromotionCode::PRICE_CODES_60
     end
+  end
+
+  def min_price_points
+    price_codes = []
+    for price_code in PromotionCode::PRICE_CODES
+      price_codes << price_code if price_code < self.target_price
+    end
+    return price_codes
   end
 
   def color
