@@ -69,7 +69,7 @@
     <% (0..(@all_coupons.size - 1)).each do |i| %>
     <tr style="min-height:0px">
       <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"># of <%= (@all_coupons[i].price > 0) ? "$#{@all_coupons[i].price.to_i}" : "Free" %> Coupons</span></td>
-      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter((@todays_coupons[i] && @todays_coupons[i].price == @all_coupons[i].price) ? @todays_coupons[i].total : 0) %></span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter((@todays_coupons[i] && (@todays_coupons[i].price == @all_coupons[i].price)) ? @todays_coupons[i].total : 0) %></span></td>
       <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(@all_coupons[i].total) %></span></td>
     </tr>
     <% end %>
