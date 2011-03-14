@@ -108,11 +108,15 @@ class HomeController < ApplicationController
 #    recipients = "abstartup@gmail.com, dhaval.parikh33@gmail.com, Summer_Riley@gap.com, Deepta_Banerjee@gap.com, Meena_Anvary@gap.com, dealkat2@gmail.com"
     recipients = "abstartup@gmail.com, dhaval.parikh33@gmail.com"
 #    recipients = "mailtoankitparekh@gmail.com, dhaval.parikh33@gmail.com"
-#    @today = DateTime.now.in_time_zone("Pacific Time (US & Canada)")
 
     start_time = DateTime.now.utc.beginning_of_day - 1.day
     end_time = DateTime.now.utc.end_of_day - 1.day
+#    @today = DateTime.now.in_time_zone("Pacific Time (US & Canada)")
     @today = Date.today-1.day
+
+    @todays_dollars = Offer.first(:select => "SUM(price) as total", :conditions => ["(updated_at >= ? and updated_at <= ?) and response LIKE 'paid'", start_time, end_time]).total
+    @overall_dollars = Offer.first(:select => "SUM(price) as total", :conditions => ["response LIKE 'paid' and updated_at <= ?", DateTime.now.utc]).total
+
     @todays_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["(updated_at >= ? and updated_at <= ?) and response LIKE 'paid'", start_time, end_time], :group => "price")
     @all_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["response LIKE 'paid' and updated_at <= ?", DateTime.now.utc], :group => "price")
 
@@ -127,9 +131,12 @@ class HomeController < ApplicationController
 	def daily_report
     start_time = DateTime.now.utc.beginning_of_day - 1.day
     end_time = DateTime.now.utc.end_of_day - 1.day
-#    render :text => [start_time, end_time, DateTime.now.utc].inspect and return false
 #    @today = DateTime.now.in_time_zone("Pacific Time (US & Canada)")
     @today = Date.today-1.day
+
+    @todays_dollars = Offer.first(:select => "SUM(price) as total", :conditions => ["(updated_at >= ? and updated_at <= ?) and response LIKE 'paid'", start_time, end_time]).total
+    @overall_dollars = Offer.first(:select => "SUM(price) as total", :conditions => ["response LIKE 'paid' and updated_at <= ?", DateTime.now.utc]).total
+
     @todays_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["(updated_at >= ? and updated_at <= ?) and response LIKE 'paid'", start_time, end_time], :group => "price")
     @all_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["response LIKE 'paid' and updated_at <= ?", DateTime.now.utc], :group => "price")
 
