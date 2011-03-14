@@ -122,6 +122,8 @@ class HomeController < ApplicationController
   end
 
 	def daily_report
+    date = DateTime.now.utc
+    render :text => date.strftime("%b %d, %I:%M %p %Z").inspect and return false
 #    @today = DateTime.now.in_time_zone("Pacific Time (US & Canada)")
     @today = Date.today-1.day
     @todays_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["Date(updated_at) = ? and response LIKE 'paid'", @today.to_date], :group => "price")
