@@ -69,8 +69,8 @@
     <% for price_code in PromotionCode::PRICE_CODES %>
     <tr style="min-height:0px">
       <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"># of <%= (price_code > 0) ? "$#{price_code.to_i}" : "Free" %> Coupons</span></td>
-      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(@todays_coupons[price_code]) %></span></td>
-      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(@all_coupons[price_code]) %></span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(@todays_coupons[price_code][0]) %> (<%= @todays_coupons[price_code][1] %>, <%= @todays_coupons[price_code][2] %>)</span></td>
+      <td style="border:1px dotted rgb(170, 170, 170);vertical-align:top;padding:7px"><span style="font-size:12pt;font-family:Verdana;color:rgb(0, 0, 0);background-color:transparent;font-weight:normal;font-style:normal;text-decoration:none;vertical-align:baseline"><%= number_with_delimiter(@all_coupons[price_code][0]) %> (<%= @all_coupons[price_code][1] %>, <%= @all_coupons[price_code][2] %>)</span></td>
     </tr>
     <% end %>
   </tbody>

@@ -148,8 +148,12 @@ class HomeController < ApplicationController
     for price_code in PromotionCode::PRICE_CODES
       todays_coupons = Offer.first(:select => "COUNT(id) as total", :conditions => ["(updated_at >= ? and updated_at <= ?) and response LIKE 'paid' and price =?", start_time, end_time, price_code])
       all_coupons = Offer.first(:select => "COUNT(id) as total", :conditions => ["response LIKE 'paid' and updated_at <= ? and price =?", DateTime.now.utc, price_code])
-      @todays_coupons[price_code] = todays_coupons.total
-      @all_coupons[price_code] = all_coupons.total
+      todays_coupons_50 = Offer.first(:select => "COUNT(id) as total", :conditions => ["(updated_at >= ? and updated_at <= ?) and response LIKE 'paid' and price =? and (product_id between ? and ?)", start_time, end_time, price_code, 1, 14])
+      todays_coupons_60 = Offer.first(:select => "COUNT(id) as total", :conditions => ["(updated_at >= ? and updated_at <= ?) and response LIKE 'paid' and price =? and (product_id between ? and ?)", start_time, end_time, price_code, 15, 18])
+      all_coupons_50 = Offer.first(:select => "COUNT(id) as total", :conditions => ["response LIKE 'paid' and updated_at <= ? and price =? and (product_id between ? and ?)", DateTime.now.utc, price_code, 1, 14])
+      all_coupons_60 = Offer.first(:select => "COUNT(id) as total", :conditions => ["response LIKE 'paid' and updated_at <= ? and price =? and (product_id between ? and ?)", DateTime.now.utc, price_code, 15, 18])
+      @todays_coupons[price_code] = [todays_coupons.total, todays_coupons_50.total, todays_coupons_60.total]
+      @all_coupons[price_code] = [all_coupons.total, all_coupons_50.total, all_coupons_60.total]
     end
 #    @todays_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["(updated_at >= ? and updated_at <= ?) and response LIKE 'paid'", start_time, end_time], :group => "price")
 #    @all_coupons = Offer.all(:select => "COUNT(id) as total, price", :conditions => ["response LIKE 'paid' and updated_at <= ?", DateTime.now.utc], :group => "price")
