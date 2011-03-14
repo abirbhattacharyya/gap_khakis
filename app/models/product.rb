@@ -31,7 +31,7 @@ class Product < ActiveRecord::Base
   end
 
   def target_price
-    (self.ticketed_retail == 49.5) ? 30 : 35
+    (self.ticketed_retail == 49.5) ? 35 : 40
   end
 
   def min_price

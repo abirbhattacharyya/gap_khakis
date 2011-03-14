@@ -139,6 +139,9 @@ class ProductsController < ApplicationController
         redirect_to root_path
         return
       end
+#          avg_offer = @product.offers.last(:select => "AVG(price) as avg_price", :conditions => ["response = ?", 'paid'])
+#          render :text => avg_offer.avg_price.inspect and return false
+#                        render :text => (Offer.min_offers_of(30).count >= (Offer.paid_offers.count*0.02).ceil) and return false
       offer_token = (session[:_csrf_token] ||= ActiveSupport::SecureRandom.base64(32))
 
       @last_offer = @product.offers.last(:conditions => ["ip = ? and token = ?", request.remote_ip, offer_token])
@@ -192,8 +195,8 @@ class ProductsController < ApplicationController
                         else
                           for price_code in @product.min_price_points
                             if(price_code > @offer.price and price_code < @last_offer.price)
-                              if(Offer.min_offers_of(25).count >= (Offer.paid_offers.count*0.02).ceil)
-                                @price_codes << price_code if price_code >= 25
+                              if(Offer.min_offers_of(30).count >= (Offer.paid_offers.count*0.02).ceil)
+                                @price_codes << price_code if price_code >= 30
                               else
                                 @price_codes << price_code
                               end
@@ -238,16 +241,26 @@ class ProductsController < ApplicationController
                       @price_codes = []
                       for price_code in @product.min_price_points
                         if(price_code > price)
-                          if(Offer.min_offers_of(25).count >= (Offer.paid_offers.count*0.02).ceil)
-                            @price_codes << price_code if price_code >= 25
+                          if(Offer.min_offers_of(30).count >= (Offer.paid_offers.count*0.02).ceil)
+                            @price_codes << price_code if price_code >= 30
                           else
                             @price_codes << price_code
                           end
                         end
                       end
                       @new_offer = @price_codes[rand(999)%@price_codes.size]
-                      Offer.create(:ip => request.remote_ip, :token => offer_token, :product_id => @product.id, :price => @new_offer, :response => "counter", :counter => 1)
-                      flash[:notice] = "Hi, we can do $#{@new_offer}. Deal?"
+                      if @new_offer == @product.target_price
+                        Offer.create(:ip => request.remote_ip, :token => offer_token, :product_id => @product.id, :price => @new_offer, :response => "last", :counter => 1)
+                        flash[:notice] = "Hey, the best we can do is $#{@new_offer}. Deal?"
+                      elsif price >= @new_offer
+                        Offer.create(:ip => request.remote_ip, :token => offer_token, :product_id => @product.id, :price => @new_offer, :response => "accepted", :counter => 1)
+                        flash[:notice] = "Cool, come on down to the store!"
+                      else
+                        Offer.create(:ip => request.remote_ip, :token => offer_token, :product_id => @product.id, :price => @new_offer, :response => "counter", :counter => 1)
+                        flash[:notice] = "Hi, we can do $#{@new_offer}. Deal?"
+                      end
+#                      Offer.create(:ip => request.remote_ip, :token => offer_token, :product_id => @product.id, :price => @new_offer, :response => "counter", :counter => 1)
+#                      flash[:notice] = "Hi, we can do $#{@new_offer}. Deal?"
                     else
                       @new_offer = ((@product.ticketed_retail == 49.5) ? 45 : 59)
                       Offer.create(:ip => request.remote_ip, :token => offer_token, :product_id => @product.id, :price => @new_offer, :response => "last", :counter => 1)
@@ -282,10 +295,28 @@ class ProductsController < ApplicationController
                           @price_codes << price_code
                         end
                       else
+                        if(Offer.min_offers_of(30).count >= (Offer.paid_offers.count*0.02).ceil)
+                          @price_codes << @product.target_price
+                        else
+                          for price_code in @product.min_price_points
+                            if(price_code >= @last_offer.price)
+                              @price_codes << price_code
+                            end
+                          end
+                        end
+#                        if(Offer.min_offers_of(30).count >= (Offer.paid_offers.count*0.02).ceil)
+#                          @price_codes << @product.target_price
+#                        else
+#                          for price_code in @product.min_price_points
+#                            if(price_code >= @last_offer.price)
+#                              @price_codes << price_code
+#                            end
+#                          end
+#                        end
                         for price_code in @product.min_price_points
-                          if(price_code >= @last_offer.price)
-                            if(Offer.min_offers_of(25).count >= (Offer.paid_offers.count*0.02).ceil)
-                              @price_codes << price_code if price_code >= 25
+                          if(price_code > price)
+                            if(Offer.min_offers_of(30).count >= (Offer.paid_offers.count*0.02).ceil)
+                              @price_codes << price_code if price_code >= 30
                             else
                               @price_codes << price_code
                             end
