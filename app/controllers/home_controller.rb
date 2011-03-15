@@ -110,8 +110,8 @@ class HomeController < ApplicationController
     recipients = "dhaval.parikh33@gmail.com"
 #    recipients = "mailtoankitparekh@gmail.com, dhaval.parikh33@gmail.com"
 
-    start_time = DateTime.now.utc.beginning_of_day - 1.day
-    end_time = DateTime.now.utc.end_of_day - 1.day
+    start_time = DateTime.now.utc.beginning_of_day
+    end_time = DateTime.now.utc.end_of_day
 #    @today = DateTime.now.in_time_zone("Pacific Time (US & Canada)")
     @today = Date.today-1.day
 
