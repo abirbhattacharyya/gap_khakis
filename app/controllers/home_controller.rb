@@ -106,7 +106,8 @@ class HomeController < ApplicationController
 
 	def send_daily_report
 #    recipients = "abstartup@gmail.com, dhaval.parikh33@gmail.com, Summer_Riley@gap.com, Deepta_Banerjee@gap.com, Meena_Anvary@gap.com, dealkat2@gmail.com"
-    recipients = "abstartup@gmail.com, dhaval.parikh33@gmail.com"
+#    recipients = "abstartup@gmail.com, dhaval.parikh33@gmail.com"
+    recipients = "dhaval.parikh33@gmail.com"
 #    recipients = "mailtoankitparekh@gmail.com, dhaval.parikh33@gmail.com"
 
     start_time = DateTime.now.utc.beginning_of_day - 1.day
@@ -135,8 +136,8 @@ class HomeController < ApplicationController
   end
 
 	def daily_report
-    start_time = DateTime.now.utc.beginning_of_day
-    end_time = DateTime.now.utc.end_of_day
+    start_time = DateTime.now.utc.beginning_of_day - 1.day
+    end_time = DateTime.now.utc.end_of_day - 1.day
 #    @today = DateTime.now.in_time_zone("Pacific Time (US & Canada)")
     @today = Date.today-1.day
 
